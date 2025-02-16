@@ -1,0 +1,20 @@
+import Link from "next/link";
+import React from "react";
+import { Nav, NavItem, NavLink } from "react-bootstrap";
+
+export default function Navigation() {
+    return (
+        <Nav>
+            <NavItem>
+                <Link href={'/'}>
+                    Dashboard
+                </Link>
+            </NavItem>
+            <NavItem>
+                <Link href={'/about'}>
+                    About
+                </Link>
+            </NavItem>
+        </Nav>
+    );
+}

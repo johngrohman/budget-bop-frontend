@@ -1,0 +1,36 @@
+.banner_card_container {
+    height: 180px;
+    width: 200px;
+    border-radius: 5px;
+}
+
+.banner_card_header {
+    height: 15% !important;
+    border-radius: 4px 4px 0px 0px !important;
+    border-bottom: none;
+}
+
+.banner_card_body {
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.banner_card_title {
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.banner_card_text {
+    font-size: 1.75em;
+    text-align: center;
+    font-weight: 500;
+}
+
+.banner_body_text_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
