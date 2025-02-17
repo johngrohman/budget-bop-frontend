@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Nav, NavItem, NavLink } from "react-bootstrap";
+import { Nav, NavItem } from "react-bootstrap";
 
 export default function Navigation() {
     return (
@@ -13,6 +13,11 @@ export default function Navigation() {
             <NavItem>
                 <Link href={'/about'}>
                     About
+                </Link>
+            </NavItem>
+            <NavItem>
+                <Link href={'/jan'}>
+                    January
                 </Link>
             </NavItem>
         </Nav>

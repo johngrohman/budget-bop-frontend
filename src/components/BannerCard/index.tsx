@@ -13,11 +13,11 @@ export default function BannerCard({
 }) {
     return (
         <Card className={styles.banner_card_container}>
-            <CardHeader style={{backgroundColor: color}} className={styles.banner_card_header}></CardHeader>
+            <CardHeader style={{backgroundColor: color}} className={styles.banner_card_header}>&nbsp;</CardHeader>
             <CardBody className={styles.banner_card_body}>
                 <div className={styles.banner_body_text_container}>
-                    <CardText className={styles.banner_card_title}>{title}</CardText>
-                    <CardTitle className={styles.banner_card_text}>{text}</CardTitle>
+                    <p className={styles.banner_card_title}>{title}</p>
+                    <p className={styles.banner_card_text}>{text}</p>
                 </div>
             </CardBody>
         </Card>

@@ -1,0 +1,88 @@
+.page_container {
+    height: 95vh;
+    width: 95%;
+    // border: 1px solid red;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.page_heading_container {
+    background-color: #B1D4E0;
+    height: 5%;
+    text-align: center;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page_heading {
+    font-size: 2.25em;
+    color: rgb(255, 255, 255);
+}
+
+.dashboard_tables_charts_container {
+    width: 100%;
+    height: 95%;
+    // border: 1px solid purple;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.dashboard_income_column {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 30px;
+    height: 100%;
+}
+
+.dashboard_tables {
+    width: 35%;
+    height: 100%;
+    // border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.dashboard_income_cards_row {
+    height: 20%;
+    padding-top: 20px;
+    gap: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: start;
+    // border: 1px solid blue;
+}
+
+.dashboard_card_chart_column {
+    width: 65%;
+    height: 100%;
+    display: inline;
+    // border: 1px solid green;
+}
+
+.dashboard_income_column_card {
+    height: 30%;
+    // border: 1px solid red;
+}
+
+.dashboard_row {
+    width: 100%;
+    height: 50%;
+    // border: 1px solid purple
+}
+
+.savings_container {
+    width: 60%;
+    height: 30%;
+    // border: 1px solid red;
+}
+
+.chart {
+    // border: 1px solid green;
+}
