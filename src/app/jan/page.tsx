@@ -1,5 +1,5 @@
 'use client'
-import { Button, Card, div, Container, div } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 import { PieChart } from "@mui/x-charts";
 import BannerCard from "@/components/BannerCard";
 import styles from './month.module.scss';
