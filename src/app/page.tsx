@@ -1,9 +1,10 @@
 import React from "react";
+import Dashboard from "./(year)/dashboard";
 
-export default function Dashboard() {
+export default function LandingPage() {
     return (
         <>
-            <h1>Dashboard</h1>
+            <Dashboard />
         </>
     );
 }

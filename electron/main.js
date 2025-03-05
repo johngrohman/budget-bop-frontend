@@ -10,11 +10,14 @@ let mainWindow;
 app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
         width: 1300,
-        height: 800,
+        height: 850,
         webPreferences: {
             preload: join(__dirname, "preload.js"),
             nodeIntegration: false,
         },
+        titleBarStyle: 'hidden',
+        ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {}),
+        trafficLightPosition: { x: 15, y: 15 },
     });
 
     const startUrl = "http://localhost:3000";

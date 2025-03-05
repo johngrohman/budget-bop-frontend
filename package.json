@@ -1,27 +1,32 @@
 {
-  "name": "budget_buddy",
+  "name": "bop",
   "version": "0.1.0",
   "private": true,
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev\" \"electron .\"",
+    "dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"electron .\"",
     "build": "next build",
     "electron": "electron .",
-    "electron-dev": "concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "start": "next start",
-    "lint": "next lint"
+    "electron-dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "start": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next start\" \"wait-on http://localhost:3000 && electron .\"",
+    "lint": "next lint",
+    "generate-types": "npx openapicmd typegen ./api/openapi.json > ./src/types/openapi.d.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.4",
     "@mui/x-charts": "^7.26.0",
+    "axios": "^1.8.1",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "electron-serve": "^2.1.1",
     "next": "15.1.7",
+    "openapicmd": "^2.6.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
+    "react-bootstrap-icons": "^1.11.5",
     "react-dom": "^19.0.0",
     "sass": "^1.85.0"
   },
@@ -31,12 +36,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "concurrently": "^9.1.2",
-    "wait-on": "^8.0.2",
     "electron": "^34.2.0",
     "electron-builder": "^25.1.8",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wait-on": "^8.0.2"
   }
 }

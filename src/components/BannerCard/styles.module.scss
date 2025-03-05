@@ -1,9 +1,7 @@
 .banner_card_container {
-    height: 15vh;
-    width: 12vw;
+    height: 100%;
+    width: 100%;
     border-radius: 10px;
-    border: none;
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .banner_card_header {
@@ -23,14 +21,17 @@
 
 .banner_card_title {
     text-align: center;
-    font-size: .8em;
+    font-size: 1em;
     margin: 0;
+    padding: 0;
 }
 
 .banner_card_text {
-    font-size: 1.5em;
+    font-size: 1.7em;
     text-align: center;
     font-weight: 500;
+    padding: 0;
+    margin: 0;
 }
 
 .banner_body_text_container {
@@ -38,5 +39,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
 }

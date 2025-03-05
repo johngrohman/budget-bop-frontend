@@ -1,25 +1,74 @@
+'use client'
 import Link from "next/link";
-import React from "react";
-import { Nav, NavItem } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Container, Nav, NavItem, Offcanvas, OffcanvasBody, OffcanvasHeader, OffcanvasTitle, Row } from "react-bootstrap";
+import { getYears } from "../../api/year";
 
-export default function Navigation() {
+interface Navigation {
+    show: boolean,
+    setShow: Function
+}
+
+interface Year {
+    id: string,
+    year: string
+}
+
+export default function Navigation({show, setShow}: Navigation) {
+
+    const [years, setYears] = useState<Year[]>([]);
+
+    const getYearsData = () => {
+        getYears()
+        .then((response) => setYears(response))
+    }
+
+    useEffect(() => {
+        getYearsData()
+    }, [])
+
     return (
-        <Nav>
-            <NavItem>
-                <Link href={'/'}>
-                    Dashboard
-                </Link>
-            </NavItem>
-            <NavItem>
-                <Link href={'/about'}>
-                    About
-                </Link>
-            </NavItem>
-            <NavItem>
-                <Link href={'/jan'}>
-                    January
-                </Link>
-            </NavItem>
-        </Nav>
+        <Offcanvas
+            show={show}
+            onHide={() => setShow(false)}
+            backdrop={false}
+        >
+            <br />
+            <OffcanvasHeader closeButton>
+                <OffcanvasTitle>
+                    Budget Bop
+                </OffcanvasTitle>
+            </OffcanvasHeader>
+            <OffcanvasBody>
+            <Nav>
+                <Container>
+                    <Row >
+                        <NavItem>
+                            <Link
+                                href={'/'}
+                                onClick={() => setShow(false)}
+                            >
+                                Dashboard
+                            </Link>
+                        </NavItem>
+                    </Row>
+                    {
+                        years.map((year: Year, index: number) => (
+                            <Row key={index}>
+                                <NavItem>
+                                    <Link
+                                        href={`${year.id}`}
+                                        onClick={() => setShow(false)}
+                                    >
+                                        {year.year}
+                                    </Link>
+                                </NavItem>
+                            </Row>
+                        ))
+                    }
+                </Container>
+            </Nav>
+            </OffcanvasBody>
+        </Offcanvas>
     );
 }

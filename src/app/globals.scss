@@ -1,0 +1,15 @@
+@import 'variables.scss';
+
+body {
+    color: var(--foreground);
+    background-color: $background-dark;
+    /* background-color: #2c2c2c; */
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    height: 100vh;
+    width: 100vw;
+}
