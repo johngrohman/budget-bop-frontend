@@ -24,3 +24,18 @@ export async function getMonthsInYear(year_id: YearSchema['id']): Promise<Array<
         return ([])
     }
 }
+
+export async function getMonthById(month_id: MonthSchema['id']): Promise<MonthSchema> {
+    try {
+        const response = await fetch(`${API}${url}/${month_id}`, {
+            method: 'GET'
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch month: ', error)
+        return {id: '', month: '', year: {id: '', year: ''}}
+    }
+}

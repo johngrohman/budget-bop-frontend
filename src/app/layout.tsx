@@ -31,7 +31,9 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <TitleBar />
-                {children}
+                <div className="content h-100">
+                    {children}
+                </div>
             </body>
         </html>
     );

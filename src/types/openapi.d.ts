@@ -16,10 +16,6 @@ declare namespace Components {
              * Month
              */
             month: string;
-            /**
-             * Year
-             */
-            year: string;
         }
         /**
          * MonthOutSchema
@@ -101,6 +97,78 @@ declare namespace Components {
             month: /* MonthSchema */ MonthSchema;
         }
         /**
+         * TransactionFilterSchema
+         */
+        export interface TransactionFilterSchema {
+            /**
+             * Date
+             */
+            date?: /* Date */ string /* date-time */ | null;
+            /**
+             * Amount
+             */
+            amount?: /* Amount */ number | null;
+            /**
+             * Description
+             */
+            description?: /* Description */ string | null;
+            /**
+             * Category
+             */
+            category?: /* Category */ string | null;
+            /**
+             * Month Id
+             */
+            month_id?: /* Month Id */ string /* uuid */ | null;
+        }
+        /**
+         * TransactionInSchema
+         */
+        export interface TransactionInSchema {
+            /**
+             * Date
+             */
+            date: string; // date
+            /**
+             * Amount
+             */
+            amount: number;
+            /**
+             * Description
+             */
+            description: string;
+            /**
+             * Category
+             */
+            category: string;
+        }
+        /**
+         * TransactionOutSchema
+         */
+        export interface TransactionOutSchema {
+            /**
+             * Id
+             */
+            id: string; // uuid
+            /**
+             * Date
+             */
+            date: string; // date
+            /**
+             * Amount
+             */
+            amount: number;
+            /**
+             * Description
+             */
+            description: string;
+            /**
+             * Category
+             */
+            category: string;
+            month: /* MonthSchema */ MonthSchema;
+        }
+        /**
          * YearInSchema
          */
         export interface YearInSchema {
@@ -153,14 +221,6 @@ declare namespace Paths {
             }
         }
     }
-    namespace AppApiMonthApiGetAllMonths {
-        namespace Responses {
-            /**
-             * Response
-             */
-            export type $200 = /* MonthOutSchema */ Components.Schemas.MonthOutSchema[];
-        }
-    }
     namespace AppApiMonthApiGetMonthById {
         namespace Parameters {
             /**
@@ -173,6 +233,23 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = /* MonthOutSchema */ Components.Schemas.MonthOutSchema;
+        }
+    }
+    namespace AppApiMonthApiListMonthsInYear {
+        namespace Parameters {
+            /**
+             * Year Id
+             */
+            export type YearId = string; // uuid
+        }
+        export interface PathParameters {
+            year_id: /* Year Id */ Parameters.YearId /* uuid */;
+        }
+        namespace Responses {
+            /**
+             * Response
+             */
+            export type $200 = /* MonthOutSchema */ Components.Schemas.MonthOutSchema[];
         }
     }
     namespace AppApiMonthApiPatchMonth {
@@ -237,6 +314,112 @@ declare namespace Paths {
         export type RequestBody = /* SavingsInSchema */ Components.Schemas.SavingsInSchema;
         namespace Responses {
             export type $200 = /* SavingsOutSchema */ Components.Schemas.SavingsOutSchema;
+        }
+    }
+    namespace AppApiTransactionApiDeleteTransaction {
+        namespace Parameters {
+            /**
+             * Transaction Id
+             */
+            export type TransactionId = string; // uuid
+        }
+        export interface PathParameters {
+            transaction_id: /* Transaction Id */ Parameters.TransactionId /* uuid */;
+        }
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
+    namespace AppApiTransactionApiGetTransactionById {
+        namespace Parameters {
+            /**
+             * Transaction Id
+             */
+            export type TransactionId = string; // uuid
+        }
+        export interface PathParameters {
+            transaction_id: /* Transaction Id */ Parameters.TransactionId /* uuid */;
+        }
+        namespace Responses {
+            export type $200 = /* TransactionOutSchema */ Components.Schemas.TransactionOutSchema;
+        }
+    }
+    namespace AppApiTransactionApiListTransactions {
+        namespace Parameters {
+            /**
+             * Amount
+             */
+            export type Amount = /* Amount */ number | null;
+            /**
+             * Category
+             */
+            export type Category = /* Category */ string | null;
+            /**
+             * Date
+             */
+            export type Date = /* Date */ string /* date-time */ | null;
+            /**
+             * Description
+             */
+            export type Description = /* Description */ string | null;
+            /**
+             * Month Id
+             */
+            export type MonthId = /* Month Id */ string /* uuid */ | null;
+        }
+        export interface QueryParameters {
+            date?: /* Date */ Parameters.Date;
+            amount?: /* Amount */ Parameters.Amount;
+            description?: /* Description */ Parameters.Description;
+            category?: /* Category */ Parameters.Category;
+            month_id?: /* Month Id */ Parameters.MonthId;
+        }
+        namespace Responses {
+            /**
+             * Response
+             */
+            export type $200 = /* TransactionOutSchema */ Components.Schemas.TransactionOutSchema[];
+        }
+    }
+    namespace AppApiTransactionApiPatchTransaction {
+        namespace Parameters {
+            /**
+             * Transaction Id
+             */
+            export type TransactionId = string; // uuid
+        }
+        export interface QueryParameters {
+            transaction_id: /* Transaction Id */ Parameters.TransactionId /* uuid */;
+        }
+        export type RequestBody = /* TransactionInSchema */ Components.Schemas.TransactionInSchema;
+        namespace Responses {
+            export type $200 = /* TransactionOutSchema */ Components.Schemas.TransactionOutSchema;
+        }
+    }
+    namespace AppApiTransactionApiPostTransaction {
+        export type RequestBody = /* TransactionInSchema */ Components.Schemas.TransactionInSchema;
+        namespace Responses {
+            export type $200 = /* TransactionOutSchema */ Components.Schemas.TransactionOutSchema;
+        }
+    }
+    namespace AppApiTransactionApiUploadTransactionList {
+        /**
+         * MultiPartBodyParams
+         */
+        export interface RequestBody {
+            /**
+             * Month Id
+             */
+            month_id: string; // uuid
+            /**
+             * File
+             */
+            file: string; // binary
+        }
+        namespace Responses {
+            export interface $200 {
+            }
         }
     }
     namespace AppApiYearApiDeleteYear {
@@ -355,22 +538,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiYearApiPostCompleteYear.Responses.$200>
   /**
-   * app_api_month_api_get_all_months - Get All Months
-   */
-  'app_api_month_api_get_all_months'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiMonthApiGetAllMonths.Responses.$200>
-  /**
-   * app_api_month_api_post_month - Post Month
-   */
-  'app_api_month_api_post_month'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AppApiMonthApiPostMonth.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiMonthApiPostMonth.Responses.$200>
-  /**
    * app_api_month_api_get_month_by_id - Get Month By Id
    */
   'app_api_month_api_get_month_by_id'(
@@ -394,6 +561,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiMonthApiDeleteMonth.Responses.$200>
+  /**
+   * app_api_month_api_post_month - Post Month
+   */
+  'app_api_month_api_post_month'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiMonthApiPostMonth.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiMonthApiPostMonth.Responses.$200>
+  /**
+   * app_api_month_api_list_months_in_year - List Months In Year
+   */
+  'app_api_month_api_list_months_in_year'(
+    parameters?: Parameters<Paths.AppApiMonthApiListMonthsInYear.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiMonthApiListMonthsInYear.Responses.$200>
   /**
    * app_api_savings_api_get_all_savings - Get All Savings
    */
@@ -426,6 +609,56 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiSavingsApiDeleteSavings.Responses.$200>
+  /**
+   * app_api_transaction_api_upload_transaction_list - Upload Transaction List
+   * 
+   * Uploads a CSV file, parses it, and inserts transactions into the database.
+   */
+  'app_api_transaction_api_upload_transaction_list'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiTransactionApiUploadTransactionList.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiUploadTransactionList.Responses.$200>
+  /**
+   * app_api_transaction_api_list_transactions - List Transactions
+   */
+  'app_api_transaction_api_list_transactions'(
+    parameters?: Parameters<Paths.AppApiTransactionApiListTransactions.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiListTransactions.Responses.$200>
+  /**
+   * app_api_transaction_api_get_transaction_by_id - Get Transaction By Id
+   */
+  'app_api_transaction_api_get_transaction_by_id'(
+    parameters?: Parameters<Paths.AppApiTransactionApiGetTransactionById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiGetTransactionById.Responses.$200>
+  /**
+   * app_api_transaction_api_delete_transaction - Delete Transaction
+   */
+  'app_api_transaction_api_delete_transaction'(
+    parameters?: Parameters<Paths.AppApiTransactionApiDeleteTransaction.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
+  /**
+   * app_api_transaction_api_post_transaction - Post Transaction
+   */
+  'app_api_transaction_api_post_transaction'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
+  /**
+   * app_api_transaction_api_patch_transaction - Patch Transaction
+   */
+  'app_api_transaction_api_patch_transaction'(
+    parameters?: Parameters<Paths.AppApiTransactionApiPatchTransaction.QueryParameters> | null,
+    data?: Paths.AppApiTransactionApiPatchTransaction.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiPatchTransaction.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -483,24 +716,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiYearApiPostCompleteYear.Responses.$200>
   }
-  ['/api/months/']: {
-    /**
-     * app_api_month_api_get_all_months - Get All Months
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiMonthApiGetAllMonths.Responses.$200>
-    /**
-     * app_api_month_api_post_month - Post Month
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AppApiMonthApiPostMonth.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiMonthApiPostMonth.Responses.$200>
-  }
   ['/api/months/{month_id}']: {
     /**
      * app_api_month_api_get_month_by_id - Get Month By Id
@@ -526,6 +741,26 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiMonthApiDeleteMonth.Responses.$200>
+  }
+  ['/api/months/']: {
+    /**
+     * app_api_month_api_post_month - Post Month
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiMonthApiPostMonth.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiMonthApiPostMonth.Responses.$200>
+  }
+  ['/api/months/year/{year_id}']: {
+    /**
+     * app_api_month_api_list_months_in_year - List Months In Year
+     */
+    'get'(
+      parameters?: Parameters<Paths.AppApiMonthApiListMonthsInYear.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiMonthApiListMonthsInYear.Responses.$200>
   }
   ['/api/savings/']: {
     /**
@@ -563,6 +798,66 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiSavingsApiDeleteSavings.Responses.$200>
   }
+  ['/api/transactions/upload']: {
+    /**
+     * app_api_transaction_api_upload_transaction_list - Upload Transaction List
+     * 
+     * Uploads a CSV file, parses it, and inserts transactions into the database.
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiTransactionApiUploadTransactionList.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiUploadTransactionList.Responses.$200>
+  }
+  ['/api/transactions/list']: {
+    /**
+     * app_api_transaction_api_list_transactions - List Transactions
+     */
+    'get'(
+      parameters?: Parameters<Paths.AppApiTransactionApiListTransactions.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiListTransactions.Responses.$200>
+  }
+  ['/api/transactions/{transaction_id}']: {
+    /**
+     * app_api_transaction_api_get_transaction_by_id - Get Transaction By Id
+     */
+    'get'(
+      parameters?: Parameters<Paths.AppApiTransactionApiGetTransactionById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiGetTransactionById.Responses.$200>
+    /**
+     * app_api_transaction_api_delete_transaction - Delete Transaction
+     */
+    'delete'(
+      parameters?: Parameters<Paths.AppApiTransactionApiDeleteTransaction.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
+  }
+  ['/api/transactions/']: {
+    /**
+     * app_api_transaction_api_post_transaction - Post Transaction
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
+  }
+  ['/api/transactions/{year_id}']: {
+    /**
+     * app_api_transaction_api_patch_transaction - Patch Transaction
+     */
+    'patch'(
+      parameters?: Parameters<Paths.AppApiTransactionApiPatchTransaction.QueryParameters> | null,
+      data?: Paths.AppApiTransactionApiPatchTransaction.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiPatchTransaction.Responses.$200>
+  }
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
@@ -572,6 +867,9 @@ export type MonthOutSchema = Components.Schemas.MonthOutSchema;
 export type MonthSchema = Components.Schemas.MonthSchema;
 export type SavingsInSchema = Components.Schemas.SavingsInSchema;
 export type SavingsOutSchema = Components.Schemas.SavingsOutSchema;
+export type TransactionFilterSchema = Components.Schemas.TransactionFilterSchema;
+export type TransactionInSchema = Components.Schemas.TransactionInSchema;
+export type TransactionOutSchema = Components.Schemas.TransactionOutSchema;
 export type YearInSchema = Components.Schemas.YearInSchema;
 export type YearOutSchema = Components.Schemas.YearOutSchema;
 export type YearSchema = Components.Schemas.YearSchema;

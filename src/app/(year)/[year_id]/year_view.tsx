@@ -18,6 +18,7 @@ async function MonthComponents({ id }: { id: string }) {
         months.map((month: MonthSchema, index: number) => (
                 <Link
                     href={`${id}/${month.id}`}
+                    key={index}
                 >
                     <Card className='p-1'>
                         {month.month}
@@ -38,8 +39,8 @@ export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
                 </Row>
                 <Row>
                     <Col xs={2} className='d-flex'>
-                        <Stack gap={4}>
-                            <MonthComponents id={year_id}/>
+                        <Stack gap={4} key={1}>
+                            <MonthComponents id={year_id} key={2}/>
                         </Stack>
                     </Col>
                     <Col>
