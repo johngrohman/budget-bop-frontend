@@ -1,6 +1,5 @@
-import { getMonthById } from "@/api/month";
+import { getMonthById } from "@/api/Month";
 import FallbackComponentH1 from "@/components/FallbackComponent";
-import TransactionTable from "@/components/TransactionTable/table";
 import TransactionTableWrapper from "@/components/TransactionTable";
 import React, { Suspense } from "react";
 import { Container, Row, Col, Stack, Card } from "react-bootstrap";

@@ -1,6 +1,8 @@
-import { YearSchema } from "@/types/openapi";
-import { getYears } from "@/api/year";
+import { getYears } from "@/api/Year";
 import YearView from "./year_view";
+import { components } from "@/types/schema";
+
+type YearSchema = components['schemas']['YearSchema']
 
 export async function generateStaticParams() {
     const years = await getYears();

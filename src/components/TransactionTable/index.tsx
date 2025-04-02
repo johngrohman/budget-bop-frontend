@@ -1,6 +1,8 @@
 import TransactionTable from "./table";
-import { listTransactions } from "@/api/transaction";
-import { TransactionFilterSchema } from "@/types/openapi";
+import { listTransactions } from "@/api/Transaction";
+import { components } from "@/types/schema";
+
+type TransactionFilterSchema = components['schemas']['TransactionFilterSchema']
 
 async function fetchTransactionData(month_id: TransactionFilterSchema['month_id']) {
   const transactions = await listTransactions({ month_id });

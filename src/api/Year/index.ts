@@ -93,7 +93,7 @@ export async function patchYearById(year_id: Year['id'], year: Year['year']): Pr
  * @param year_id 
  * @returns 
  */
-export async function deleteYear(year_id: Year['id']): Promise<{}> {
+export async function deleteYear(year_id: Year['id']): Promise<object> {
     try {
         const response = await fetch(`${API}${url}/${year_id}`, {
             method: 'DELETE',

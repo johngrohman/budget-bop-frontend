@@ -1,8 +1,10 @@
 "use client";
 
 import { DataGrid, GridColDef, GridToolbarContainer } from "@mui/x-data-grid";
-import { TransactionOutSchema } from "@/types/openapi";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { components } from '@/types/schema';
+
+type TransactionOutSchema = components['schemas']['TransactionOutSchema']
 
 function CustomToolbar() {
     return (
@@ -23,7 +25,8 @@ const columns: GridColDef[] = [
         field: "amount",
         headerName: "Amount",
         width: 125,
-        editable: true
+        editable: true,
+        valueFormatter: (c) => `$${c}`,
     },
     {
         field: "category",

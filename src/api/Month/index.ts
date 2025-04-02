@@ -1,16 +1,20 @@
 // Month API Client
 
-import { MonthSchema, YearSchema } from "@/types/openapi";
+import { components } from "@/types/schema";
 
 const url='/api/months';
 const API = 'http://localhost:8000';
+
+type YearOutSchema = components['schemas']['YearOutSchema']
+type MonthSchema = components['schemas']['MonthSchema']
+type MonthOutSchema = components['schemas']['MonthOutSchema']
 
 /**
  * Get all months in year
  * @returns array of months in a given year
  */
 
-export async function getMonthsInYear(year_id: YearSchema['id']): Promise<Array<MonthSchema>> {
+export async function getMonthsInYear(year_id: YearOutSchema['id']): Promise<Array<MonthSchema>> {
     try {
         const response = await fetch(`${API}${url}/year/${year_id}`, {
             method: 'GET',
@@ -25,7 +29,7 @@ export async function getMonthsInYear(year_id: YearSchema['id']): Promise<Array<
     }
 }
 
-export async function getMonthById(month_id: MonthSchema['id']): Promise<MonthSchema> {
+export async function getMonthById(month_id: MonthOutSchema['id']): Promise<MonthSchema> {
     try {
         const response = await fetch(`${API}${url}/${month_id}`, {
             method: 'GET'

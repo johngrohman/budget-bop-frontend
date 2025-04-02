@@ -1,8 +1,10 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { getYears } from "../../api/year";
-import { YearSchema } from "@/types/openapi";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { getYears } from "../../api/Year";
+import { components } from "@/types/schema";
+
+type YearSchema = components['schemas']['YearSchema']
 
 export default function Dashboard() {
     const [years, setYears] = useState<YearSchema[]>([]);

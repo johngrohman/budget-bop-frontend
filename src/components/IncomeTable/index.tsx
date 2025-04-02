@@ -1,7 +1,5 @@
-import { listIncome } from "@/api/income";
+import { listIncome } from "@/api/Income";
 import IncomeTable from "./table";
-import { listTransactions } from "@/api/transaction";
-import { TransactionFilterSchema } from "@/types/openapi";
 import { components } from "@/types/schema";
 
 async function fetchIncomeData(month_id: components["schemas"]["IncomeFilterSchema"]['month_id']) {

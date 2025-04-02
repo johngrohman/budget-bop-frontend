@@ -1,11 +1,14 @@
 import { Suspense } from 'react';
-import { MonthSchema, YearSchema } from '@/types/openapi';
-import { getYearById } from '@/api/year';
+import { getYearById } from '@/api/Year';
 import FallbackComponentH1 from '@/components/FallbackComponent';
 import './styles.scss';
-import { getMonthsInYear } from '@/api/month';
+import { getMonthsInYear } from '@/api/Month';
 import { Card, Col, Container, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
+import { components } from "@/types/schema";
+
+type MonthSchema = components['schemas']['MonthSchema']
+type YearSchema = components['schemas']['YearSchema']
 
 async function YearComponent({ id }: { id: string }) {
     const year = await getYearById(id);
