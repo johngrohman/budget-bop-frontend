@@ -2,11 +2,11 @@ import FileUploadModal from "@/components/TransactionTable/components/FileUpload
 import { getMonthById } from "@/api/Month";
 import FallbackComponentH1 from "@/components/FallbackComponent";
 import TransactionTableWrapper from "@/components/TransactionTable";
-import React, { Suspense, use, useContext, useState } from "react";
+import React, { Suspense } from "react";
 import { Container, Row, Col, Stack, Card } from "react-bootstrap";
 import IncomeTableWrapper from "@/components/IncomeTable";
 import './month.scss';
-import MonthViewContextProvider, { MonthViewContext } from "@/context/monthview";
+import MonthViewContextProvider from "@/context/monthview";
 
 async function MonthComponent({ month_id }: { month_id: string }) {
     const year = await getMonthById(month_id);

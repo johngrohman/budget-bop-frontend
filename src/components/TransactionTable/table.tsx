@@ -3,8 +3,7 @@ import { DataGrid, GridColDef, GridToolbarContainer } from "@mui/x-data-grid";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { components } from '@/types/schema';
 import { Button } from "react-bootstrap";
-import { MonthViewContext, useMonthViewContext } from "@/context/monthview";
-import { useContext } from "react";
+import { useMonthViewContext } from "@/context/monthview";
 
 type TransactionOutSchema = components['schemas']['TransactionOutSchema']
 
