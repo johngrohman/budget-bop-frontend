@@ -12,4 +12,3 @@ export default async function IncomeTableWrapper({ month_id }: { month_id: compo
 
   return <IncomeTable rows={[...rows]} />;
 }
- 

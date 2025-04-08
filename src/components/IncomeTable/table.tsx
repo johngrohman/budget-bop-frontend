@@ -9,6 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { Button } from "react-bootstrap";
 import { components } from "@/types/schema";
+import AddIcon from '@mui/icons-material/Add';
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -36,7 +37,7 @@ function CustomToolbar({ setRows, setRowModesModel }: {
     return (
         <GridToolbarContainer>
             <Button onClick={handleClick}>
-                +
+                <AddIcon />
             </Button>
         </GridToolbarContainer>
     );
@@ -88,6 +89,7 @@ export default function IncomeTable({ rows }: { rows: components["schemas"]["Inc
             columns={columns}
             density="compact"
             slots={{ toolbar: CustomToolbar }}
+            editMode="cell"
             slotProps={{
                 filterPanel: {
                     filterFormProps: {

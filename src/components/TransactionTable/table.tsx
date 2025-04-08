@@ -1,15 +1,26 @@
-"use client";
-
+'use client'
 import { DataGrid, GridColDef, GridToolbarContainer } from "@mui/x-data-grid";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { components } from '@/types/schema';
+import { Button } from "react-bootstrap";
+import { MonthViewContext, useMonthViewContext } from "@/context/monthview";
+import { useContext } from "react";
 
 type TransactionOutSchema = components['schemas']['TransactionOutSchema']
 
 function CustomToolbar() {
+
+    const {
+        setShowFileUploadModal,
+    } = useMonthViewContext();
+
     return (
         <GridToolbarContainer>
-            <FileUploadIcon />
+            <Button
+                onClick={() => setShowFileUploadModal(true)}
+            >
+                <FileUploadIcon />
+            </Button>
         </GridToolbarContainer>
     );
 }
