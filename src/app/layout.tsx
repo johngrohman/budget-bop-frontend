@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TitleBar from "@/components/TitleBar";
+import { ToastProvider } from "@/components/ToastSystem";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
             >
                 <TitleBar />
                 <div className="content h-100">
-                    {children}
+                    <ToastProvider>
+                        {children}
+                    </ToastProvider>
                 </div>
             </body>
         </html>
