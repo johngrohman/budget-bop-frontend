@@ -4,7 +4,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 type MonthViewContextType = {
     showFileUploadModal: boolean;
     setShowFileUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
-  };
+};
   
 
 export const MonthViewContext = createContext<MonthViewContextType | undefined>(undefined);

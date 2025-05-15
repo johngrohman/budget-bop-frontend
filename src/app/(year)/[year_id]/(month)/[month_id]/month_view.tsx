@@ -18,7 +18,7 @@ export default function MonthView({ month_id }: { month_id: string }) {
     return (
         <div className="page_container">
             <MonthViewContextProvider>
-                <FileUploadModal />
+                <FileUploadModal month_id={month_id} />
                 <Container fluid className="h-100">
                     <Row>
                         <Suspense fallback={<FallbackComponentH1 size={1} />}>

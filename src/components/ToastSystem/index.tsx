@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { ToastContainer, Toast } from 'react-bootstrap';
 
-type ToastType = 'success' | 'error' | 'info';
+type ToastType = 'success' | 'danger' | 'info';
 
 interface Toast {
     id: string;
