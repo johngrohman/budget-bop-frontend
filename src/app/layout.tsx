@@ -28,10 +28,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className='content'
             >
                 <TitleBar />
-                <div className="content h-100">
+                <div>
                     <ToastProvider>
                         {children}
                     </ToastProvider>

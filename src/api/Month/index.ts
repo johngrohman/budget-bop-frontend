@@ -1,13 +1,13 @@
 // Month API Client
 
-import { components } from "@/types/schema";
+import {
+    MonthOutSchema,
+    MonthSchema,
+    YearOutSchema
+} from "@/types";
 
 const url='/api/months';
 const API = 'http://localhost:8000';
-
-type YearOutSchema = components['schemas']['YearOutSchema']
-type MonthSchema = components['schemas']['MonthSchema']
-type MonthOutSchema = components['schemas']['MonthOutSchema']
 
 /**
  * Get all months in year

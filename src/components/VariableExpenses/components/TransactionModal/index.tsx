@@ -4,16 +4,24 @@ import { useMonthViewContext } from "@/context/monthview";
 import {
     Alert,
     Button,
+    Col,
     FormControl,
     InputGroup,
     Modal,
     ModalBody,
     ModalFooter,
     ModalHeader,
-    ModalTitle
+    ModalTitle,
+    ProgressBar,
+    Row
 } from "react-bootstrap";
 import { useToast } from "@/components/ToastSystem";
 import { uploadTransactions } from "@/api/Transaction";
+import TransactionTable from "./components/Table";
+// import TransactionTable from "./components/table";
+// import TransactionTableWrapper from "./components/Table";
+
+
 
 /**
  * File Upload modal used in Transaction Table. Used to upload transaction csv file
@@ -61,30 +69,35 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
             size="lg"
         >
             <ModalHeader closeButton>
-                <ModalTitle>Upload CSV</ModalTitle>
+                <ModalTitle>Transactions</ModalTitle>
             </ModalHeader>
             <ModalBody>
-                <div className="w-75 mx-auto">
+                <div className="ps-4 pe-4 pb-4 mx-auto">
                 <Alert
                     className="invisible"
                 >Test</Alert>
-                <FormControl
-                    type={'file'}
-                    onChange={handleFileChange}
-                    accept='.csv'
-                />
+                <Row className="justify-content-center">
+                    <Col
+                        md={7}
+                    >
+                        <FormControl
+                            type={'file'}
+                            onChange={handleFileChange}
+                            accept='.csv'
+                        />
+                    </Col>
+                    <Col md='auto'>
+                        <Button
+                            onClick={handleUpload}
+                        >
+                            Upload
+                        </Button>
+                    </Col>
+                </Row>
                 <br />
-                <br />
-                <br />
+                <TransactionTable month_id={month_id} />
                 </div>
             </ModalBody>
-            <ModalFooter>
-                <Button
-                    onClick={handleUpload}
-                >
-                    Upload
-                </Button>
-            </ModalFooter>
         </Modal>
     );
 };

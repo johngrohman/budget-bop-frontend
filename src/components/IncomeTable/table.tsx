@@ -7,9 +7,9 @@ import {
     GridRowsProp,
     GridToolbarContainer
 } from "@mui/x-data-grid";
-import { Button } from "react-bootstrap";
-import { components } from "@/types/schema";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import AddIcon from '@mui/icons-material/Add';
+import { IncomeOutSchema } from "@/types";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -80,15 +80,33 @@ const columns: GridColDef[] = [
     },
 ];
 
-export default function IncomeTable({ rows }: { rows: components["schemas"]["IncomeOutSchema"][] }) {
+export default function IncomeTable({ rows }: { rows: IncomeOutSchema[] }) {
+
+    const CustomFooter = () => (
+        <div className="border-top bg-light py-2">
+        <Container fluid>
+            <Row>
+            <Col style={{ width: 70 }} /> {/* ID column */}
+            <Col style={{ width: 200 }}>
+                <strong>Total</strong>
+            </Col>
+            <Col style={{ width: 200 }}>
+                <strong>${100}</strong>
+            </Col>
+            </Row>
+        </Container>
+        </div>
+    )
 
     return (
         <DataGrid
-            hideFooter
             rows={rows}
             columns={columns}
             density="compact"
-            slots={{ toolbar: CustomToolbar }}
+            slots={{
+                toolbar: CustomToolbar,
+                footer: CustomFooter,
+            }}
             editMode="cell"
             slotProps={{
                 filterPanel: {

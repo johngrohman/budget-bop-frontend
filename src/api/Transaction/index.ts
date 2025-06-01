@@ -1,7 +1,6 @@
 // Transaction API Client
 
-import { components } from "@/types/schema";
-type MonthOutSchema = components['schemas']['MonthOutSchema']
+import { MonthOutSchema, TransactionOutSchema } from "@/types";
 
 const url='/api/transactions';
 const API = 'http://localhost:8000';
@@ -12,7 +11,7 @@ type Params = {
 
 export async function listTransactions(
     filters: Params,
-): Promise<Readonly<Array<components['schemas']['TransactionOutSchema']>>> {
+): Promise<Array<TransactionOutSchema>> {
     try {
         const response = await fetch(`${API}${url}/list?${filters.month_id && 'month_id='+filters.month_id}`, {
             method: 'GET',
@@ -30,7 +29,7 @@ export async function listTransactions(
 export async function uploadTransactions(
   file: File,
   month_id: MonthOutSchema['id']
-): Promise<Readonly<components['schemas']['TransactionOutSchema']>> {
+): Promise<Readonly<TransactionOutSchema>> {
   try {
     const formData = new FormData();
     formData.append('file', file);

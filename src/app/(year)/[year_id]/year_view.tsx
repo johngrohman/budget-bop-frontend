@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 import { getYearById } from '@/api/Year';
 import FallbackComponentH1 from '@/components/FallbackComponent';
-import './styles.scss';
 import { getMonthsInYear } from '@/api/Month';
 import { Card, Col, Container, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
 import { components } from "@/types/schema";
+import './styles.scss';
 
 type MonthSchema = components['schemas']['MonthSchema']
 type YearSchema = components['schemas']['YearSchema']
