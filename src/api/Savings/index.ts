@@ -1,30 +1,12 @@
-// Variable Expense API Client
+// Savings API Client
 
-import { VariableExpenseFilterSchema, VariableExpenseInSchema, VariableExpenseOutSchema } from "@/types";
+import { SavingsFilterSchema, SavingsInSchema, SavingsOutSchema } from "@/types";
 
-const url='/api/variable-expense';
+const url='/api/savings';
 const API = 'http://localhost:8000';
 
-export async function getVariableExpensesByMonthId(month_id: VariableExpenseOutSchema['month']['id']) {
-    try {
-        const response = await fetch(
-            `${API}${url}/month/${month_id}`,
-            {
-                method: 'GET'
-            }
-        );
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
-        }
-        return await response.json()
-    } catch (error) {
-        console.error('Failed to fetch variable expenses: ', error)
-        return ({})
-    }
-};
-
-export async function listVariableExpenses(filters: VariableExpenseFilterSchema) {
-    try {
+export async function listSavings(filters: SavingsFilterSchema) {
+        try {
         const params = new URLSearchParams(filters as Record<string, string>).toString();
         const response = await fetch(
             `${API}${url}?${params}`,
@@ -42,12 +24,12 @@ export async function listVariableExpenses(filters: VariableExpenseFilterSchema)
     }
 }
 
-export async function patchVariableExpense(
-    variable_expense_id: VariableExpenseOutSchema['id'],
-    payload: VariableExpenseInSchema
+export async function patchSavings(
+    savings_id: SavingsOutSchema['id'],
+    payload: SavingsInSchema,
 ) {
     try {
-        const response = await fetch(`${API}${url}/${variable_expense_id}`, {
+        const response = await fetch(`${API}${url}/${savings_id}`, {
             method: 'PATCH',
             body: JSON.stringify(payload),
         });
@@ -61,9 +43,9 @@ export async function patchVariableExpense(
     }
 }
 
-export async function createVariableExpense(
-    payload: VariableExpenseInSchema
-): Promise<VariableExpenseOutSchema>
+export async function createSavings(
+    payload: SavingsInSchema
+): Promise<SavingsOutSchema>
 {
     try {
         const response = await fetch(`${API}${url}/`, {
@@ -80,8 +62,8 @@ export async function createVariableExpense(
     }
 }
 
-export async function deleteVariableExpense(
-    payload: Array<VariableExpenseOutSchema['id']>
+export async function deleteSavings(
+    payload: Array<SavingsOutSchema['id']>
 )
 {
     try {

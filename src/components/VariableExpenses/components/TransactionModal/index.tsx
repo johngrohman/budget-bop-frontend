@@ -6,13 +6,10 @@ import {
     Button,
     Col,
     FormControl,
-    InputGroup,
     Modal,
     ModalBody,
-    ModalFooter,
     ModalHeader,
     ModalTitle,
-    ProgressBar,
     Row
 } from "react-bootstrap";
 import { useToast } from "@/components/ToastSystem";
@@ -53,7 +50,6 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
         try {
             const result = await uploadTransactions(file, month_id);
             addToast('Transactions uploaded successfully', 'success');
-            setShowFileUploadModal(false);
         } catch (error) {
             addToast('Failed to upload transactions', 'danger');
         } finally {
@@ -68,7 +64,7 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
             centered
             size="lg"
         >
-            <ModalHeader closeButton>
+            <ModalHeader closeButton className="px-4 border-0">
                 <ModalTitle>Transactions</ModalTitle>
             </ModalHeader>
             <ModalBody>

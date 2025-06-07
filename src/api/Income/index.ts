@@ -1,12 +1,12 @@
 // Income API Client
-import { components } from "@/types/schema";
+import { IncomeFilterSchema, IncomeInSchema, IncomeOutSchema } from "@/types";
 import { UUID } from "crypto";
 
 const url='/api/income';
 const API = 'http://localhost:8000';
 
 export async function listIncome(
-    filters: components["schemas"]["IncomeFilterSchema"]
+    filters: IncomeFilterSchema
 ) {
     try {
         const response = await fetch(`${API}${url}?${
@@ -24,11 +24,11 @@ export async function listIncome(
     }
 }
 
-export async function addIncome(
-    content: components['schemas']['IncomeInSchema']
+export async function createIncome(
+    content: IncomeInSchema
 ) {
     try {
-        const response = await fetch(`${API}${url}`, {
+        const response = await fetch(`${API}${url}/`, {
             method: 'POST',
             body: JSON.stringify(content),
         })
@@ -42,10 +42,11 @@ export async function addIncome(
 }
 
 export async function patchIncome(
-    content: components['schemas']['IncomeInSchema']
+    income_id: IncomeOutSchema['id'],
+    content: IncomeInSchema
 ) {
     try {
-        const response = await fetch(`${API}${url}`, {
+        const response = await fetch(`${API}${url}/${income_id}`, {
             method: 'PATCH',
             body: JSON.stringify(content),
         })
@@ -55,21 +56,23 @@ export async function patchIncome(
         return await response.json();
     } catch (error) {
         console.error('Failed to fetch income:', error);
+        return ({})
     }
 }
 
 export async function deleteIncome(
-    income_id: UUID
+    payload: Array<IncomeOutSchema['id']>
 ) {
     try {
-        const response = await fetch(`${API}${url}?${income_id}`, {
+        const response = await fetch(`${API}${url}/`, {
             method: 'DELETE',
+            body: JSON.stringify(payload),
         })
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to fetch income:', error);
+        console.error('Failed to delete income(s):', error);
     }
 }

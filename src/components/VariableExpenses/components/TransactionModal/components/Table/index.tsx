@@ -9,7 +9,7 @@ export function fetchTransactionData(month_id: TransactionFilterSchema['month_id
   return transactions;
 }
 
-export default function TransactionTable({ month_id }: { month_id: TransactionFilterSchema['month_id'] }) {
+export default function TransactionTable({ month_id }: { month_id: TransactionOutSchema['month']['id'] }) {
   
     const [rowData, setRowData] = useState<TransactionOutSchema[]>([]);
     
@@ -21,7 +21,7 @@ export default function TransactionTable({ month_id }: { month_id: TransactionFi
         };
 
         fetchData();
-    }, []);
+    }, [month_id]);
 
-    return <TransactionDataGrid rowData={rowData} />;
+    return <TransactionDataGrid rowData={rowData} month_id={month_id} />;
 }

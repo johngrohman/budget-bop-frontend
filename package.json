@@ -11,7 +11,7 @@
     "electron-dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next start\" \"wait-on http://localhost:3000 && electron .\"",
     "lint": "next lint",
-    "generate-types": "npx openapicmd typegen ./src/api/openapi.json > ./src/types/openapi.d.ts"
+    "generate-types": "npx openapicmd typegen ./src/api/openapi.json > ./src/types/index.d.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

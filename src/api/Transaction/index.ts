@@ -50,3 +50,22 @@ export async function uploadTransactions(
     throw error;
   }
 }
+
+export async function deleteTransactions(
+    payload: Array<TransactionOutSchema['id']>
+)
+{
+    try {
+        const response = await fetch(`${API}${url}/`, {
+            method: 'DELETE',
+            body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete transactions');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to delete transactions', error);
+        throw error;
+    }   
+}

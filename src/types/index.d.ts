@@ -17,9 +17,9 @@ declare namespace Components {
              */
             name?: /* Name */ string | null;
             /**
-             * Due
+             * Date
              */
-            due?: /* Due */ string /* date-time */ | null;
+            date?: /* Date */ string /* date-time */ | null;
             /**
              * Budget
              */
@@ -42,9 +42,9 @@ declare namespace Components {
              */
             name?: /* Name */ string | null;
             /**
-             * Due
+             * Date
              */
-            due?: /* Due */ string /* date */ | null;
+            date?: /* Date */ string /* date */ | null;
             /**
              * Budget
              */
@@ -69,20 +69,20 @@ declare namespace Components {
             /**
              * Name
              */
-            name: string;
+            name?: /* Name */ string | null;
             /**
-             * Due
+             * Date
              */
-            due: string; // date
+            date?: /* Date */ string /* date */ | null;
             /**
              * Budget
              */
-            budget: number;
+            budget?: /* Budget */ number | null;
             /**
              * Actual
              */
-            actual: number;
-            month: /* MonthSchema */ MonthSchema;
+            actual?: /* Actual */ number | null;
+            month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
          * IncomeFilterSchema
@@ -145,20 +145,20 @@ declare namespace Components {
             /**
              * Name
              */
-            name: string;
+            name?: /* Name */ string | null;
             /**
              * Date
              */
-            date: string; // date
+            date?: /* Date */ string /* date */ | null;
             /**
              * Expected
              */
-            expected: number;
+            expected?: /* Expected */ number | null;
             /**
              * Actual
              */
-            actual: number;
-            month: /* MonthSchema */ MonthSchema;
+            actual?: /* Actual */ number | null;
+            month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
          * MonthInSchema
@@ -198,29 +198,50 @@ declare namespace Components {
             year: /* YearSchema */ YearSchema;
         }
         /**
+         * SavingsFilterSchema
+         */
+        export interface SavingsFilterSchema {
+            /**
+             * Name
+             */
+            name?: /* Name */ string | null;
+            /**
+             * Budget
+             */
+            budget?: /* Budget */ string | null;
+            /**
+             * Actual
+             */
+            actual?: /* Actual */ string | null;
+            /**
+             * Month Id
+             */
+            month_id?: /* Month Id */ string /* uuid */ | null;
+        }
+        /**
          * SavingsInSchema
          */
         export interface SavingsInSchema {
             /**
              * Name
              */
-            name: string;
+            name?: /* Name */ string | null;
             /**
              * Budget
              */
-            budget: number;
+            budget?: /* Budget */ number | null;
             /**
              * Actual
              */
-            actual: number;
+            actual?: /* Actual */ number | null;
             /**
              * Date
              */
-            date: string; // date
+            date?: /* Date */ string /* date */ | null;
             /**
-             * Month
+             * Month Id
              */
-            month: string;
+            month_id?: /* Month Id */ string /* uuid */ | null;
         }
         /**
          * SavingsOutSchema
@@ -373,16 +394,16 @@ declare namespace Components {
             /**
              * Name
              */
-            name: string;
+            name?: /* Name */ string | null;
             /**
              * Budget
              */
-            budget: number;
+            budget?: /* Budget */ number | null;
             /**
              * Actual
              */
-            actual: number;
-            month: /* MonthSchema */ MonthSchema;
+            actual?: /* Actual */ number | null;
+            month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
          * YearInSchema
@@ -423,15 +444,10 @@ declare namespace Components {
 }
 declare namespace Paths {
     namespace AppApiFixedExpenseApiDeleteFixedExpense {
-        namespace Parameters {
-            /**
-             * Fixed Expense Id
-             */
-            export type FixedExpenseId = string; // uuid
-        }
-        export interface PathParameters {
-            fixed_expense_id: /* Fixed Expense Id */ Parameters.FixedExpenseId /* uuid */;
-        }
+        /**
+         * Payload
+         */
+        export type RequestBody = string /* uuid */[];
         namespace Responses {
             export interface $200 {
             }
@@ -448,9 +464,9 @@ declare namespace Paths {
              */
             export type Budget = /* Budget */ number | null;
             /**
-             * Due
+             * Date
              */
-            export type Due = /* Due */ string /* date-time */ | null;
+            export type Date = /* Date */ string /* date-time */ | null;
             /**
              * Month Id
              */
@@ -462,7 +478,7 @@ declare namespace Paths {
         }
         export interface QueryParameters {
             name?: /* Name */ Parameters.Name;
-            due?: /* Due */ Parameters.Due;
+            date?: /* Date */ Parameters.Date;
             budget?: /* Budget */ Parameters.Budget;
             actual?: /* Actual */ Parameters.Actual;
             month_id?: /* Month Id */ Parameters.MonthId;
@@ -496,15 +512,10 @@ declare namespace Paths {
         }
     }
     namespace AppApiIncomeApiDeleteIncome {
-        namespace Parameters {
-            /**
-             * Income Id
-             */
-            export type IncomeId = string; // uuid
-        }
-        export interface PathParameters {
-            income_id: /* Income Id */ Parameters.IncomeId /* uuid */;
-        }
+        /**
+         * Payload
+         */
+        export type RequestBody = string /* uuid */[];
         namespace Responses {
             export interface $200 {
             }
@@ -636,26 +647,13 @@ declare namespace Paths {
         }
     }
     namespace AppApiSavingsApiDeleteSavings {
-        namespace Parameters {
-            /**
-             * Savings Id
-             */
-            export type SavingsId = string; // uuid
-        }
-        export interface PathParameters {
-            savings_id: /* Savings Id */ Parameters.SavingsId /* uuid */;
-        }
+        /**
+         * Payload
+         */
+        export type RequestBody = string /* uuid */[];
         namespace Responses {
             export interface $200 {
             }
-        }
-    }
-    namespace AppApiSavingsApiGetAllSavings {
-        namespace Responses {
-            /**
-             * Response
-             */
-            export type $200 = /* SavingsOutSchema */ Components.Schemas.SavingsOutSchema[];
         }
     }
     namespace AppApiSavingsApiGetSavingsById {
@@ -668,6 +666,53 @@ declare namespace Paths {
         export interface PathParameters {
             savings_id: /* Savings Id */ Parameters.SavingsId /* uuid */;
         }
+        namespace Responses {
+            export type $200 = /* SavingsOutSchema */ Components.Schemas.SavingsOutSchema;
+        }
+    }
+    namespace AppApiSavingsApiListAllSavings {
+        namespace Parameters {
+            /**
+             * Actual
+             */
+            export type Actual = /* Actual */ string | null;
+            /**
+             * Budget
+             */
+            export type Budget = /* Budget */ string | null;
+            /**
+             * Month Id
+             */
+            export type MonthId = /* Month Id */ string /* uuid */ | null;
+            /**
+             * Name
+             */
+            export type Name = /* Name */ string | null;
+        }
+        export interface QueryParameters {
+            name?: /* Name */ Parameters.Name;
+            budget?: /* Budget */ Parameters.Budget;
+            actual?: /* Actual */ Parameters.Actual;
+            month_id?: /* Month Id */ Parameters.MonthId;
+        }
+        namespace Responses {
+            /**
+             * Response
+             */
+            export type $200 = /* SavingsOutSchema */ Components.Schemas.SavingsOutSchema[];
+        }
+    }
+    namespace AppApiSavingsApiPatchSavings {
+        namespace Parameters {
+            /**
+             * Savings Id
+             */
+            export type SavingsId = string; // uuid
+        }
+        export interface PathParameters {
+            savings_id: /* Savings Id */ Parameters.SavingsId /* uuid */;
+        }
+        export type RequestBody = /* SavingsInSchema */ Components.Schemas.SavingsInSchema;
         namespace Responses {
             export type $200 = /* SavingsOutSchema */ Components.Schemas.SavingsOutSchema;
         }
@@ -685,15 +730,10 @@ declare namespace Paths {
         }
     }
     namespace AppApiTransactionApiDeleteTransaction {
-        namespace Parameters {
-            /**
-             * Transaction Id
-             */
-            export type TransactionId = string; // uuid
-        }
-        export interface PathParameters {
-            transaction_id: /* Transaction Id */ Parameters.TransactionId /* uuid */;
-        }
+        /**
+         * Payload
+         */
+        export type RequestBody = string /* uuid */[];
         namespace Responses {
             export interface $200 {
             }
@@ -711,6 +751,21 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = /* TransactionOutSchema */ Components.Schemas.TransactionOutSchema;
+        }
+    }
+    namespace AppApiTransactionApiGetTransactionSummary {
+        namespace Parameters {
+            /**
+             * Month Id
+             */
+            export type MonthId = string; // uuid
+        }
+        export interface PathParameters {
+            month_id: /* Month Id */ Parameters.MonthId /* uuid */;
+        }
+        namespace Responses {
+            export interface $200 {
+            }
         }
     }
     namespace AppApiTransactionApiListTransactions {
@@ -791,15 +846,10 @@ declare namespace Paths {
         }
     }
     namespace AppApiVariableExpenseApiDeleteVariableExpense {
-        namespace Parameters {
-            /**
-             * Variable Expense Id
-             */
-            export type VariableExpenseId = string; // uuid
-        }
-        export interface PathParameters {
-            variable_expense_id: /* Variable Expense Id */ Parameters.VariableExpenseId /* uuid */;
-        }
+        /**
+         * Payload
+         */
+        export type RequestBody = string /* uuid */[];
         namespace Responses {
             export interface $200 {
             }
@@ -1052,6 +1102,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiIncomeApiPostIncome.Responses.$200>
   /**
+   * app_api_income_api_delete_income - Delete Income
+   */
+  'app_api_income_api_delete_income'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiIncomeApiDeleteIncome.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiIncomeApiDeleteIncome.Responses.$200>
+  /**
    * app_api_income_api_patch_income - Patch Income
    */
   'app_api_income_api_patch_income'(
@@ -1059,14 +1117,6 @@ export interface OperationMethods {
     data?: Paths.AppApiIncomeApiPatchIncome.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiIncomeApiPatchIncome.Responses.$200>
-  /**
-   * app_api_income_api_delete_income - Delete Income
-   */
-  'app_api_income_api_delete_income'(
-    parameters?: Parameters<Paths.AppApiIncomeApiDeleteIncome.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiIncomeApiDeleteIncome.Responses.$200>
   /**
    * app_api_variable_expense_api_list_variable_expense - List Variable Expense
    * 
@@ -1086,6 +1136,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiVariableExpenseApiPostVariableExpense.Responses.$200>
   /**
+   * app_api_variable_expense_api_delete_variable_expense - Delete Variable Expense
+   */
+  'app_api_variable_expense_api_delete_variable_expense'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiVariableExpenseApiDeleteVariableExpense.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiVariableExpenseApiDeleteVariableExpense.Responses.$200>
+  /**
    * app_api_variable_expense_api_get_variable_expenses_in_month - Get Variable Expenses By Month ID
    * 
    * Retrieve a summary of transactions (variable expenses) in a given month.
@@ -1103,14 +1161,6 @@ export interface OperationMethods {
     data?: Paths.AppApiVariableExpenseApiPatchVariableExpense.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiVariableExpenseApiPatchVariableExpense.Responses.$200>
-  /**
-   * app_api_variable_expense_api_delete_variable_expense - Delete Variable Expense
-   */
-  'app_api_variable_expense_api_delete_variable_expense'(
-    parameters?: Parameters<Paths.AppApiVariableExpenseApiDeleteVariableExpense.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiVariableExpenseApiDeleteVariableExpense.Responses.$200>
   /**
    * app_api_fixed_expense_api_list_fixed_expense - List Fixed Expense
    * 
@@ -1130,6 +1180,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiFixedExpenseApiPostFixedExpense.Responses.$200>
   /**
+   * app_api_fixed_expense_api_delete_fixed_expense - Delete Fixed Expense
+   */
+  'app_api_fixed_expense_api_delete_fixed_expense'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiFixedExpenseApiDeleteFixedExpense.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiFixedExpenseApiDeleteFixedExpense.Responses.$200>
+  /**
    * app_api_fixed_expense_api_patch_fixed_expense - Patch Fixed Expense
    */
   'app_api_fixed_expense_api_patch_fixed_expense'(
@@ -1138,21 +1196,15 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiFixedExpenseApiPatchFixedExpense.Responses.$200>
   /**
-   * app_api_fixed_expense_api_delete_fixed_expense - Delete Fixed Expense
+   * app_api_savings_api_list_all_savings - List All Savings
+   * 
+   * List all savings based on filters
    */
-  'app_api_fixed_expense_api_delete_fixed_expense'(
-    parameters?: Parameters<Paths.AppApiFixedExpenseApiDeleteFixedExpense.PathParameters> | null,
+  'app_api_savings_api_list_all_savings'(
+    parameters?: Parameters<Paths.AppApiSavingsApiListAllSavings.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiFixedExpenseApiDeleteFixedExpense.Responses.$200>
-  /**
-   * app_api_savings_api_get_all_savings - Get All Savings
-   */
-  'app_api_savings_api_get_all_savings'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiSavingsApiGetAllSavings.Responses.$200>
+  ): OperationResponse<Paths.AppApiSavingsApiListAllSavings.Responses.$200>
   /**
    * app_api_savings_api_post_savings - Post Savings
    */
@@ -1162,6 +1214,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiSavingsApiPostSavings.Responses.$200>
   /**
+   * app_api_savings_api_delete_savings - Delete Savings
+   */
+  'app_api_savings_api_delete_savings'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiSavingsApiDeleteSavings.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiSavingsApiDeleteSavings.Responses.$200>
+  /**
    * app_api_savings_api_get_savings_by_id - Get Savings By Id
    */
   'app_api_savings_api_get_savings_by_id'(
@@ -1170,17 +1230,21 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiSavingsApiGetSavingsById.Responses.$200>
   /**
-   * app_api_savings_api_delete_savings - Delete Savings
+   * app_api_savings_api_patch_savings - Patch Savings
    */
-  'app_api_savings_api_delete_savings'(
-    parameters?: Parameters<Paths.AppApiSavingsApiDeleteSavings.PathParameters> | null,
-    data?: any,
+  'app_api_savings_api_patch_savings'(
+    parameters?: Parameters<Paths.AppApiSavingsApiPatchSavings.PathParameters> | null,
+    data?: Paths.AppApiSavingsApiPatchSavings.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiSavingsApiDeleteSavings.Responses.$200>
+  ): OperationResponse<Paths.AppApiSavingsApiPatchSavings.Responses.$200>
   /**
    * app_api_transaction_api_upload_transaction_list - Upload Transaction List
    * 
-   * Uploads a CSV file, parses it, and inserts transactions into the database.
+   * Upload CSV file with transactions.
+   * 
+   * 1. Parses transactions, inserting them into the database.
+   * 
+   * 2. Creates or updates corresponding variable expenses.
    */
   'app_api_transaction_api_upload_transaction_list'(
     parameters?: Parameters<UnknownParamsObject> | null,
@@ -1212,13 +1276,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiTransactionApiPatchTransaction.Responses.$200>
   /**
-   * app_api_transaction_api_delete_transaction - Delete Transaction
+   * app_api_transaction_api_get_transaction_summary - Get Transaction Summary
    */
-  'app_api_transaction_api_delete_transaction'(
-    parameters?: Parameters<Paths.AppApiTransactionApiDeleteTransaction.PathParameters> | null,
+  'app_api_transaction_api_get_transaction_summary'(
+    parameters?: Parameters<Paths.AppApiTransactionApiGetTransactionSummary.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
+  ): OperationResponse<Paths.AppApiTransactionApiGetTransactionSummary.Responses.$200>
   /**
    * app_api_transaction_api_post_transaction - Post Transaction
    */
@@ -1227,6 +1291,14 @@ export interface OperationMethods {
     data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
+  /**
+   * app_api_transaction_api_delete_transaction - Delete Transaction
+   */
+  'app_api_transaction_api_delete_transaction'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiTransactionApiDeleteTransaction.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
   /**
    * app_api_time_api_list_all_time_data - List All Time Data
    */
@@ -1357,6 +1429,14 @@ export interface PathsDictionary {
       data?: Paths.AppApiIncomeApiPostIncome.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiIncomeApiPostIncome.Responses.$200>
+    /**
+     * app_api_income_api_delete_income - Delete Income
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiIncomeApiDeleteIncome.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiIncomeApiDeleteIncome.Responses.$200>
   }
   ['/api/income/{income_id}']: {
     /**
@@ -1367,14 +1447,6 @@ export interface PathsDictionary {
       data?: Paths.AppApiIncomeApiPatchIncome.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiIncomeApiPatchIncome.Responses.$200>
-    /**
-     * app_api_income_api_delete_income - Delete Income
-     */
-    'delete'(
-      parameters?: Parameters<Paths.AppApiIncomeApiDeleteIncome.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiIncomeApiDeleteIncome.Responses.$200>
   }
   ['/api/variable-expense/']: {
     /**
@@ -1395,8 +1467,16 @@ export interface PathsDictionary {
       data?: Paths.AppApiVariableExpenseApiPostVariableExpense.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiVariableExpenseApiPostVariableExpense.Responses.$200>
+    /**
+     * app_api_variable_expense_api_delete_variable_expense - Delete Variable Expense
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiVariableExpenseApiDeleteVariableExpense.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiVariableExpenseApiDeleteVariableExpense.Responses.$200>
   }
-  ['/api/variable-expense/{month_id}']: {
+  ['/api/variable-expense/month/{month_id}']: {
     /**
      * app_api_variable_expense_api_get_variable_expenses_in_month - Get Variable Expenses By Month ID
      * 
@@ -1417,14 +1497,6 @@ export interface PathsDictionary {
       data?: Paths.AppApiVariableExpenseApiPatchVariableExpense.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiVariableExpenseApiPatchVariableExpense.Responses.$200>
-    /**
-     * app_api_variable_expense_api_delete_variable_expense - Delete Variable Expense
-     */
-    'delete'(
-      parameters?: Parameters<Paths.AppApiVariableExpenseApiDeleteVariableExpense.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiVariableExpenseApiDeleteVariableExpense.Responses.$200>
   }
   ['/api/fixed-expense/']: {
     /**
@@ -1445,6 +1517,14 @@ export interface PathsDictionary {
       data?: Paths.AppApiFixedExpenseApiPostFixedExpense.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiFixedExpenseApiPostFixedExpense.Responses.$200>
+    /**
+     * app_api_fixed_expense_api_delete_fixed_expense - Delete Fixed Expense
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiFixedExpenseApiDeleteFixedExpense.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiFixedExpenseApiDeleteFixedExpense.Responses.$200>
   }
   ['/api/fixed-expense/{fixed_expense_id}']: {
     /**
@@ -1455,24 +1535,18 @@ export interface PathsDictionary {
       data?: Paths.AppApiFixedExpenseApiPatchFixedExpense.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiFixedExpenseApiPatchFixedExpense.Responses.$200>
-    /**
-     * app_api_fixed_expense_api_delete_fixed_expense - Delete Fixed Expense
-     */
-    'delete'(
-      parameters?: Parameters<Paths.AppApiFixedExpenseApiDeleteFixedExpense.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiFixedExpenseApiDeleteFixedExpense.Responses.$200>
   }
   ['/api/savings/']: {
     /**
-     * app_api_savings_api_get_all_savings - Get All Savings
+     * app_api_savings_api_list_all_savings - List All Savings
+     * 
+     * List all savings based on filters
      */
     'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
+      parameters?: Parameters<Paths.AppApiSavingsApiListAllSavings.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiSavingsApiGetAllSavings.Responses.$200>
+    ): OperationResponse<Paths.AppApiSavingsApiListAllSavings.Responses.$200>
     /**
      * app_api_savings_api_post_savings - Post Savings
      */
@@ -1481,6 +1555,14 @@ export interface PathsDictionary {
       data?: Paths.AppApiSavingsApiPostSavings.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiSavingsApiPostSavings.Responses.$200>
+    /**
+     * app_api_savings_api_delete_savings - Delete Savings
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiSavingsApiDeleteSavings.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiSavingsApiDeleteSavings.Responses.$200>
   }
   ['/api/savings/{savings_id}']: {
     /**
@@ -1492,19 +1574,23 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiSavingsApiGetSavingsById.Responses.$200>
     /**
-     * app_api_savings_api_delete_savings - Delete Savings
+     * app_api_savings_api_patch_savings - Patch Savings
      */
-    'delete'(
-      parameters?: Parameters<Paths.AppApiSavingsApiDeleteSavings.PathParameters> | null,
-      data?: any,
+    'patch'(
+      parameters?: Parameters<Paths.AppApiSavingsApiPatchSavings.PathParameters> | null,
+      data?: Paths.AppApiSavingsApiPatchSavings.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiSavingsApiDeleteSavings.Responses.$200>
+    ): OperationResponse<Paths.AppApiSavingsApiPatchSavings.Responses.$200>
   }
   ['/api/transactions/upload']: {
     /**
      * app_api_transaction_api_upload_transaction_list - Upload Transaction List
      * 
-     * Uploads a CSV file, parses it, and inserts transactions into the database.
+     * Upload CSV file with transactions.
+     * 
+     * 1. Parses transactions, inserting them into the database.
+     * 
+     * 2. Creates or updates corresponding variable expenses.
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -1539,14 +1625,16 @@ export interface PathsDictionary {
       data?: Paths.AppApiTransactionApiPatchTransaction.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiTransactionApiPatchTransaction.Responses.$200>
+  }
+  ['/api/transactions/month/{month_id}']: {
     /**
-     * app_api_transaction_api_delete_transaction - Delete Transaction
+     * app_api_transaction_api_get_transaction_summary - Get Transaction Summary
      */
-    'delete'(
-      parameters?: Parameters<Paths.AppApiTransactionApiDeleteTransaction.PathParameters> | null,
+    'get'(
+      parameters?: Parameters<Paths.AppApiTransactionApiGetTransactionSummary.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
+    ): OperationResponse<Paths.AppApiTransactionApiGetTransactionSummary.Responses.$200>
   }
   ['/api/transactions/']: {
     /**
@@ -1557,6 +1645,14 @@ export interface PathsDictionary {
       data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
+    /**
+     * app_api_transaction_api_delete_transaction - Delete Transaction
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiTransactionApiDeleteTransaction.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
   }
   ['/api/time/years-months']: {
     /**
@@ -1582,6 +1678,7 @@ export type IncomeOutSchema = Components.Schemas.IncomeOutSchema;
 export type MonthInSchema = Components.Schemas.MonthInSchema;
 export type MonthOutSchema = Components.Schemas.MonthOutSchema;
 export type MonthSchema = Components.Schemas.MonthSchema;
+export type SavingsFilterSchema = Components.Schemas.SavingsFilterSchema;
 export type SavingsInSchema = Components.Schemas.SavingsInSchema;
 export type SavingsOutSchema = Components.Schemas.SavingsOutSchema;
 export type TransactionFilterSchema = Components.Schemas.TransactionFilterSchema;

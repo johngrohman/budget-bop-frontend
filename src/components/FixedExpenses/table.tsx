@@ -1,101 +1,88 @@
-"use client";
-
-import {
-    DataGrid,
-    GridColDef,
-    GridRowModesModel,
-    GridRowsProp,
-    GridRowSelectionModel
-} from "@mui/x-data-grid";
-import { Button, Col, Row, Stack } from "react-bootstrap";
-import { IncomeOutSchema } from "@/types";
+'use client'
+import { createFixedExpense, deleteFixedExpense, patchFixedExpense } from "@/api/FixedExpenses";
+import { FixedExpenseInSchema, FixedExpenseOutSchema } from "@/types";
+import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
-import { createIncome, deleteIncome, patchIncome } from "@/api/Income";
-import { fetchIncomeData } from ".";
-
-declare module '@mui/x-data-grid' {
-    interface ToolbarPropsOverrides {
-        setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-        setRowModesModel: (
-            newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
-        ) => void;
-    }
-}
+import { fetchFixedExpense } from ".";
+import { Button, Col, Row, Stack } from "react-bootstrap";
 
 const columns: GridColDef[] = [
     {
-        field: "name",
-        headerName: "Name",
+        field: 'name',
+        headerName: 'Name',
         width: 170,
         editable: true,
-        sortable: false,
-        resizable: false,
     },
     {
-        field: "date",
-        headerName: "Date",
-        width: 94,
+        field: 'date',
+        headerName: 'Date',
+        width: 170,
         editable: true,
-        sortable: false,
-        resizable: false,
     },
     {
-        field: "expected",
-        headerName: "Expected",
+        field: 'budget',
+        headerName: 'Budget',
         width: 94,
         editable: true,
-        sortable: false,
-        resizable: false,
-        valueFormatter: (c) => `$${c}`,
+        renderCell: (cell) => cell.value ? `$${cell.value}` : '',
     },
     {
-        field: "actual",
-        headerName: "Actual",
+        field: 'actual',
+        headerName: 'Actual',
         width: 94,
         editable: true,
-        sortable: false,
-        resizable: false,
-        valueFormatter: (c) => `$${c}`,
+        renderCell: (cell) => cell.value?`$${cell.value.toFixed(2)}`:'',
+    },
+    {
+        field: 'diff',
+        headerName: 'Diff',
+        valueGetter: (value, row) => row.budget - row.actual,
+        valueFormatter: (value) => {
+            const isNeg = Math.sign(value) === -1;
+            return value?`${isNeg?'-':''}$${Math.abs(value).toFixed(2)}`:'';
+        },
+        width: 94,
     },
 ];
 
-function CustomFooter({ rows }: { rows: IncomeOutSchema[] }) {
+function CustomFooter({ rows }: { rows: FixedExpenseOutSchema[] }) {
 
-    const totalExpected = useMemo(() => {
-        return rows.reduce((acc, row) => acc + (row.expected ?? 0), 0);
+    const totalBudget = useMemo(() => {
+        return rows.reduce((acc, row) => acc + (row.budget ?? 0), 0);
     }, [rows]);
 
     const totalActual = useMemo(() => {
         return rows.reduce((acc, row) => acc + (row.actual ?? 0), 0);
     }, [rows]);
 
-    const totalDiff = useMemo(() => totalExpected - totalActual, [totalExpected, totalActual]);
+    const totalDiff = useMemo(() => totalBudget - totalActual, [totalBudget, totalActual]);
 
     return (
         <div className="bg-light d-flex justify-content-center align-items-center border-top test">
             <span style={{ width: 50 }}>Total</span>
             <span style={{ width: 170 }} />
-            <span style={{ width: 94 }} />
-            <span style={{ width: 94 }}>${totalExpected.toFixed(2)}</span>
+            <span style={{ width: 94 }}>${totalBudget.toFixed(2)}</span>
             <span style={{ width: 94 }}>${totalActual.toFixed(2)}</span>
+            <span style={{ width: 94 }}>${totalDiff.toFixed(2)}</span>
         </div>
     );
 }
 
-export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeOutSchema[], month_id: IncomeOutSchema['month']['id'] }) {
-
-    const [rows, setRows] = useState<Array<IncomeOutSchema>>(rowData);
+export default function FixedExpenseDataGrid(
+    { rowData, month_id }: { rowData: FixedExpenseOutSchema[], month_id: FixedExpenseOutSchema['month']['id'] }
+) {
+    const [rows, setRows] = useState<Array<FixedExpenseOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
 
     const handleRowCreate = async () => {
-        await createIncome({month_id: month_id});
-        setRows(await fetchIncomeData(month_id));
+        await createFixedExpense({month_id: month_id});
+        setRows(await fetchFixedExpense(month_id));
     }
 
     const handleRowDelete = async () => {
-        await deleteIncome(selectedRows as Array<IncomeOutSchema['id']>);
-        setRows(await fetchIncomeData(month_id));
+        await deleteFixedExpense(selectedRows as Array<FixedExpenseOutSchema['id']>);
+        setRows(await fetchFixedExpense(month_id));
     }
 
     const handleRowUpdate = async (
@@ -103,10 +90,10 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
         oldRow: any,
     ) => {
         
-        const bodyPayload: Partial<IncomeOutSchema> = {};
+        const bodyPayload: Partial<FixedExpenseOutSchema> = {};
 
         Object.keys(newRow).forEach((key) => {
-            const typedKey = key as keyof IncomeOutSchema;
+            const typedKey = key as keyof FixedExpenseOutSchema;
             if(newRow[typedKey] !== oldRow[typedKey]) {
                 const newValue = newRow[typedKey] === '' ? null : newRow[typedKey];
                 bodyPayload[typedKey] = newValue;
@@ -114,7 +101,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
         });
 
         try {
-            const updatedRow = await patchIncome(newRow.id, bodyPayload);
+            const updatedRow = await patchFixedExpense(newRow.id, bodyPayload);
             return updatedRow;
         } catch (error) {
             console.error('Row update failed', error);
@@ -123,7 +110,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
     };
 
     const handleCellEditStop = async () => {
-        setRows(await fetchIncomeData(month_id));
+        setRows(await fetchFixedExpense(month_id));
     };
 
     const handleRowUpdateError = (e: any) => {
@@ -134,7 +121,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
         <Stack gap={2}>
             <Row>
                 <Col className='p-0'>
-                    <h5 className="m-0">Income</h5>
+                    <h5 className="m-0">Fixed Expenses</h5>
                 </Col>
                 <Col align='right' className="p-0">
                     <Button
@@ -153,13 +140,12 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
                     </Button>
                 </Col>
             </Row>
-            <Row className="h-100">
+            <Row className="left_side_table">
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     density="compact"
                     className="p-0"
-                    editMode="cell"
                     disableColumnMenu
                     disableColumnResize
                     processRowUpdate={handleRowUpdate}
@@ -170,7 +156,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
                         setSelectedRows(e);
                         setCanDelete(e.length);
                     }}
-                    slots={{footer: () => <CustomFooter rows={rows} />}}
+                    slots={{footer: () => <CustomFooter rows={rows}/>}}
                 />
             </Row>
         </Stack>

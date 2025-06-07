@@ -3,11 +3,11 @@
 import React, { useMemo, useState } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useMonthViewContext } from "@/context/monthview";
-import { Button, Col, Container, Row, Stack } from "react-bootstrap";
+import { Button, Col, Row, Stack } from "react-bootstrap";
 import { VariableExpenseInSchema, VariableExpenseOutSchema } from "@/types";
 import { createVariableExpense, deleteVariableExpense, patchVariableExpense } from "@/api/VariableExpense";
-import './styles.scss';
 import { fetchVariableExpenses } from ".";
+import './styles.scss';
 
 const columns: GridColDef[] = [
     {
@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
         },
         width: 94,
     },
-]
+];
 
 function CustomFooter({ rows }: { rows: VariableExpenseOutSchema[] }) {
 
@@ -70,6 +70,7 @@ export default function VariableExpenseDataGrid(
     const [rows, setRows] = useState<Array<VariableExpenseOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+
     const { setShowFileUploadModal } = useMonthViewContext();
     
     const handleRowCreate = async () => {

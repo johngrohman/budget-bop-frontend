@@ -1,8 +1,6 @@
 import { VariableExpenseFilterSchema, VariableExpenseOutSchema } from "@/types";
 import VariableExpenseDataGrid from "./table";
 import { listVariableExpenses } from "@/api/VariableExpense";
-import Link from "next/link";
-import { Button, Col, Row, Stack } from "react-bootstrap";
 
 export async function fetchVariableExpenses(month_id: VariableExpenseFilterSchema['month_id']) {
     const variable_expenses = await listVariableExpenses({month_id});
