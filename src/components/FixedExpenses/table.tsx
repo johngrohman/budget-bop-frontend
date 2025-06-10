@@ -1,6 +1,6 @@
 'use client'
 import { createFixedExpense, deleteFixedExpense, patchFixedExpense } from "@/api/FixedExpenses";
-import { FixedExpenseInSchema, FixedExpenseOutSchema } from "@/types";
+import { FixedExpenseInSchema, FixedExpenseOutSchema, MonthSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
 import { fetchFixedExpense } from ".";
@@ -69,7 +69,7 @@ function CustomFooter({ rows }: { rows: FixedExpenseOutSchema[] }) {
 }
 
 export default function FixedExpenseDataGrid(
-    { rowData, month_id }: { rowData: FixedExpenseOutSchema[], month_id: FixedExpenseOutSchema['month']['id'] }
+    { rowData, month_id }: { rowData: FixedExpenseOutSchema[], month_id: MonthSchema['id'] }
 ) {
     const [rows, setRows] = useState<Array<FixedExpenseOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
@@ -119,7 +119,7 @@ export default function FixedExpenseDataGrid(
 
     return (
         <Stack gap={2}>
-            <Row>
+            <Row className="w-100">
                 <Col className='p-0'>
                     <h5 className="m-0">Fixed Expenses</h5>
                 </Col>

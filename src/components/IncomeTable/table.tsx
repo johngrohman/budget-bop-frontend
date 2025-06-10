@@ -8,7 +8,7 @@ import {
     GridRowSelectionModel
 } from "@mui/x-data-grid";
 import { Button, Col, Row, Stack } from "react-bootstrap";
-import { IncomeOutSchema } from "@/types";
+import { IncomeOutSchema, MonthSchema } from "@/types";
 import { useMemo, useState } from "react";
 import { createIncome, deleteIncome, patchIncome } from "@/api/Income";
 import { fetchIncomeData } from ".";
@@ -82,7 +82,7 @@ function CustomFooter({ rows }: { rows: IncomeOutSchema[] }) {
     );
 }
 
-export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeOutSchema[], month_id: IncomeOutSchema['month']['id'] }) {
+export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeOutSchema[], month_id: MonthSchema['id'] }) {
 
     const [rows, setRows] = useState<Array<IncomeOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
@@ -132,7 +132,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
 
     return (
         <Stack gap={2}>
-            <Row>
+            <Row className="w-100">
                 <Col className='p-0'>
                     <h5 className="m-0">Income</h5>
                 </Col>
@@ -153,7 +153,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
                     </Button>
                 </Col>
             </Row>
-            <Row className="h-100">
+            <Row className="left_side_table">
                 <DataGrid
                     rows={rows}
                     columns={columns}

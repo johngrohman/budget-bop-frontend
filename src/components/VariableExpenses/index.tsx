@@ -1,4 +1,4 @@
-import { VariableExpenseFilterSchema, VariableExpenseOutSchema } from "@/types";
+import { MonthSchema, VariableExpenseFilterSchema, VariableExpenseOutSchema } from "@/types";
 import VariableExpenseDataGrid from "./table";
 import { listVariableExpenses } from "@/api/VariableExpense";
 
@@ -7,7 +7,7 @@ export async function fetchVariableExpenses(month_id: VariableExpenseFilterSchem
     return variable_expenses;
 }
 
-export default async function VariableExpenseTable({month_id}: { month_id: VariableExpenseOutSchema['month']['id']}) {
+export default async function VariableExpenseTable({month_id}: { month_id: MonthSchema['id']}) {
     const rows = await fetchVariableExpenses(month_id);
     return (
         <>

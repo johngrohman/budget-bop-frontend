@@ -1,5 +1,5 @@
 import { listFixedExpenses } from "@/api/FixedExpenses";
-import { FixedExpenseFilterSchema, FixedExpenseOutSchema } from "@/types";
+import { FixedExpenseFilterSchema, FixedExpenseOutSchema, MonthSchema } from "@/types";
 import FixedExpenseDataGrid from "./table";
 
 export async function fetchFixedExpense(month_id: FixedExpenseFilterSchema['month_id']) {
@@ -7,7 +7,7 @@ export async function fetchFixedExpense(month_id: FixedExpenseFilterSchema['mont
     return fixed_expenses;
 }
 
-export default async function FixedExpenseTable({month_id}: { month_id: FixedExpenseOutSchema['month']['id']}) {
+export default async function FixedExpenseTable({month_id}: { month_id: MonthSchema['id']}) {
     const rows = await fetchFixedExpense(month_id);
     return <FixedExpenseDataGrid rowData={[...rows]} month_id={month_id} />;
 }

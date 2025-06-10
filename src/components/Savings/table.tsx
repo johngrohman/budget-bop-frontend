@@ -1,9 +1,9 @@
 'use client'
 
 import { createSavings, deleteSavings, listSavings, patchSavings } from "@/api/Savings";
-import { SavingsInSchema, SavingsOutSchema } from "@/types";
+import { MonthSchema, SavingsInSchema, SavingsOutSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid"
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Stack, Row, Col, Button } from "react-bootstrap";
 
 const columns: GridColDef[] = [
@@ -12,6 +12,11 @@ const columns: GridColDef[] = [
         headerName: 'Name',
         width: 170,
         editable: true,
+    },
+    {
+        field: 'date',
+        headerName: 'Date',
+        width: 94,
     },
     {
         field: 'budget',
@@ -26,19 +31,32 @@ const columns: GridColDef[] = [
         width: 94,
         renderCell: (cell) => cell.value?`$${cell.value.toFixed(2)}`:'',
     },
-    {
-        field: 'date',
-        headerName: 'Date',
-        width: 94,
-    },
 ];
 
 function CustomFooter({ rows }: { rows: SavingsOutSchema[] }) {
+    const totalBudget = useMemo(() => {
+        return rows.reduce((acc, row) => acc + (row.budget ?? 0), 0);
+    }, [rows]);
 
+    const totalActual = useMemo(() => {
+        return rows.reduce((acc, row) => acc + (row.actual ?? 0), 0);
+    }, [rows]);
+
+    const totalDiff = useMemo(() => totalBudget - totalActual, [totalBudget, totalActual]);
+
+    return (
+        <div className="bg-light d-flex justify-content-center align-items-center border-top test">
+            <span style={{ width: 50 }}>Total</span>
+            <span style={{ width: 170 }} />
+            <span style={{ width: 94 }} />
+            <span style={{ width: 94 }}>${totalBudget.toFixed(2)}</span>
+            <span style={{ width: 94 }}>${totalActual.toFixed(2)}</span>
+        </div>
+    );
 }
 
 export default function SavingsDataGrid(
-    { rowData, month_id }: { rowData: SavingsOutSchema[], month_id: SavingsOutSchema['month']['id'] }
+    { rowData, month_id }: { rowData: SavingsOutSchema[], month_id: MonthSchema['id'] }
 ) {
     const [rows, setRows] = useState<Array<SavingsOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
@@ -86,8 +104,8 @@ export default function SavingsDataGrid(
         };
 
     return (
-        <Stack gap={2}>
-            <Row>
+        <Stack gap={2} className="h-100 w-100">
+            <Row className="w-100 m-0">
                 <Col className='p-0'>
                     <h5 className="m-0">Savings</h5>
                 </Col>
@@ -108,14 +126,14 @@ export default function SavingsDataGrid(
                     </Button>
                 </Col>
             </Row>
-            <Row className="left_side_table">
+            <Row className="w-100 h-100 m-0">
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     density="compact"
                     disableColumnMenu
                     disableColumnResize
-                    className="p-0"
+                    className="p-0 h-100 w-100"
                     processRowUpdate={handleRowUpdate}
                     onCellEditStop={handleCellEditStop}
                     onProcessRowUpdateError={handleRowUpdateError}
@@ -124,6 +142,7 @@ export default function SavingsDataGrid(
                         setSelectedRows(e);
                         setCanDelete(e.length);
                     }}
+                    slots={{footer: () => <CustomFooter rows={rows} />}}
                 />
             </Row>
         </Stack>

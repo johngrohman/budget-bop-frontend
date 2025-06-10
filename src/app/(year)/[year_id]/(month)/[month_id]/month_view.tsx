@@ -8,10 +8,10 @@ import VariableExpenseTable from "@/components/VariableExpenses";
 import FixedExpenseTable from "@/components/FixedExpenses";
 import IncomeTable from "@/components/IncomeTable";
 import SavingsTable from "@/components/Savings/intdex";
-import '../../styles.scss';
-import './month.scss';
 import BudgetPieChart from "@/components/BudgetPieChart";
 import CurrencyBox from "@/components/CurrencyBox";
+import '../../styles.scss';
+import './month.scss';
 
 async function MonthComponent({ month_id }: { month_id: string }) {
     const year = await getMonthById(month_id);
@@ -25,52 +25,46 @@ export default function MonthView({ month_id }: { month_id: string }) {
             <MonthViewContextProvider>
                 <FileUploadModal month_id={month_id} />
                 <Container fluid className="h-100">
-                    <Row className="border_green">
+                    <Row className="page_heading_container">
                         <Suspense fallback={<FallbackComponentH1 size={1} />}>
                             <MonthComponent month_id={month_id} />
                         </Suspense>
                     </Row>
-                    <Row className="border_red">
-                        <Col className="left_side_tables_container" xs={4}>
+                    <div className="dashboard_container">
+                        <div className="left_side_tables_container">
                             <Stack gap={5}>
-                                <Row key={2} className="left_side_table">
+                                <div key={1} className="left_side_table">
                                     <IncomeTable month_id={month_id} />
-                                </Row>
-                                <Row key={3} className="left_side_table">
+                                </div>
+                                <div key={2} className="left_side_table">
                                     <FixedExpenseTable month_id={month_id} />
-                                </Row>
-                                <Row key={6} className="left_side_table">
+                                </div>
+                                <div key={3} className="left_side_table">
                                     <VariableExpenseTable month_id={month_id} />
-                                </Row>
+                                </div>
                             </Stack>
-                        </Col>
-                        <Col>
-                            <Stack gap={5}>
-                                <Row className="dashboard_income_cards_row">
-                                    <Col>
-                                        <CurrencyBox amount={'$9,999.99'} />
-                                    </Col>
-                                    <Col>
-                                        <CurrencyBox amount={'$9,999.99'} />
-                                    </Col>
-                                    <Col>
-                                        <CurrencyBox amount={'$9,999.99'} />
-                                    </Col>
-                                    <Col>
-                                        <CurrencyBox amount={'$9,999.99'} />
-                                    </Col>
-                                </Row>
-                                <Row style={{height: '40vh'}}>
-                                    <Card className="w-75">
+                        </div>
+                        <div className="right_side_table_container">
+                            <h5>&nbsp;</h5>
+                            <Stack gap={3} className="right_side_stack">
+                                <div className="d-flex justify-content-between">
+                                    <CurrencyBox amount={'$9,999.99'} />
+                                    <CurrencyBox amount={'$9,999.99'} />
+                                    <CurrencyBox amount={'$9,999.99'} />
+                                    <CurrencyBox amount={'$9,999.99'} />
+                                </div>
+                                <div>
+                                    <h5>&nbsp;</h5>
+                                    <Card className="pie_chart_card">
                                         <BudgetPieChart />
                                     </Card>
-                                </Row>
-                                <Row className="left_side_table">
+                                </div>
+                                <div className="savings_table">
                                     <SavingsTable month_id={month_id} />
-                                </Row>
+                                </div>
                             </Stack>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 </Container>
             </MonthViewContextProvider>
         </div>

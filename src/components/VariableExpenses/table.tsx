@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useMonthViewContext } from "@/context/monthview";
 import { Button, Col, Row, Stack } from "react-bootstrap";
-import { VariableExpenseInSchema, VariableExpenseOutSchema } from "@/types";
+import { MonthSchema, VariableExpenseInSchema, VariableExpenseOutSchema } from "@/types";
 import { createVariableExpense, deleteVariableExpense, patchVariableExpense } from "@/api/VariableExpense";
 import { fetchVariableExpenses } from ".";
 import './styles.scss';
@@ -65,7 +65,7 @@ function CustomFooter({ rows }: { rows: VariableExpenseOutSchema[] }) {
 }
 
 export default function VariableExpenseDataGrid(
-    { rowData, month_id }: { rowData: VariableExpenseOutSchema[], month_id: VariableExpenseOutSchema['month']['id'] }
+    { rowData, month_id }: { rowData: VariableExpenseOutSchema[], month_id: MonthSchema['id'] }
 ) {
     const [rows, setRows] = useState<Array<VariableExpenseOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
@@ -116,7 +116,7 @@ export default function VariableExpenseDataGrid(
 
     return (
         <Stack gap={2}>
-            <Row>
+            <Row className="w-100">
                 <Col className='p-0'>
                     <h5 className="m-0">Variable Expenses</h5>
                 </Col>
