@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "electron/preload.js", "electron/main.js", "src/app/themeContext.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "electron/preload.js", "electron/main.js", "src/app/themeContext.jsx", "jest.config.js"],
   "exclude": ["node_modules"]
 }

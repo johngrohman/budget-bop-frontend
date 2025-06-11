@@ -11,8 +11,8 @@ export default function BudgetPieChart() {
                     { id: 2, value: 1000, label: 'Variable Expense' },
                     { id: 3, value: 1790, label: 'Savings' },
                 ],
-                innerRadius: 45,
-                outerRadius: 115,
+                innerRadius: 60,
+                outerRadius: 110,
                 paddingAngle: 0,
                 cornerRadius: 0,
                 startAngle: 0,
@@ -20,6 +20,7 @@ export default function BudgetPieChart() {
                 }
             ]}
             height={200}
+            colors={['#336699', '#86BBD8', '#2F4858', '#9EE493', '#DAF7DC']}
         />
     );
 }

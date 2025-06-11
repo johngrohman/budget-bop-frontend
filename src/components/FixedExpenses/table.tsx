@@ -118,8 +118,8 @@ export default function FixedExpenseDataGrid(
     };
 
     return (
-        <Stack gap={2}>
-            <Row className="w-100">
+        <Stack gap={2} className="h-100">
+            <Row className="w-100 m-0">
                 <Col className='p-0'>
                     <h5 className="m-0">Fixed Expenses</h5>
                 </Col>
@@ -140,7 +140,7 @@ export default function FixedExpenseDataGrid(
                     </Button>
                 </Col>
             </Row>
-            <Row className="left_side_table">
+            <Row className="m-0 h-100">
                 <DataGrid
                     rows={rows}
                     columns={columns}

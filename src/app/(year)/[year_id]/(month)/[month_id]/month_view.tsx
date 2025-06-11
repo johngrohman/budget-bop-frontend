@@ -32,21 +32,19 @@ export default function MonthView({ month_id }: { month_id: string }) {
                     </Row>
                     <div className="dashboard_container">
                         <div className="left_side_tables_container">
-                            <Stack gap={5}>
-                                <div key={1} className="left_side_table">
-                                    <IncomeTable month_id={month_id} />
-                                </div>
-                                <div key={2} className="left_side_table">
-                                    <FixedExpenseTable month_id={month_id} />
-                                </div>
-                                <div key={3} className="left_side_table">
-                                    <VariableExpenseTable month_id={month_id} />
-                                </div>
-                            </Stack>
+                            <div key={1} className="left_side_table">
+                                <IncomeTable month_id={month_id} />
+                            </div>
+                            <div key={2} className="left_side_table">
+                                <FixedExpenseTable month_id={month_id} />
+                            </div>
+                            <div key={3} className="left_side_table">
+                                <VariableExpenseTable month_id={month_id} />
+                            </div>
                         </div>
                         <div className="right_side_table_container">
                             <h5>&nbsp;</h5>
-                            <Stack gap={3} className="right_side_stack">
+                            <div className="right_side_stack">
                                 <div className="d-flex justify-content-between">
                                     <CurrencyBox amount={'$9,999.99'} />
                                     <CurrencyBox amount={'$9,999.99'} />
@@ -54,7 +52,7 @@ export default function MonthView({ month_id }: { month_id: string }) {
                                     <CurrencyBox amount={'$9,999.99'} />
                                 </div>
                                 <div>
-                                    <h5>&nbsp;</h5>
+                                    <div style={{height: '5vh'}} />
                                     <Card className="pie_chart_card">
                                         <BudgetPieChart />
                                     </Card>
@@ -62,7 +60,7 @@ export default function MonthView({ month_id }: { month_id: string }) {
                                 <div className="savings_table">
                                     <SavingsTable month_id={month_id} />
                                 </div>
-                            </Stack>
+                            </div>
                         </div>
                     </div>
                 </Container>

@@ -1,12 +1,10 @@
 import { getYears } from "@/api/Year";
 import YearView from "./year_view";
-import { components } from "@/types/schema";
-
-type YearSchema = components['schemas']['YearSchema']
+import { YearOutSchema } from "@/types";
 
 export async function generateStaticParams() {
     const years = await getYears();
-    return years.map((year: YearSchema) => ({
+    return years.map((year: YearOutSchema) => ({
       year_id: year.id,
     }))
 }

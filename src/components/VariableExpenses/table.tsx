@@ -115,8 +115,8 @@ export default function VariableExpenseDataGrid(
     };
 
     return (
-        <Stack gap={2}>
-            <Row className="w-100">
+        <Stack gap={2} className="h-100">
+            <Row className="w-100 m-0">
                 <Col className='p-0'>
                     <h5 className="m-0">Variable Expenses</h5>
                 </Col>
@@ -144,7 +144,7 @@ export default function VariableExpenseDataGrid(
                     </Button>
                 </Col>
             </Row>
-            <Row className="left_side_table">
+            <Row className="m-0" style={{height: 'auto'}}>
                 <DataGrid
                     rows={rows}
                     columns={columns}

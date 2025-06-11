@@ -83,14 +83,17 @@
 }
 
 .left_side_table {
-    height: 23vh;
+    height: 32%;
     width: 100%;
 }
 
 .left_side_tables_container {
-    // border: 1px solid green;
+    border: 1px solid green;
     min-width: 520px;
     width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .right_side_table_container {
@@ -107,6 +110,10 @@
 
 .right_side_stack {
     height: calc(100% - 24px);
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .pie_chart_card {
