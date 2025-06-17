@@ -10,8 +10,7 @@ import {
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { IncomeOutSchema, MonthSchema } from "@/types";
 import { useMemo, useState } from "react";
-import { createIncome, deleteIncome, patchIncome } from "@/api/Income";
-import { fetchIncomeData } from ".";
+import { createIncome, deleteIncome, listIncome, patchIncome } from "@/api/Income";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -55,7 +54,7 @@ const columns: GridColDef[] = [
         editable: true,
         sortable: false,
         resizable: false,
-        valueFormatter: (c) => `$${c}`,
+        valueFormatter: (c) => `$${c}`, 
     },
 ];
 
@@ -90,12 +89,12 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
 
     const handleRowCreate = async () => {
         await createIncome({month_id: month_id});
-        setRows(await fetchIncomeData(month_id));
+        setRows(await listIncome({month_id}));
     }
 
     const handleRowDelete = async () => {
         await deleteIncome(selectedRows as Array<IncomeOutSchema['id']>);
-        setRows(await fetchIncomeData(month_id));
+        setRows(await listIncome({month_id}));
     }
 
     const handleRowUpdate = async (
@@ -123,7 +122,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
     };
 
     const handleCellEditStop = async () => {
-        setRows(await fetchIncomeData(month_id));
+        setRows(await listIncome({month_id}));
     };
 
     const handleRowUpdateError = (e: any) => {

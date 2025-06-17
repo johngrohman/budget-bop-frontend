@@ -1,14 +1,20 @@
+'use client'
+
 import { listIncome } from "@/api/Income";
 import IncomeDataGrid from "./table";
-import { IncomeFilterSchema, IncomeOutSchema, MonthSchema } from "@/types";
+import { IncomeOutSchema, MonthSchema } from "@/types";
+import { useEffect, useState } from "react";
 
-export async function fetchIncomeData(month_id: IncomeFilterSchema['month_id']) {
-  const income = await listIncome({ month_id });
-  return income;
-}
+export default function IncomeTable({ month_id }: { month_id: MonthSchema['id']}) {
 
-export default async function IncomeTable({ month_id }: { month_id: MonthSchema['id']}) {
-  const rows = await fetchIncomeData(month_id);
+    const [rows, setRows] = useState<Array<IncomeOutSchema>>([]);
 
-  return <IncomeDataGrid rowData={[...rows]} month_id={month_id} />;
+    useEffect(() => {
+        listIncome({ month_id })
+        .then((response) => {
+            setRows(response);
+        });
+    }, []);
+
+    return <IncomeDataGrid rowData={[...rows]} month_id={month_id} />;
 }
