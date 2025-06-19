@@ -10,7 +10,7 @@
     "electron": "electron .",
     "electron-dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next start\" \"wait-on http://localhost:3000 && electron .\"",
-    "lint": "next lint",
+    "lint": "eslint src/",
     "generate-types": "npx openapicmd typegen ./src/api/openapi.json > ./src/types/index.d.ts",
     "test": "jest",
     "test:coverage": "jest --coverage"
@@ -24,6 +24,7 @@
     "@mui/x-data-grid": "^7.27.3",
     "@mui/x-data-grid-generator": "^7.28.2",
     "@mui/x-tree-view": "^7.28.1",
+    "@next/eslint-plugin-next": "^15.3.4",
     "axios": "^1.8.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
@@ -33,7 +34,8 @@
     "react-bootstrap": "^2.10.9",
     "react-bootstrap-icons": "^1.11.5",
     "react-dom": "^19.0.0",
-    "sass": "^1.85.0"
+    "sass": "^1.85.0",
+    "typescript-eslint": "^8.34.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

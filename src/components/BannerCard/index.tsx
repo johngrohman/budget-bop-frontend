@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody } from "react-bootstrap";
 import { CardProps } from "react-bootstrap";
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
 interface BannerCardProps extends CardProps {
     color: string,

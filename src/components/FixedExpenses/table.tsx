@@ -1,8 +1,8 @@
-'use client'
+'use client';
 import { createFixedExpense, deleteFixedExpense, patchFixedExpense } from "@/api/FixedExpenses";
-import { FixedExpenseInSchema, FixedExpenseOutSchema, MonthSchema } from "@/types";
+import { FixedExpenseOutSchema, MonthSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { fetchFixedExpense } from ".";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 
@@ -78,15 +78,17 @@ export default function FixedExpenseDataGrid(
     const handleRowCreate = async () => {
         await createFixedExpense({month_id: month_id});
         setRows(await fetchFixedExpense(month_id));
-    }
+    };
 
     const handleRowDelete = async () => {
         await deleteFixedExpense(selectedRows as Array<FixedExpenseOutSchema['id']>);
         setRows(await fetchFixedExpense(month_id));
-    }
+    };
 
     const handleRowUpdate = async (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         newRow: any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         oldRow: any,
     ) => {
         
@@ -112,7 +114,7 @@ export default function FixedExpenseDataGrid(
     const handleCellEditStop = async () => {
         setRows(await fetchFixedExpense(month_id));
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
         console.log(e);
     };

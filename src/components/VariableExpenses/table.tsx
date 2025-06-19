@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useMemo, useState } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
@@ -81,10 +81,12 @@ export default function VariableExpenseDataGrid(
     const handleRowDelete = async () => {
         await deleteVariableExpense(selectedRows as Array<VariableExpenseOutSchema['id']>);
         setRows(await fetchVariableExpenses(month_id));
-    }
+    };
 
     const handleRowUpdate = async (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         newRow: any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         oldRow: any,
     ) => {
         const bodyPayload: Partial<VariableExpenseInSchema> = {};
@@ -108,10 +110,10 @@ export default function VariableExpenseDataGrid(
 
     const handleCellEditStop = async () => {
         setRows(await fetchVariableExpenses(month_id));
-    }
-
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
-        console.log(e)
+        console.log(e);
     };
 
     return (

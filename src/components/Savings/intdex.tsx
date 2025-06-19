@@ -1,5 +1,6 @@
+import React from "react";
 import { listSavings } from "@/api/Savings";
-import { MonthSchema, SavingsOutSchema } from "@/types";
+import { MonthSchema } from "@/types";
 import SavingsDataGrid from "./table";
 
 
@@ -9,5 +10,5 @@ export default async function SavingsTable({month_id}: { month_id: MonthSchema['
         <>
             <SavingsDataGrid rowData={[...rows]} month_id={month_id} />
         </>
-    )
+    );
 }

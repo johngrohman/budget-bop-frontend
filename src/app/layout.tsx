@@ -1,19 +1,9 @@
+import React from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TitleBar from "@/components/TitleBar";
 import { ToastProvider } from "@/components/ToastSystem";
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
     title: "Budget Buddy",
@@ -21,8 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-        children,
-    }: Readonly<{
+    children,
+}: Readonly<{
         children: React.ReactNode;
     }>) {
     return (

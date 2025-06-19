@@ -12,20 +12,21 @@ export async function listFixedExpenses (
         const params = new URLSearchParams(filters as Record<string, string>).toString();
         const response = await fetch(`${API}${url}?${params}`, {
             method: 'GET',
-        })
+        });
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to fetch fixed expenses: ', error)
-        return ([])
+        console.error('Failed to fetch fixed expenses: ', error);
+        return ([]);
     }
 }
 
 export async function patchFixedExpense(
     fixed_expense_id: FixedExpenseOutSchema['id'],
     payload: FixedExpenseInSchema,
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 ): Promise<FixedExpenseOutSchema | {} > {
     try {
         const response = await fetch(`${API}${url}/${fixed_expense_id}`, {
@@ -33,12 +34,12 @@ export async function patchFixedExpense(
             body: JSON.stringify(payload),
         });
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to fetch fixed expenses: ', error)
-        return ({})
+        console.error('Failed to fetch fixed expenses: ', error);
+        return ({});
     }
 }
 

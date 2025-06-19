@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
+import React, { useMemo, useState } from "react";
 import { createSavings, deleteSavings, listSavings, patchSavings } from "@/api/Savings";
 import { MonthSchema, SavingsInSchema, SavingsOutSchema } from "@/types";
-import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid"
-import { useMemo, useState } from "react";
+import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { Stack, Row, Col, Button } from "react-bootstrap";
 
 const columns: GridColDef[] = [
@@ -42,8 +42,6 @@ function CustomFooter({ rows }: { rows: SavingsOutSchema[] }) {
         return rows.reduce((acc, row) => acc + (row.actual ?? 0), 0);
     }, [rows]);
 
-    const totalDiff = useMemo(() => totalBudget - totalActual, [totalBudget, totalActual]);
-
     return (
         <div className="bg-light d-flex justify-content-center align-items-center border-top test">
             <span style={{ width: 50 }}>Total</span>
@@ -73,7 +71,9 @@ export default function SavingsDataGrid(
     };
 
     const handleRowUpdate = async (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         newRow: any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         oldRow: any,
     ) => {
         const bodyPayload: Partial<SavingsInSchema> = {};
@@ -93,15 +93,15 @@ export default function SavingsDataGrid(
             console.error("Row update failed", error);
             throw error;
         }
-    }
+    };
     
-        const handleCellEditStop = async () => {
-            setRows(await listSavings({month_id}));
-        }
-    
-        const handleRowUpdateError = (e: any) => {
-            console.log(e)
-        };
+    const handleCellEditStop = async () => {
+        setRows(await listSavings({month_id}));
+    };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleRowUpdateError = (e: any) => {
+        console.log(e);
+    };
 
     return (
         <Stack gap={2} className="h-100 w-100">

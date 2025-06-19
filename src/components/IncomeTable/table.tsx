@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { IncomeOutSchema, MonthSchema } from "@/types";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { createIncome, deleteIncome, listIncome, patchIncome } from "@/api/Income";
 
 declare module '@mui/x-data-grid' {
@@ -68,8 +68,6 @@ function CustomFooter({ rows }: { rows: IncomeOutSchema[] }) {
         return rows.reduce((acc, row) => acc + (row.actual ?? 0), 0);
     }, [rows]);
 
-    const totalDiff = useMemo(() => totalExpected - totalActual, [totalExpected, totalActual]);
-
     return (
         <div className="bg-light d-flex justify-content-center align-items-center border-top test">
             <span style={{ width: 50 }}>Total</span>
@@ -90,15 +88,17 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
     const handleRowCreate = async () => {
         await createIncome({month_id: month_id});
         setRows(await listIncome({month_id}));
-    }
+    };
 
     const handleRowDelete = async () => {
         await deleteIncome(selectedRows as Array<IncomeOutSchema['id']>);
         setRows(await listIncome({month_id}));
-    }
+    };
 
     const handleRowUpdate = async (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         newRow: any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         oldRow: any,
     ) => {
         
@@ -125,6 +125,7 @@ export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeO
         setRows(await listIncome({month_id}));
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
         console.log(e);
     };

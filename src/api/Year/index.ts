@@ -20,10 +20,10 @@ export async function getYears(): Promise<Year[]> {
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
-    return await response.json();
+        return await response.json();
     } catch (error) {
         console.error("Failed to fetch years:", error);
-    return [];
+        return [];
     }
 }
 
@@ -40,7 +40,7 @@ export async function createYear(year: Year): Promise<Year> {
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
-    return await response.json();
+        return await response.json();
     } catch (error) {
         console.error("Failed to fetch years:", error);
         return {id:'', year:''};
@@ -121,7 +121,7 @@ export async function createCompleteYear(year: Year): Promise<Year> {
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
-    return await response.json();
+        return await response.json();
     } catch (error) {
         console.error("Failed to fetch years:", error);
         return {id:'', year:''};

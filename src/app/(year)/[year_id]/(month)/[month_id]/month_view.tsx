@@ -2,7 +2,7 @@ import FileUploadModal from "@/components/VariableExpenses/components/Transactio
 import { getMonthById } from "@/api/Month";
 import FallbackComponentH1 from "@/components/FallbackComponent";
 import React, { Suspense } from "react";
-import { Container, Row, Col, Stack, Card } from "react-bootstrap";
+import { Container, Row, Card } from "react-bootstrap";
 import MonthViewContextProvider from "@/context/monthview";
 import VariableExpenseTable from "@/components/VariableExpenses";
 import FixedExpenseTable from "@/components/FixedExpenses";

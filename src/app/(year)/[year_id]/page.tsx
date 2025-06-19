@@ -1,3 +1,4 @@
+import React from "react";
 import { getYears } from "@/api/Year";
 import YearView from "./year_view";
 import { YearOutSchema } from "@/types";
@@ -5,8 +6,8 @@ import { YearOutSchema } from "@/types";
 export async function generateStaticParams() {
     const years = await getYears();
     return years.map((year: YearOutSchema) => ({
-      year_id: year.id,
-    }))
+        year_id: year.id,
+    }));
 }
 
 export default async function Year({
@@ -15,7 +16,7 @@ export default async function Year({
     params: Promise<{ year_id: string }>
 }) {
 
-    const year_id = (await params).year_id
+    const year_id = (await params).year_id;
 
     return (
         <YearView year_id={year_id} />

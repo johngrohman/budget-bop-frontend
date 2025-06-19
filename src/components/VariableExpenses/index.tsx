@@ -1,4 +1,5 @@
-import { MonthSchema, VariableExpenseFilterSchema, VariableExpenseOutSchema } from "@/types";
+import React from "react";
+import { MonthSchema, VariableExpenseFilterSchema } from "@/types";
 import VariableExpenseDataGrid from "./table";
 import { listVariableExpenses } from "@/api/VariableExpense";
 
@@ -13,5 +14,5 @@ export default async function VariableExpenseTable({month_id}: { month_id: Month
         <>
             <VariableExpenseDataGrid rowData={[...rows]} month_id={month_id} />
         </>
-    )
+    );
 }

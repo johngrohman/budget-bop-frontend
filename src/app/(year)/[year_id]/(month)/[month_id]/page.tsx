@@ -1,3 +1,4 @@
+import React from "react";
 import MonthView from "./month_view";
 
 export default async function Year({
@@ -5,7 +6,7 @@ export default async function Year({
 }:{
     params: Promise<{ year_id: string, month_id: string }>
 }) {
-    const month_id = (await params).month_id
+    const month_id = (await params).month_id;
     return (
         <MonthView month_id={month_id} />
     );

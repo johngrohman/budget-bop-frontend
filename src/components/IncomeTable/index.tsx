@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 import { listIncome } from "@/api/Income";
 import IncomeDataGrid from "./table";
 import { IncomeOutSchema, MonthSchema } from "@/types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function IncomeTable({ month_id }: { month_id: MonthSchema['id']}) {
 
@@ -11,9 +11,9 @@ export default function IncomeTable({ month_id }: { month_id: MonthSchema['id']}
 
     useEffect(() => {
         listIncome({ month_id })
-        .then((response) => {
-            setRows(response);
-        });
+            .then((response) => {
+                setRows(response);
+            });
     }, []);
 
     return <IncomeDataGrid rowData={[...rows]} month_id={month_id} />;

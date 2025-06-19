@@ -1,3 +1,4 @@
+import React from "react";
 import { Card } from "react-bootstrap";
 import './styles.scss';
 
@@ -9,5 +10,5 @@ export default function  CurrencyBox({ amount }: { amount: string}) {
                 <h4>{amount}</h4>
             </div>
         </Card>
-    )
+    );
 }

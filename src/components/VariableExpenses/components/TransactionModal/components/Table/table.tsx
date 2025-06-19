@@ -1,9 +1,8 @@
-'use client'
+'use client';
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { FixedExpenseOutSchema, TransactionOutSchema } from "@/types";
+import { TransactionOutSchema } from "@/types";
 import { Button, Col, Row, Stack } from "react-bootstrap";
-import { deleteFixedExpense } from "@/api/FixedExpenses";
 import { deleteTransactions } from "@/api/Transaction";
 import { fetchTransactionData } from ".";
 
@@ -51,7 +50,7 @@ export default function TransactionDataGrid(
     const handleRowDelete = async () => {
         await deleteTransactions(selectedRows as Array<TransactionOutSchema['id']>);
         setRows(await fetchTransactionData(month_id));
-    }
+    };
 
 
     return (

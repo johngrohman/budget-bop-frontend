@@ -24,8 +24,8 @@ export async function getMonthsInYear(year_id: YearOutSchema['id']): Promise<Arr
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to fetch years:', error)
-        return ([])
+        console.error('Failed to fetch years:', error);
+        return ([]);
     }
 }
 
@@ -39,7 +39,7 @@ export async function getMonthById(month_id: MonthOutSchema['id']): Promise<Mont
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to fetch month: ', error)
-        return {id: '', month: '', year: {id: '', year: ''}}
+        console.error('Failed to fetch month: ', error);
+        return {id: '', month: '', year: {id: '', year: ''}};
     }
 }

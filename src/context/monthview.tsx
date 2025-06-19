@@ -1,5 +1,5 @@
-'use client'
-import { createContext, ReactNode, useContext, useState } from "react";
+'use client';
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
 type MonthViewContextType = {
     showFileUploadModal: boolean;
@@ -12,7 +12,7 @@ export const MonthViewContext = createContext<MonthViewContextType | undefined>(
 export const useMonthViewContext = () => {
     const context = useContext(MonthViewContext);
     if (!context) {
-      throw new Error("useMonthViewContext must be used within a MonthViewProvider");
+        throw new Error("useMonthViewContext must be used within a MonthViewProvider");
     }
     return context;
 };

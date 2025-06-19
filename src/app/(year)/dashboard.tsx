@@ -1,24 +1,22 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { getYears } from "../../api/Year";
-import { components } from "@/types/schema";
-
-type YearSchema = components['schemas']['YearSchema']
+import { YearSchema } from "@/types";
 
 export default function Dashboard() {
     const [years, setYears] = useState<YearSchema[]>([]);
 
     const getYearsData = () => {
         getYears()
-        .then((response) => setYears(response))
-    }
+            .then((response) => setYears(response));
+    };
 
     useEffect(() => {
-        getYearsData()
-    }, [])
+        getYearsData();
+    }, []);
 
-    console.log(years)
+    console.log(years);
 
     return (
         <Container fluid>

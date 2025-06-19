@@ -1,5 +1,5 @@
-'use client'
-import { useState } from "react";
+'use client';
+import React, { useState } from "react";
 import { useMonthViewContext } from "@/context/monthview";
 import {
     Alert,
@@ -27,6 +27,7 @@ import TransactionTable from "./components/Table";
 export default function FileUploadModal({month_id}: {month_id: string}) {
     const { addToast } = useToast();
     const [file, setFile] = useState<File | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [uploading, setUploading] = useState<boolean>(false);
 
     const {
@@ -34,7 +35,7 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
         setShowFileUploadModal,
     } = useMonthViewContext();
 
-   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selected = e.target.files?.[0];
         if (selected) {
             setFile(selected);
@@ -48,9 +49,10 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
         }
         setUploading(true);
         try {
-            const result = await uploadTransactions(file, month_id);
+            await uploadTransactions(file, month_id);
             addToast('Transactions uploaded successfully', 'success');
         } catch (error) {
+            console.error(error);
             addToast('Failed to upload transactions', 'danger');
         } finally {
             setUploading(false);
@@ -69,29 +71,29 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
             </ModalHeader>
             <ModalBody>
                 <div className="ps-4 pe-4 pb-4 mx-auto">
-                <Alert
-                    className="invisible"
-                >Test</Alert>
-                <Row className="justify-content-center">
-                    <Col
-                        md={7}
-                    >
-                        <FormControl
-                            type={'file'}
-                            onChange={handleFileChange}
-                            accept='.csv'
-                        />
-                    </Col>
-                    <Col md='auto'>
-                        <Button
-                            onClick={handleUpload}
+                    <Alert
+                        className="invisible"
+                    >Test</Alert>
+                    <Row className="justify-content-center">
+                        <Col
+                            md={7}
                         >
+                            <FormControl
+                                type={'file'}
+                                onChange={handleFileChange}
+                                accept='.csv'
+                            />
+                        </Col>
+                        <Col md='auto'>
+                            <Button
+                                onClick={handleUpload}
+                            >
                             Upload
-                        </Button>
-                    </Col>
-                </Row>
-                <br />
-                <TransactionTable month_id={month_id} />
+                            </Button>
+                        </Col>
+                    </Row>
+                    <br />
+                    <TransactionTable month_id={month_id} />
                 </div>
             </ModalBody>
         </Modal>

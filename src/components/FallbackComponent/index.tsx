@@ -1,4 +1,5 @@
-'use client'
+'use client';
+import React from 'react';
 import { Placeholder } from 'react-bootstrap';
 
 export default function FallbackComponentH1({ size }: { size: number }) {

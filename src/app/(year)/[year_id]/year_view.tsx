@@ -1,14 +1,12 @@
+import React from 'react';
 import { Suspense } from 'react';
 import { getYearById } from '@/api/Year';
 import FallbackComponentH1 from '@/components/FallbackComponent';
 import { getMonthsInYear } from '@/api/Month';
 import { Card, Col, Container, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
-import { components } from "@/types/schema";
 import './styles.scss';
-
-type MonthSchema = components['schemas']['MonthSchema']
-type YearSchema = components['schemas']['YearSchema']
+import { MonthSchema, YearSchema } from '@/types';
 
 async function YearComponent({ id }: { id: string }) {
     const year = await getYearById(id);
@@ -19,16 +17,16 @@ async function MonthComponents({ id }: { id: string }) {
     const months = await getMonthsInYear(id);
     return (
         months.map((month: MonthSchema, index: number) => (
-                <Link
-                    href={`${id}/${month.id}`}
-                    key={index}
-                >
-                    <Card className='p-1'>
-                        {month.month}
-                    </Card>
-                </Link>
+            <Link
+                href={`${id}/${month.id}`}
+                key={index}
+            >
+                <Card className='p-1'>
+                    {month.month}
+                </Card>
+            </Link>
         ))
-    )
+    );
 }
 
 export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {

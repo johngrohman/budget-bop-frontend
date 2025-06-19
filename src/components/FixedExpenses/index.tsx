@@ -1,5 +1,6 @@
+import React from "react";
 import { listFixedExpenses } from "@/api/FixedExpenses";
-import { FixedExpenseFilterSchema, FixedExpenseOutSchema, MonthSchema } from "@/types";
+import { FixedExpenseFilterSchema, MonthSchema } from "@/types";
 import FixedExpenseDataGrid from "./table";
 
 export async function fetchFixedExpense(month_id: FixedExpenseFilterSchema['month_id']) {

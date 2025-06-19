@@ -14,14 +14,14 @@ async function GET(url: string) {
             {
                 method: 'GET',
             }
-        )
+        );
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to get: ', error)
-        return error
+        console.error('Failed to get: ', error);
+        return error;
     }
 }
 
@@ -38,12 +38,12 @@ async function PUT(url: string, body: object) {
             body: JSON.stringify(body),
         });
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to patch: ', error)
-        return ({})
+        console.error('Failed to patch: ', error);
+        return ({});
     }
 }
 
@@ -60,12 +60,12 @@ async function PATCH(url: string, body: object) {
             body: JSON.stringify(body),
         });
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to patch: ', error)
-        return ({})
+        console.error('Failed to patch: ', error);
+        return ({});
     }
 }
 
@@ -82,12 +82,12 @@ async function POST(url: string, body: object) {
             body: JSON.stringify(body),
         });
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to post: ', error)
-        return ({})
+        console.error('Failed to post: ', error);
+        return ({});
     }
 }
 
@@ -104,12 +104,12 @@ async function DELETE(url: string, body: object | null) {
             body: JSON.stringify(body),
         });
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to delete: ', error)
-        return ({})
+        console.error('Failed to delete: ', error);
+        return ({});
     }
 }
 
@@ -119,4 +119,4 @@ export {
     PUT,
     PATCH,
     DELETE,
-}
+};

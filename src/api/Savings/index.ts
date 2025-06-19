@@ -6,7 +6,7 @@ const url='/api/savings';
 const API = 'http://localhost:8000';
 
 export async function listSavings(filters: SavingsFilterSchema) {
-        try {
+    try {
         const params = new URLSearchParams(filters as Record<string, string>).toString();
         const response = await fetch(
             `${API}${url}?${params}`,
@@ -15,12 +15,12 @@ export async function listSavings(filters: SavingsFilterSchema) {
             }
         );
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to fetch variable expenses: ', error)
-        return ([])
+        console.error('Failed to fetch variable expenses: ', error);
+        return ([]);
     }
 }
 
@@ -34,12 +34,12 @@ export async function patchSavings(
             body: JSON.stringify(payload),
         });
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`);
         }
-        return await response.json()
+        return await response.json();
     } catch (error) {
-        console.error('Failed to fetch variable expenses: ', error)
-        return ({})
+        console.error('Failed to fetch variable expenses: ', error);
+        return ({});
     }
 }
 
