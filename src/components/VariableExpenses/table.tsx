@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useMonthViewContext } from "@/context/monthview";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { MonthSchema, VariableExpenseInSchema, VariableExpenseOutSchema } from "@/types";
-import { createVariableExpense, deleteVariableExpense, patchVariableExpense } from "@/api/VariableExpense";
-import { fetchVariableExpenses } from ".";
+import { createVariableExpense, deleteVariableExpense, listVariableExpenses, patchVariableExpense } from "@/api/VariableExpense";
 import './styles.scss';
 
 const columns: GridColDef[] = [
@@ -65,22 +64,29 @@ function CustomFooter({ rows }: { rows: VariableExpenseOutSchema[] }) {
 }
 
 export default function VariableExpenseDataGrid(
-    { rowData, month_id }: { rowData: VariableExpenseOutSchema[], month_id: MonthSchema['id'] }
+    { month_id }: { month_id: MonthSchema['id'] }
 ) {
-    const [rows, setRows] = useState<Array<VariableExpenseOutSchema>>(rowData);
+    const [rows, setRows] = useState<Array<VariableExpenseOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
 
     const { setShowFileUploadModal } = useMonthViewContext();
     
+    useEffect(() => {
+        listVariableExpenses({ month_id })
+            .then((response) => {
+                setRows(response);
+            });
+    }, []);
+
     const handleRowCreate = async () => {
         await createVariableExpense({month_id: month_id});
-        setRows(await fetchVariableExpenses(month_id));
+        setRows(await listVariableExpenses({month_id}));
     };
 
     const handleRowDelete = async () => {
         await deleteVariableExpense(selectedRows as Array<VariableExpenseOutSchema['id']>);
-        setRows(await fetchVariableExpenses(month_id));
+        setRows(await listVariableExpenses({month_id}));
     };
 
     const handleRowUpdate = async (
@@ -109,8 +115,9 @@ export default function VariableExpenseDataGrid(
     };
 
     const handleCellEditStop = async () => {
-        setRows(await fetchVariableExpenses(month_id));
+        setRows(await listVariableExpenses({month_id}));
     };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
         console.log(e);

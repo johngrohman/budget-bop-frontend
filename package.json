@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"electron .\"",
+    "next-dev": "next dev",
     "build": "next build",
     "electron": "electron .",
     "electron-dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"wait-on http://localhost:3000 && electron .\"",

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createSavings, deleteSavings, listSavings, patchSavings } from "@/api/Savings";
 import { MonthSchema, SavingsInSchema, SavingsOutSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
@@ -54,11 +54,18 @@ function CustomFooter({ rows }: { rows: SavingsOutSchema[] }) {
 }
 
 export default function SavingsDataGrid(
-    { rowData, month_id }: { rowData: SavingsOutSchema[], month_id: MonthSchema['id'] }
+    { month_id }: { month_id: MonthSchema['id'] }
 ) {
-    const [rows, setRows] = useState<Array<SavingsOutSchema>>(rowData);
+    const [rows, setRows] = useState<Array<SavingsOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+
+    useEffect(() => {
+        listSavings({ month_id })
+            .then((response) => {
+                setRows(response);
+            });
+    }, []);
 
     const handleRowCreate = async () => {
         await createSavings({month_id: month_id});

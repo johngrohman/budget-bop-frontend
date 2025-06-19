@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { IncomeOutSchema, MonthSchema } from "@/types";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createIncome, deleteIncome, listIncome, patchIncome } from "@/api/Income";
 
 declare module '@mui/x-data-grid' {
@@ -79,11 +79,18 @@ function CustomFooter({ rows }: { rows: IncomeOutSchema[] }) {
     );
 }
 
-export default function IncomeDataGrid({ rowData, month_id }: { rowData: IncomeOutSchema[], month_id: MonthSchema['id'] }) {
+export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id'] }) {
 
-    const [rows, setRows] = useState<Array<IncomeOutSchema>>(rowData);
+    const [rows, setRows] = useState<Array<IncomeOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+
+    useEffect(() => {
+        listIncome({ month_id })
+            .then((response) => {
+                setRows(response);
+            });
+    }, []);
 
     const handleRowCreate = async () => {
         await createIncome({month_id: month_id});

@@ -19,7 +19,7 @@ export async function listSavings(filters: SavingsFilterSchema) {
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to fetch variable expenses: ', error);
+        console.error('Failed to fetch savings: ', error);
         return ([]);
     }
 }
@@ -38,7 +38,7 @@ export async function patchSavings(
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to fetch variable expenses: ', error);
+        console.error('Failed to fetch savings: ', error);
         return ({});
     }
 }
@@ -72,11 +72,11 @@ export async function deleteSavings(
             body: JSON.stringify(payload),
         });
         if (!response.ok) {
-            throw new Error('Failed to delete variable expenses');
+            throw new Error('Failed to delete savings');
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to delete variable expenses', error);
+        console.error('Failed to delete savings', error);
         throw error;
     }   
 }

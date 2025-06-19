@@ -1,9 +1,8 @@
 'use client';
-import { createFixedExpense, deleteFixedExpense, patchFixedExpense } from "@/api/FixedExpenses";
+import { createFixedExpense, deleteFixedExpense, listFixedExpenses, patchFixedExpense } from "@/api/FixedExpenses";
 import { FixedExpenseOutSchema, MonthSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
-import React, { useMemo, useState } from "react";
-import { fetchFixedExpense } from ".";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 
 const columns: GridColDef[] = [
@@ -69,20 +68,27 @@ function CustomFooter({ rows }: { rows: FixedExpenseOutSchema[] }) {
 }
 
 export default function FixedExpenseDataGrid(
-    { rowData, month_id }: { rowData: FixedExpenseOutSchema[], month_id: MonthSchema['id'] }
+    { month_id }: { month_id: MonthSchema['id'] }
 ) {
-    const [rows, setRows] = useState<Array<FixedExpenseOutSchema>>(rowData);
+    const [rows, setRows] = useState<Array<FixedExpenseOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
 
+    useEffect(() => {
+        listFixedExpenses({ month_id })
+            .then((response) => {
+                setRows(response);
+            });
+    }, []);
+
     const handleRowCreate = async () => {
         await createFixedExpense({month_id: month_id});
-        setRows(await fetchFixedExpense(month_id));
+        setRows(await listFixedExpenses({ month_id }));
     };
 
     const handleRowDelete = async () => {
         await deleteFixedExpense(selectedRows as Array<FixedExpenseOutSchema['id']>);
-        setRows(await fetchFixedExpense(month_id));
+        setRows(await listFixedExpenses({ month_id }));
     };
 
     const handleRowUpdate = async (
@@ -112,7 +118,7 @@ export default function FixedExpenseDataGrid(
     };
 
     const handleCellEditStop = async () => {
-        setRows(await fetchFixedExpense(month_id));
+        setRows(await listFixedExpenses({ month_id }));
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
