@@ -29,7 +29,7 @@ export async function getMonthsInYear(year_id: YearOutSchema['id']): Promise<Arr
     }
 }
 
-export async function getMonthById(month_id: MonthOutSchema['id']): Promise<MonthSchema> {
+export async function getMonthById(month_id: any): Promise<any> {
     try {
         const response = await fetch(`${API}${url}/${month_id}`, {
             method: 'GET'

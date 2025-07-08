@@ -161,6 +161,19 @@ declare namespace Components {
             month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
+         * MonthFixedExpense
+         */
+        export interface MonthFixedExpense {
+            /**
+             * Budget
+             */
+            budget: number;
+            /**
+             * Actual
+             */
+            actual: number;
+        }
+        /**
          * MonthInSchema
          */
         export interface MonthInSchema {
@@ -168,6 +181,19 @@ declare namespace Components {
              * Month
              */
             month: string;
+        }
+        /**
+         * MonthIncome
+         */
+        export interface MonthIncome {
+            /**
+             * Expected
+             */
+            expected: number;
+            /**
+             * Actual
+             */
+            actual: number;
         }
         /**
          * MonthOutSchema
@@ -182,6 +208,23 @@ declare namespace Components {
              */
             month: string;
             year: /* YearSchema */ YearSchema;
+            total_income: /* MonthIncome */ MonthIncome | null;
+            total_fixed_expenses: /* MonthFixedExpense */ MonthFixedExpense | null;
+            total_variable_expenses: /* MonthVariableExpense */ MonthVariableExpense | null;
+            total_savings: /* MonthSavings */ MonthSavings | null;
+        }
+        /**
+         * MonthSavings
+         */
+        export interface MonthSavings {
+            /**
+             * Budget
+             */
+            budget: number;
+            /**
+             * Actual
+             */
+            actual: number;
         }
         /**
          * MonthSchema
@@ -196,6 +239,23 @@ declare namespace Components {
              */
             month: string;
             year: /* YearSchema */ YearSchema;
+            total_income: /* MonthIncome */ MonthIncome | null;
+            total_fixed_expenses: /* MonthFixedExpense */ MonthFixedExpense | null;
+            total_variable_expenses: /* MonthVariableExpense */ MonthVariableExpense | null;
+            total_savings: /* MonthSavings */ MonthSavings | null;
+        }
+        /**
+         * MonthVariableExpense
+         */
+        export interface MonthVariableExpense {
+            /**
+             * Budget
+             */
+            budget: number;
+            /**
+             * Actual
+             */
+            actual: number;
         }
         /**
          * SavingsFilterSchema
@@ -254,20 +314,20 @@ declare namespace Components {
             /**
              * Name
              */
-            name: string;
+            name?: /* Name */ string | null;
             /**
              * Budget
              */
-            budget: number;
+            budget?: /* Budget */ number | null;
             /**
              * Actual
              */
-            actual: number;
+            actual?: /* Actual */ number | null;
             /**
              * Date
              */
-            date: string; // date
-            month: /* MonthSchema */ MonthSchema;
+            date?: /* Date */ string /* date */ | null;
+            month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
          * TransactionFilterSchema
@@ -1675,9 +1735,13 @@ export type FixedExpenseOutSchema = Components.Schemas.FixedExpenseOutSchema;
 export type IncomeFilterSchema = Components.Schemas.IncomeFilterSchema;
 export type IncomeInSchema = Components.Schemas.IncomeInSchema;
 export type IncomeOutSchema = Components.Schemas.IncomeOutSchema;
+export type MonthFixedExpense = Components.Schemas.MonthFixedExpense;
 export type MonthInSchema = Components.Schemas.MonthInSchema;
+export type MonthIncome = Components.Schemas.MonthIncome;
 export type MonthOutSchema = Components.Schemas.MonthOutSchema;
+export type MonthSavings = Components.Schemas.MonthSavings;
 export type MonthSchema = Components.Schemas.MonthSchema;
+export type MonthVariableExpense = Components.Schemas.MonthVariableExpense;
 export type SavingsFilterSchema = Components.Schemas.SavingsFilterSchema;
 export type SavingsInSchema = Components.Schemas.SavingsInSchema;
 export type SavingsOutSchema = Components.Schemas.SavingsOutSchema;

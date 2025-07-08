@@ -1,8 +1,9 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { getYears } from "../../api/Year";
 import { YearSchema } from "@/types";
+import { Login } from "@/api/User";
 
 export default function Dashboard() {
     const [years, setYears] = useState<YearSchema[]>([]);
@@ -25,7 +26,7 @@ export default function Dashboard() {
                     years.map((year: YearSchema, index: number) => (
                         <Col key={index}>
                             <a
-                                href={`${year.year}`}
+                                href={`${year.id}`}
                             >
                                 <Card>
                                     {year.year}
@@ -35,6 +36,11 @@ export default function Dashboard() {
                     ))
                 }
             </Row>
+            <Button
+                onClick={() => Login({username: 'string', password: 'string'})}
+            >
+                Test
+            </Button>
         </Container>
     );
 }

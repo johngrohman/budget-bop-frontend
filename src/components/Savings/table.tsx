@@ -5,12 +5,13 @@ import { createSavings, deleteSavings, listSavings, patchSavings } from "@/api/S
 import { MonthSchema, SavingsInSchema, SavingsOutSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { Stack, Row, Col, Button } from "react-bootstrap";
+import { useMonthViewContext } from "@/context/monthview";
 
 const columns: GridColDef[] = [
     {
         field: 'name',
         headerName: 'Name',
-        width: 170,
+        width: 160,
         editable: true,
     },
     {
@@ -29,6 +30,7 @@ const columns: GridColDef[] = [
         field: 'actual',
         headerName: 'Actual',
         width: 94,
+        editable: true,
         renderCell: (cell) => cell.value?`$${cell.value.toFixed(2)}`:'',
     },
 ];
@@ -59,6 +61,7 @@ export default function SavingsDataGrid(
     const [rows, setRows] = useState<Array<SavingsOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+    const { getMonthData } = useMonthViewContext();
 
     useEffect(() => {
         listSavings({ month_id })
@@ -70,11 +73,13 @@ export default function SavingsDataGrid(
     const handleRowCreate = async () => {
         await createSavings({month_id: month_id});
         setRows(await listSavings({month_id}));
+        getMonthData();
     };
 
     const handleRowDelete = async () => {
         await deleteSavings(selectedRows as Array<SavingsOutSchema['id']>);
         setRows(await listSavings({month_id}));
+        getMonthData();
     };
 
     const handleRowUpdate = async (
@@ -83,7 +88,7 @@ export default function SavingsDataGrid(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         oldRow: any,
     ) => {
-        const bodyPayload: Partial<SavingsInSchema> = {};
+        const bodyPayload: Partial<SavingsInSchema> = {month_id: month_id};
 
         Object.keys(newRow).forEach((key) => {
             const typedKey = key as keyof SavingsInSchema;
@@ -104,6 +109,7 @@ export default function SavingsDataGrid(
     
     const handleCellEditStop = async () => {
         setRows(await listSavings({month_id}));
+        getMonthData();
     };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
@@ -111,12 +117,12 @@ export default function SavingsDataGrid(
     };
 
     return (
-        <Stack gap={2} className="h-100 w-100">
-            <Row className="w-100 m-0">
-                <Col className='p-0'>
+        <div className="h-100 w-75 d-flex flex-column">
+            <div className="w-100 m-0 d-flex justify-content-between">
+                <div className='p-0 pb-2'>
                     <h5 className="m-0">Savings</h5>
-                </Col>
-                <Col align='right' className="p-0">
+                </div>
+                <div className="p-0">
                     <Button
                         variant='link'
                         className={`p-0 ${canDelete?'':'invisible'}`}
@@ -131,27 +137,25 @@ export default function SavingsDataGrid(
                     >
                         Add
                     </Button>
-                </Col>
-            </Row>
-            <Row className="w-100 h-100 m-0">
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    density="compact"
-                    disableColumnMenu
-                    disableColumnResize
-                    className="p-0 h-100 w-100"
-                    processRowUpdate={handleRowUpdate}
-                    onCellEditStop={handleCellEditStop}
-                    onProcessRowUpdateError={handleRowUpdateError}
-                    checkboxSelection
-                    onRowSelectionModelChange={(e) => {
-                        setSelectedRows(e);
-                        setCanDelete(e.length);
-                    }}
-                    slots={{footer: () => <CustomFooter rows={rows} />}}
-                />
-            </Row>
-        </Stack>
+                </div>
+            </div>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                density="compact"
+                disableColumnMenu
+                disableColumnResize
+                className="table_styles"
+                processRowUpdate={handleRowUpdate}
+                onCellEditStop={handleCellEditStop}
+                onProcessRowUpdateError={handleRowUpdateError}
+                checkboxSelection
+                onRowSelectionModelChange={(e) => {
+                    setSelectedRows(e);
+                    setCanDelete(e.length);
+                }}
+                slots={{footer: () => <CustomFooter rows={rows} />}}
+            />
+        </div>
     );
 };

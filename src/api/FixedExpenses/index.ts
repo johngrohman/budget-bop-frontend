@@ -10,7 +10,7 @@ export async function listFixedExpenses (
 ): Promise<FixedExpenseOutSchema[]> {
     try {
         const params = new URLSearchParams(filters as Record<string, string>).toString();
-        const response = await fetch(`${API}${url}?${params}`, {
+        const response = await fetch(`${API}${url}/?${params}`, {
             method: 'GET',
         });
         if (!response.ok) {

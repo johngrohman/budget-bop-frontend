@@ -9,7 +9,7 @@ export async function listSavings(filters: SavingsFilterSchema) {
     try {
         const params = new URLSearchParams(filters as Record<string, string>).toString();
         const response = await fetch(
-            `${API}${url}?${params}`,
+            `${API}${url}/?${params}`,
             {
                 method: 'GET'
             }

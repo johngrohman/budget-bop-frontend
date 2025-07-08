@@ -12,7 +12,7 @@ export async function getVariableExpensesByMonthId(month_id: MonthSchema['id']) 
 
 export async function listVariableExpenses(filters: VariableExpenseFilterSchema) {
     const params = new URLSearchParams(filters as Record<string, string>).toString();
-    return await GET(`${API}${url}?${params}`);
+    return await GET(`${API}${url}/?${params}`);
 }
 
 export async function patchVariableExpense(

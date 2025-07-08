@@ -5,6 +5,7 @@ import { TransactionOutSchema } from "@/types";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { deleteTransactions } from "@/api/Transaction";
 import { fetchTransactionData } from ".";
+import { useMonthViewContext } from "@/context/monthview";
 
 const columns: GridColDef[] = [
     {
@@ -46,10 +47,12 @@ export default function TransactionDataGrid(
     const [rows, setRows] = useState<Array<TransactionOutSchema>>(rowData);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+    const { getMonthData } = useMonthViewContext();
 
     const handleRowDelete = async () => {
         await deleteTransactions(selectedRows as Array<TransactionOutSchema['id']>);
         setRows(await fetchTransactionData(month_id));
+        getMonthData();
     };
 
 

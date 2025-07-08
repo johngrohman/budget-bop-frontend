@@ -9,10 +9,10 @@
  */
 async function GET(url: string) {
     try {
-        const response = await fetch (
-            url,
+        const response = await fetch (url,
             {
                 method: 'GET',
+                credentials: 'include'
             }
         );
         if (!response.ok) {
@@ -35,6 +35,7 @@ async function PUT(url: string, body: object) {
     try {
         const response = await fetch(url, {
             method: 'PATCH',
+            credentials: 'include',
             body: JSON.stringify(body),
         });
         if (!response.ok) {
@@ -57,6 +58,7 @@ async function PATCH(url: string, body: object) {
     try {
         const response = await fetch(url, {
             method: 'PATCH',
+            credentials: 'include',
             body: JSON.stringify(body),
         });
         if (!response.ok) {
@@ -79,6 +81,10 @@ async function POST(url: string, body: object) {
     try {
         const response = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify(body),
         });
         if (!response.ok) {

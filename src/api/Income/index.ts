@@ -8,7 +8,7 @@ export async function listIncome(
     filters: IncomeFilterSchema
 ) {
     try {
-        const response = await fetch(`${API}${url}?${
+        const response = await fetch(`${API}${url}/?${
             filters.month_id && 'month_id='+filters.month_id
         }`, {
             method: 'GET',

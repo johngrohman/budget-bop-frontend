@@ -33,6 +33,7 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
     const {
         showFileUploadModal,
         setShowFileUploadModal,
+        getMonthData,
     } = useMonthViewContext();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +57,8 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
             addToast('Failed to upload transactions', 'danger');
         } finally {
             setUploading(false);
+            setShowFileUploadModal(false);
+            getMonthData();
         }
     };
 

@@ -1,16 +1,26 @@
 import React from "react";
 import { PieChart } from "@mui/x-charts";
 
-export default function BudgetPieChart() {
+export default function BudgetPieChart({
+    total_fixed_expenses,
+    total_variable_expenses,
+    total_savings,
+    left_to_budget
+}: {
+    total_fixed_expenses: string | 0,
+    total_variable_expenses: string | 0,
+    total_savings: string | 0,
+    left_to_budget: string | 0,
+}) {
     return (
         <PieChart
             series={[
                 {
                     data: [
-                    // { id: 0, value: 2880, label: 'Income' },
-                        { id: 1, value: 10, label: 'Fixed Expense' },
-                        { id: 2, value: 1000, label: 'Variable Expense' },
-                        { id: 3, value: 1790, label: 'Savings' },
+                        { id: 3, value: Number(total_savings), label: 'Savings' },
+                        { id: 1, value: Number(total_fixed_expenses), label: 'Fixed Expenses' },
+                        { id: 2, value: Number(total_variable_expenses), label: 'Variable Expenses' },
+                        { id: 4, value: Number(left_to_budget), label: 'Left to Budget' },
                     ],
                     innerRadius: 60,
                     outerRadius: 110,
@@ -18,10 +28,11 @@ export default function BudgetPieChart() {
                     cornerRadius: 0,
                     startAngle: 0,
                     endAngle: 365,
+                    cx: 150,
                 }
             ]}
             height={200}
-            colors={['#336699', '#86BBD8', '#2F4858', '#9EE493', '#DAF7DC']}
+            colors={['#468faf', '#2a6f97', '#01497c', '#012a4a']}
         />
     );
 }

@@ -1,5 +1,7 @@
 // Year API Client
 
+import { GET } from "../http";
+
 const url = "/api/years";
 const API = "http://localhost:8000";
 
@@ -12,20 +14,7 @@ interface Year {
  * Get All Years
  * @returns array of years
  */
-export async function getYears(): Promise<Year[]> {
-    try {
-        const response = await fetch(`${API}${url}`, {
-            method: 'GET',
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch years:", error);
-        return [];
-    }
-}
+export async function getYears() {return await GET(`${API}${url}`)}
 
 /**
  * Post Year

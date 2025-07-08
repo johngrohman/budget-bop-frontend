@@ -85,10 +85,11 @@
 .left_side_table {
     height: 32%;
     width: 100%;
+    // border: 1px solid blue;
 }
 
 .left_side_tables_container {
-    border: 1px solid green;
+    // border: 1px solid green;
     min-width: 520px;
     width: 40%;
     display: flex;
@@ -109,8 +110,8 @@
 }
 
 .right_side_stack {
-    height: calc(100% - 30px);
-    border: 1px solid red;
+    height: 100%;
+    // border: 1px solid red;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -126,4 +127,3 @@
     height: 32% !important;
     width: 75%;
 }
-

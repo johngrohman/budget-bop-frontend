@@ -1,18 +1,23 @@
 .currency-card {
     aspect-ratio: 1/1;
-    width: 20%;
+    width: 22%;
     max-width: 160px;
     height: auto;
 }
 
 .color-bar {
     height: 20%;
-    background-color: rgb(90, 90, 195);
+    background-color: #86BBD8;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .amount-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 70%;
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px;
 }

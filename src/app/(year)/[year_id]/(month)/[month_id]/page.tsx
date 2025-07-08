@@ -1,5 +1,6 @@
 import React from "react";
 import MonthView from "./month_view";
+import MonthViewContextProvider from "@/context/monthview";
 
 export default async function Year({
     params
@@ -8,6 +9,8 @@ export default async function Year({
 }) {
     const month_id = (await params).month_id;
     return (
-        <MonthView month_id={month_id} />
+        <MonthViewContextProvider month_id={month_id}>
+            <MonthView month_id={month_id} />
+        </MonthViewContextProvider>
     );
 }

@@ -1,6 +1,7 @@
 'use client';
 import { createFixedExpense, deleteFixedExpense, listFixedExpenses, patchFixedExpense } from "@/api/FixedExpenses";
-import { FixedExpenseOutSchema, MonthSchema } from "@/types";
+import { useMonthViewContext } from "@/context/monthview";
+import { FixedExpenseInSchema, FixedExpenseOutSchema, MonthSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Col, Row, Stack } from "react-bootstrap";
@@ -23,14 +24,14 @@ const columns: GridColDef[] = [
         headerName: 'Budget',
         width: 94,
         editable: true,
-        renderCell: (cell) => cell.value ? `$${cell.value}` : '',
+        valueFormatter: (c) => c!==null? `$${c}`:null,
     },
     {
         field: 'actual',
         headerName: 'Actual',
         width: 94,
         editable: true,
-        renderCell: (cell) => cell.value?`$${cell.value.toFixed(2)}`:'',
+        valueFormatter: (c) => c!==null?`$${Number(c).toFixed(2)}`:null,
     },
     {
         field: 'diff',
@@ -38,7 +39,7 @@ const columns: GridColDef[] = [
         valueGetter: (value, row) => row.budget - row.actual,
         valueFormatter: (value) => {
             const isNeg = Math.sign(value) === -1;
-            return value?`${isNeg?'-':''}$${Math.abs(value).toFixed(2)}`:'';
+            return `${isNeg?'-':''}$${Math.abs(value).toFixed(2)}`;
         },
         width: 94,
     },
@@ -73,6 +74,7 @@ export default function FixedExpenseDataGrid(
     const [rows, setRows] = useState<Array<FixedExpenseOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+    const { getMonthData } = useMonthViewContext();
 
     useEffect(() => {
         listFixedExpenses({ month_id })
@@ -84,11 +86,13 @@ export default function FixedExpenseDataGrid(
     const handleRowCreate = async () => {
         await createFixedExpense({month_id: month_id});
         setRows(await listFixedExpenses({ month_id }));
+        getMonthData();
     };
 
     const handleRowDelete = async () => {
         await deleteFixedExpense(selectedRows as Array<FixedExpenseOutSchema['id']>);
         setRows(await listFixedExpenses({ month_id }));
+        getMonthData();
     };
 
     const handleRowUpdate = async (
@@ -98,10 +102,10 @@ export default function FixedExpenseDataGrid(
         oldRow: any,
     ) => {
         
-        const bodyPayload: Partial<FixedExpenseOutSchema> = {};
+        const bodyPayload: Partial<FixedExpenseInSchema> = {month_id: month_id};
 
         Object.keys(newRow).forEach((key) => {
-            const typedKey = key as keyof FixedExpenseOutSchema;
+            const typedKey = key as keyof FixedExpenseInSchema;
             if(newRow[typedKey] !== oldRow[typedKey]) {
                 const newValue = newRow[typedKey] === '' ? null : newRow[typedKey];
                 bodyPayload[typedKey] = newValue;
@@ -110,6 +114,7 @@ export default function FixedExpenseDataGrid(
 
         try {
             const updatedRow = await patchFixedExpense(newRow.id, bodyPayload);
+            setRows(await listFixedExpenses({ month_id }));
             return updatedRow;
         } catch (error) {
             console.error('Row update failed', error);
@@ -118,7 +123,7 @@ export default function FixedExpenseDataGrid(
     };
 
     const handleCellEditStop = async () => {
-        setRows(await listFixedExpenses({ month_id }));
+        getMonthData();
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
@@ -126,12 +131,12 @@ export default function FixedExpenseDataGrid(
     };
 
     return (
-        <Stack gap={2} className="h-100">
-            <Row className="w-100 m-0">
-                <Col className='p-0'>
+        <div className="d-flex flex-column h-100">
+            <div className="w-100 m-0 d-flex justify-content-between">
+                <div className='p-0 pb-2'>
                     <h5 className="m-0">Fixed Expenses</h5>
-                </Col>
-                <Col align='right' className="p-0">
+                </div>
+                <div className="p-0">
                     <Button
                         variant='link'
                         className={`py-0 ${canDelete?'':'invisible'}`}
@@ -146,27 +151,25 @@ export default function FixedExpenseDataGrid(
                     >
                         Add
                     </Button>
-                </Col>
-            </Row>
-            <Row className="m-0 h-100">
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    density="compact"
-                    className="p-0"
-                    disableColumnMenu
-                    disableColumnResize
-                    processRowUpdate={handleRowUpdate}
-                    onCellEditStop={handleCellEditStop}
-                    onProcessRowUpdateError={handleRowUpdateError}
-                    checkboxSelection
-                    onRowSelectionModelChange={(e) => {
-                        setSelectedRows(e);
-                        setCanDelete(e.length);
-                    }}
-                    slots={{footer: () => <CustomFooter rows={rows}/>}}
-                />
-            </Row>
-        </Stack>
+                </div>
+            </div>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                density="compact"
+                className="table_styles"
+                disableColumnMenu
+                disableColumnResize
+                processRowUpdate={handleRowUpdate}
+                onCellEditStop={handleCellEditStop}
+                onProcessRowUpdateError={handleRowUpdateError}
+                checkboxSelection
+                onRowSelectionModelChange={(e) => {
+                    setSelectedRows(e);
+                    setCanDelete(e.length);
+                }}
+                slots={{footer: () => <CustomFooter rows={rows}/>}}
+            />
+        </div>
     );
 }

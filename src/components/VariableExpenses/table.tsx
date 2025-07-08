@@ -69,6 +69,7 @@ export default function VariableExpenseDataGrid(
     const [rows, setRows] = useState<Array<VariableExpenseOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+    const { getMonthData } = useMonthViewContext();
 
     const { setShowFileUploadModal } = useMonthViewContext();
     
@@ -82,11 +83,13 @@ export default function VariableExpenseDataGrid(
     const handleRowCreate = async () => {
         await createVariableExpense({month_id: month_id});
         setRows(await listVariableExpenses({month_id}));
+        getMonthData();
     };
 
     const handleRowDelete = async () => {
         await deleteVariableExpense(selectedRows as Array<VariableExpenseOutSchema['id']>);
         setRows(await listVariableExpenses({month_id}));
+        getMonthData();
     };
 
     const handleRowUpdate = async (
@@ -95,7 +98,7 @@ export default function VariableExpenseDataGrid(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         oldRow: any,
     ) => {
-        const bodyPayload: Partial<VariableExpenseInSchema> = {};
+        const bodyPayload: Partial<VariableExpenseInSchema> = {month_id: month_id};
 
         Object.keys(newRow).forEach((key) => {
             const typedKey = key as keyof VariableExpenseInSchema;
@@ -107,6 +110,7 @@ export default function VariableExpenseDataGrid(
 
         try {
             const updatedRow = await patchVariableExpense(newRow.id, bodyPayload);
+            getMonthData();
             return updatedRow;
         } catch (error) {
             console.error("Row update failed", error);
@@ -116,6 +120,7 @@ export default function VariableExpenseDataGrid(
 
     const handleCellEditStop = async () => {
         setRows(await listVariableExpenses({month_id}));
+        getMonthData();
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,12 +129,12 @@ export default function VariableExpenseDataGrid(
     };
 
     return (
-        <Stack gap={2} className="h-100">
-            <Row className="w-100 m-0">
-                <Col className='p-0'>
+        <div className="d-flex flex-column h-100">
+            <div className="w-100 m-0 d-flex justify-content-between">
+                <div className='p-0 pb-2'>
                     <h5 className="m-0">Variable Expenses</h5>
-                </Col>
-                <Col align='right' className="p-0">
+                </div>
+                <div className="p-0">
                     <Button
                         variant='link'
                         className={`p-0 ${canDelete?'':'invisible'}`}
@@ -151,27 +156,25 @@ export default function VariableExpenseDataGrid(
                     >
                         Transactions
                     </Button>
-                </Col>
-            </Row>
-            <Row className="m-0" style={{height: 'auto'}}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    density="compact"
-                    disableColumnMenu
-                    disableColumnResize
-                    className="variable_expense_table_container"
-                    processRowUpdate={handleRowUpdate}
-                    onCellEditStop={handleCellEditStop}
-                    onProcessRowUpdateError={handleRowUpdateError}
-                    checkboxSelection
-                    onRowSelectionModelChange={(e) => {
-                        setSelectedRows(e);
-                        setCanDelete(e.length);
-                    }}
-                    slots={{footer: () => <CustomFooter rows={rows} />}}
-                />
-            </Row>
-        </Stack>
+                </div>
+            </div>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                density="compact"
+                disableColumnMenu
+                disableColumnResize
+                className="table_styles"
+                processRowUpdate={handleRowUpdate}
+                onCellEditStop={handleCellEditStop}
+                onProcessRowUpdateError={handleRowUpdateError}
+                checkboxSelection
+                onRowSelectionModelChange={(e) => {
+                    setSelectedRows(e);
+                    setCanDelete(e.length);
+                }}
+                slots={{footer: () => <CustomFooter rows={rows} />}}
+            />
+        </div>
     );
 }

@@ -8,9 +8,10 @@ import {
     GridRowSelectionModel
 } from "@mui/x-data-grid";
 import { Button, Col, Row, Stack } from "react-bootstrap";
-import { IncomeOutSchema, MonthSchema } from "@/types";
+import { IncomeInSchema, IncomeOutSchema, MonthSchema } from "@/types";
 import React, { useEffect, useMemo, useState } from "react";
 import { createIncome, deleteIncome, listIncome, patchIncome } from "@/api/Income";
+import { useMonthViewContext } from "@/context/monthview";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -45,7 +46,7 @@ const columns: GridColDef[] = [
         editable: true,
         sortable: false,
         resizable: false,
-        valueFormatter: (c) => `$${c}`,
+        valueFormatter: (c) => c!==null?`$${c}`:null,
     },
     {
         field: "actual",
@@ -54,7 +55,7 @@ const columns: GridColDef[] = [
         editable: true,
         sortable: false,
         resizable: false,
-        valueFormatter: (c) => `$${c}`, 
+        valueFormatter: (c) => c!==null?`$${c}`:null, 
     },
 ];
 
@@ -84,6 +85,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
     const [rows, setRows] = useState<Array<IncomeOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
+    const { getMonthData } = useMonthViewContext();
 
     useEffect(() => {
         listIncome({ month_id })
@@ -95,11 +97,13 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
     const handleRowCreate = async () => {
         await createIncome({month_id: month_id});
         setRows(await listIncome({month_id}));
+        getMonthData();
     };
 
     const handleRowDelete = async () => {
         await deleteIncome(selectedRows as Array<IncomeOutSchema['id']>);
         setRows(await listIncome({month_id}));
+        getMonthData();
     };
 
     const handleRowUpdate = async (
@@ -109,10 +113,10 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
         oldRow: any,
     ) => {
         
-        const bodyPayload: Partial<IncomeOutSchema> = {};
+        const bodyPayload: Partial<IncomeInSchema> = {month_id: month_id};
 
         Object.keys(newRow).forEach((key) => {
-            const typedKey = key as keyof IncomeOutSchema;
+            const typedKey = key as keyof IncomeInSchema;
             if(newRow[typedKey] !== oldRow[typedKey]) {
                 const newValue = newRow[typedKey] === '' ? null : newRow[typedKey];
                 bodyPayload[typedKey] = newValue;
@@ -121,6 +125,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
 
         try {
             const updatedRow = await patchIncome(newRow.id, bodyPayload);
+            setRows(await listIncome({month_id}));
             return updatedRow;
         } catch (error) {
             console.error('Row update failed', error);
@@ -129,7 +134,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
     };
 
     const handleCellEditStop = async () => {
-        setRows(await listIncome({month_id}));
+        getMonthData();
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -138,12 +143,12 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
     };
 
     return (
-        <Stack gap={2} className="h-100">
-            <Row className="w-100 m-0">
-                <Col className='p-0'>
+        <div className="d-flex flex-column h-100">
+            <div className="w-100 m-0 d-flex justify-content-between">
+                <div className='p-0 pb-2'>
                     <h5 className="m-0">Income</h5>
-                </Col>
-                <Col align='right' className="p-0">
+                </div>
+                <div className="p-0">
                     <Button
                         variant='link'
                         className={`py-0 ${canDelete?'':'invisible'}`}
@@ -158,28 +163,26 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
                     >
                         Add
                     </Button>
-                </Col>
-            </Row>
-            <Row className="m-0 h-100">
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    density="compact"
-                    className="p-0"
-                    editMode="cell"
-                    disableColumnMenu
-                    disableColumnResize
-                    processRowUpdate={handleRowUpdate}
-                    onCellEditStop={handleCellEditStop}
-                    onProcessRowUpdateError={handleRowUpdateError}
-                    checkboxSelection
-                    onRowSelectionModelChange={(e) => {
-                        setSelectedRows(e);
-                        setCanDelete(e.length);
-                    }}
-                    slots={{footer: () => <CustomFooter rows={rows} />}}
-                />
-            </Row>
-        </Stack>
+                </div>
+            </div>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                density="compact"
+                className="table_styles"
+                editMode="cell"
+                disableColumnMenu
+                disableColumnResize
+                processRowUpdate={handleRowUpdate}
+                onCellEditStop={handleCellEditStop}
+                onProcessRowUpdateError={handleRowUpdateError}
+                checkboxSelection
+                onRowSelectionModelChange={(e) => {
+                    setSelectedRows(e);
+                    setCanDelete(e.length);
+                }}
+                slots={{footer: () => <CustomFooter rows={rows} />}}
+            />
+        </div>
     );
 }

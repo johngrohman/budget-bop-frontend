@@ -7,6 +7,7 @@ import { Card, Col, Container, Row, Stack } from 'react-bootstrap';
 import Link from 'next/link';
 import './styles.scss';
 import { MonthSchema, YearSchema } from '@/types';
+import { LineChart } from '@mui/x-charts';
 
 async function YearComponent({ id }: { id: string }) {
     const year = await getYearById(id);
@@ -29,7 +30,10 @@ async function MonthComponents({ id }: { id: string }) {
     );
 }
 
-export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
+export default async function YearView({ year_id }: { year_id: YearSchema['id'] }) {
+
+    const year_data = await getMonthsInYear(year_id)
+
     return (
         <div className="page_container">
             <Container fluid>
@@ -45,7 +49,34 @@ export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
                         </Stack>
                     </Col>
                     <Col>
-                        
+                        <LineChart
+                            xAxis={[
+                                { 
+                                    data: [
+                                        'Jan',
+                                        'Feb',
+                                        'Mar',
+                                        'Apr',
+                                        'May',
+                                        'Jun',
+                                        'Jul',
+                                        'Aug',
+                                        'Sep',
+                                        'Oct',
+                                        'Nov',
+                                        'Dec',
+                                    ],
+                                    scaleType: 'point'
+                                }
+                            ]}
+                            series={[
+                                {
+                                    data: year_data.map((year) => (year.total_variable_expenses?.actual || null)),
+                                    label: 'Variable Expenses',
+                                },
+                            ]}
+                            height={300}
+                        />
                     </Col>
                 </Row>
             </Container>
