@@ -12,7 +12,7 @@
     "electron-dev": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "concurrently -n \"NEXT,ELECTRON\" -c \"blue,green\" --kill-others \"next start\" \"wait-on http://localhost:3000 && electron .\"",
     "lint": "eslint src/",
-    "generate-types": "npx openapicmd typegen ./src/api/openapi.json > ./src/types/index.d.ts",
+    "generate-types": "curl http://localhost:8000/api/openapi.json > src/api/openapi.json && npx openapicmd typegen ./src/api/openapi.json > ./src/types/index.d.ts",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },
