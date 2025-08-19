@@ -2,7 +2,6 @@ import React from "react";
 import type { Metadata } from "next";
 import "./globals.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TitleBar from "@/components/TitleBar";
 import { ToastProvider } from "@/components/ToastSystem";
 
 export const metadata: Metadata = {
@@ -15,17 +14,15 @@ export default function RootLayout({
 }: Readonly<{
         children: React.ReactNode;
     }>) {
+
     return (
         <html lang="en">
             <body
                 className='content'
             >
-                <TitleBar />
-                <div>
-                    <ToastProvider>
-                        {children}
-                    </ToastProvider>
-                </div>
+                <ToastProvider>
+                    {children}
+                </ToastProvider>
             </body>
         </html>
     );

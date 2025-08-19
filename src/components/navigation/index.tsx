@@ -5,6 +5,7 @@ import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { getAllTime } from "@/api/Time";
 import { redirect } from "next/navigation";
 import { MonthOutSchema, YearOutSchema } from "@/types";
+import { useAuthContext } from "@/context/auth";
 
 interface Navigation {
     show: boolean,
@@ -14,9 +15,10 @@ interface Navigation {
 export default function Navigation({show, setShow}: Navigation) {
     
     const [yearsAndMonths, setYearsAndMonths] = useState([]);
+    const { accessToken } = useAuthContext();
 
     const getTimeData = () => {
-        getAllTime()
+        getAllTime(accessToken)
             .then((response) => setYearsAndMonths(response));
     };
 

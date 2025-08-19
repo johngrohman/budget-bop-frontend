@@ -14,7 +14,7 @@ interface Year {
  * Get All Years
  * @returns array of years
  */
-export async function getYears() {return await GET(`${API}${url}`)}
+export async function getYears(access_token: string) {return await GET(`${API}${url}`, access_token)}
 
 /**
  * Post Year
@@ -36,25 +36,7 @@ export async function createYear(year: Year): Promise<Year> {
     }
 }
 
-/**
- * Get Year By Id
- * @param year_id 
- * @returns year
- */
-export async function getYearById(year_id: Year['id']): Promise<Year> {
-    try {
-        const response = await fetch(`${API}${url}/${year_id}`, {
-            method: 'GET',
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch years:", error);
-        return {id:'', year:''};
-    }
-}
+export async function getYearById(year_id: Year['id'], access_token: string) {return await GET(`${API}${url}/${year_id}`, access_token)}
 
 /**
  * Patch Year By Id

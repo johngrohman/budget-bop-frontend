@@ -3,21 +3,22 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { getYears } from "../../api/Year";
 import { YearSchema } from "@/types";
-import { Login } from "@/api/User";
+import { useAuthContext } from "@/context/auth";
 
 export default function Dashboard() {
     const [years, setYears] = useState<YearSchema[]>([]);
+    
+    const { accessToken } = useAuthContext();
+    console.log(accessToken);
 
     const getYearsData = () => {
-        getYears()
+        getYears(accessToken)
             .then((response) => setYears(response));
     };
 
     useEffect(() => {
         getYearsData();
     }, []);
-
-    console.log(years);
 
     return (
         <Container fluid>
@@ -36,11 +37,6 @@ export default function Dashboard() {
                     ))
                 }
             </Row>
-            <Button
-                onClick={() => Login({username: 'string', password: 'string'})}
-            >
-                Test
-            </Button>
         </Container>
     );
 }

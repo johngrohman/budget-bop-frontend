@@ -9,6 +9,40 @@ import type {
 declare namespace Components {
     namespace Schemas {
         /**
+         * CreateUserSchema
+         */
+        export interface CreateUserSchema {
+            /**
+             * Username
+             */
+            username: string;
+            /**
+             * Password
+             */
+            password: string;
+            /**
+             * Email
+             */
+            email?: /* Email */ string | null;
+            /**
+             * First Name
+             */
+            first_name?: /* First Name */ string | null;
+            /**
+             * Last Name
+             */
+            last_name?: /* Last Name */ string | null;
+        }
+        /**
+         * ErrorSchema
+         */
+        export interface ErrorSchema {
+            /**
+             * Detail
+             */
+            detail: string;
+        }
+        /**
          * FixedExpenseFilterSchema
          */
         export interface FixedExpenseFilterSchema {
@@ -161,6 +195,37 @@ declare namespace Components {
             month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
+         * LoginResponse
+         */
+        export interface LoginResponse {
+            /**
+             * Access Token
+             */
+            access_token: string;
+            /**
+             * Token Type
+             */
+            token_type: string;
+            /**
+             * Expires In
+             */
+            expires_in: number;
+            user: /* UserSchema */ UserSchema;
+        }
+        /**
+         * LoginSchema
+         */
+        export interface LoginSchema {
+            /**
+             * Username
+             */
+            username: string;
+            /**
+             * Password
+             */
+            password: string;
+        }
+        /**
          * MonthFixedExpense
          */
         export interface MonthFixedExpense {
@@ -181,6 +246,10 @@ declare namespace Components {
              * Month
              */
             month: string;
+            /**
+             * Year
+             */
+            year: string; // uuid
         }
         /**
          * MonthIncome
@@ -208,10 +277,10 @@ declare namespace Components {
              */
             month: string;
             year: /* YearSchema */ YearSchema;
-            total_income: /* MonthIncome */ MonthIncome | null;
-            total_fixed_expenses: /* MonthFixedExpense */ MonthFixedExpense | null;
-            total_variable_expenses: /* MonthVariableExpense */ MonthVariableExpense | null;
-            total_savings: /* MonthSavings */ MonthSavings | null;
+            total_income?: /* MonthIncome */ MonthIncome | null;
+            total_fixed_expenses?: /* MonthFixedExpense */ MonthFixedExpense | null;
+            total_variable_expenses?: /* MonthVariableExpense */ MonthVariableExpense | null;
+            total_savings?: /* MonthSavings */ MonthSavings | null;
         }
         /**
          * MonthSavings
@@ -239,10 +308,10 @@ declare namespace Components {
              */
             month: string;
             year: /* YearSchema */ YearSchema;
-            total_income: /* MonthIncome */ MonthIncome | null;
-            total_fixed_expenses: /* MonthFixedExpense */ MonthFixedExpense | null;
-            total_variable_expenses: /* MonthVariableExpense */ MonthVariableExpense | null;
-            total_savings: /* MonthSavings */ MonthSavings | null;
+            total_income?: /* MonthIncome */ MonthIncome | null;
+            total_fixed_expenses?: /* MonthFixedExpense */ MonthFixedExpense | null;
+            total_variable_expenses?: /* MonthVariableExpense */ MonthVariableExpense | null;
+            total_savings?: /* MonthSavings */ MonthSavings | null;
         }
         /**
          * MonthVariableExpense
@@ -402,6 +471,31 @@ declare namespace Components {
             month: /* MonthSchema */ MonthSchema;
         }
         /**
+         * UserSchema
+         */
+        export interface UserSchema {
+            /**
+             * Id
+             */
+            id: number;
+            /**
+             * Username
+             */
+            username: string;
+            /**
+             * Email
+             */
+            email: string;
+            /**
+             * First Name
+             */
+            first_name: string;
+            /**
+             * Last Name
+             */
+            last_name: string;
+        }
+        /**
          * VariableExpenseFilterSchema
          */
         export interface VariableExpenseFilterSchema {
@@ -503,6 +597,37 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
+    namespace AppApiAuthApiCreateUser {
+        export type RequestBody = /* CreateUserSchema */ Components.Schemas.CreateUserSchema;
+        namespace Responses {
+            export type $200 = /* LoginResponse */ Components.Schemas.LoginResponse;
+            export type $409 = /* ErrorSchema */ Components.Schemas.ErrorSchema;
+        }
+    }
+    namespace AppApiAuthApiDeleteAcount {
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
+    namespace AppApiAuthApiGetMyUser {
+        namespace Responses {
+            export type $200 = /* UserSchema */ Components.Schemas.UserSchema;
+        }
+    }
+    namespace AppApiAuthApiLoginView {
+        export type RequestBody = /* LoginSchema */ Components.Schemas.LoginSchema;
+        namespace Responses {
+            export type $200 = /* LoginResponse */ Components.Schemas.LoginResponse;
+            export type $401 = /* ErrorSchema */ Components.Schemas.ErrorSchema;
+        }
+    }
+    namespace AppApiAuthApiRefreshAccessToken {
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
     namespace AppApiFixedExpenseApiDeleteFixedExpense {
         /**
          * Payload
@@ -1056,6 +1181,46 @@ declare namespace Paths {
 
 export interface OperationMethods {
   /**
+   * app_api_auth_api_get_my_user - Get My User
+   */
+  'app_api_auth_api_get_my_user'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiAuthApiGetMyUser.Responses.$200>
+  /**
+   * app_api_auth_api_delete_acount - Delete Acount
+   */
+  'app_api_auth_api_delete_acount'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiAuthApiDeleteAcount.Responses.$200>
+  /**
+   * app_api_auth_api_create_user - Create User
+   */
+  'app_api_auth_api_create_user'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiAuthApiCreateUser.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiAuthApiCreateUser.Responses.$200>
+  /**
+   * app_api_auth_api_login_view - Login View
+   */
+  'app_api_auth_api_login_view'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiAuthApiLoginView.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiAuthApiLoginView.Responses.$200>
+  /**
+   * app_api_auth_api_refresh_access_token - Refresh Access Token
+   */
+  'app_api_auth_api_refresh_access_token'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiAuthApiRefreshAccessToken.Responses.$200>
+  /**
    * app_api_year_api_get_all_years - Get All Years
    */
   'app_api_year_api_get_all_years'(
@@ -1370,6 +1535,54 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
+  ['/api/auth/me']: {
+    /**
+     * app_api_auth_api_get_my_user - Get My User
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiAuthApiGetMyUser.Responses.$200>
+    /**
+     * app_api_auth_api_delete_acount - Delete Acount
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiAuthApiDeleteAcount.Responses.$200>
+  }
+  ['/api/auth/']: {
+    /**
+     * app_api_auth_api_create_user - Create User
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiAuthApiCreateUser.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiAuthApiCreateUser.Responses.$200>
+  }
+  ['/api/auth/login']: {
+    /**
+     * app_api_auth_api_login_view - Login View
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiAuthApiLoginView.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiAuthApiLoginView.Responses.$200>
+  }
+  ['/api/auth/refresh']: {
+    /**
+     * app_api_auth_api_refresh_access_token - Refresh Access Token
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiAuthApiRefreshAccessToken.Responses.$200>
+  }
   ['/api/years/']: {
     /**
      * app_api_year_api_get_all_years - Get All Years
@@ -1729,12 +1942,16 @@ export interface PathsDictionary {
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
 
 
+export type CreateUserSchema = Components.Schemas.CreateUserSchema;
+export type ErrorSchema = Components.Schemas.ErrorSchema;
 export type FixedExpenseFilterSchema = Components.Schemas.FixedExpenseFilterSchema;
 export type FixedExpenseInSchema = Components.Schemas.FixedExpenseInSchema;
 export type FixedExpenseOutSchema = Components.Schemas.FixedExpenseOutSchema;
 export type IncomeFilterSchema = Components.Schemas.IncomeFilterSchema;
 export type IncomeInSchema = Components.Schemas.IncomeInSchema;
 export type IncomeOutSchema = Components.Schemas.IncomeOutSchema;
+export type LoginResponse = Components.Schemas.LoginResponse;
+export type LoginSchema = Components.Schemas.LoginSchema;
 export type MonthFixedExpense = Components.Schemas.MonthFixedExpense;
 export type MonthInSchema = Components.Schemas.MonthInSchema;
 export type MonthIncome = Components.Schemas.MonthIncome;
@@ -1748,6 +1965,7 @@ export type SavingsOutSchema = Components.Schemas.SavingsOutSchema;
 export type TransactionFilterSchema = Components.Schemas.TransactionFilterSchema;
 export type TransactionInSchema = Components.Schemas.TransactionInSchema;
 export type TransactionOutSchema = Components.Schemas.TransactionOutSchema;
+export type UserSchema = Components.Schemas.UserSchema;
 export type VariableExpenseFilterSchema = Components.Schemas.VariableExpenseFilterSchema;
 export type VariableExpenseInSchema = Components.Schemas.VariableExpenseInSchema;
 export type VariableExpenseOutSchema = Components.Schemas.VariableExpenseOutSchema;

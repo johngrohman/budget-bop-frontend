@@ -18,19 +18,17 @@ export default function MonthView({ month_id }: { month_id: string }) {
 
     const total_spent: number = Number(monthData.total_fixed_expenses?.budget.toFixed(2)) +
                         Number(monthData.total_variable_expenses?.budget.toFixed(2)) || 0;
-    console.log(total_spent);
+
     return (
         <div className="page_container">
             <FileUploadModal month_id={month_id} />
             <Container fluid className="h-100">
-                <Suspense fallback={<h2 className="page_heading">Loading</h2>}>
-                    <h2
-                        className="page_heading"
-                        onDoubleClick={() => console.log("hi")}
-                    >
-                        {monthData.month && monthData.month}
-                    </h2>
-                </Suspense>
+                <h2
+                    className="page_heading"
+                    onDoubleClick={() => console.log("hi")}
+                >
+                    {monthData.month && monthData.month}
+                </h2>
                 <div className="dashboard_container">
                     <div className="left_side_tables_container">
                         <div key={1} className="left_side_table">

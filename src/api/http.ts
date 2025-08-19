@@ -7,21 +7,19 @@
  * @param url string
  * @returns promise
  */
-async function GET(url: string) {
+async function GET(url: string, access_token: string) {
     try {
         const response = await fetch (url,
             {
                 method: 'GET',
-                credentials: 'include'
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
             }
         );
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
         return await response.json();
     } catch (error) {
-        console.error('Failed to get: ', error);
-        return error;
+        throw new Error('error')
     }
 }
 
@@ -31,11 +29,13 @@ async function GET(url: string) {
  * @param body object
  * @returns promise
  */
-async function PUT(url: string, body: object) {
+async function PUT(url: string, access_token: string, body: object) {
     try {
         const response = await fetch(url, {
             method: 'PATCH',
-            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            },
             body: JSON.stringify(body),
         });
         if (!response.ok) {
@@ -54,11 +54,13 @@ async function PUT(url: string, body: object) {
  * @param body object
  * @returns promise
  */
-async function PATCH(url: string, body: object) {
+async function PATCH(url: string, access_token: string, body: object) {
     try {
         const response = await fetch(url, {
             method: 'PATCH',
-            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            },
             body: JSON.stringify(body),
         });
         if (!response.ok) {
@@ -77,23 +79,23 @@ async function PATCH(url: string, body: object) {
  * @param body object
  * @returns promise
  */
-async function POST(url: string, body: object) {
+async function POST(url: string, access_token: string, body: object) {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            credentials: 'include',
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${access_token}`,
             },
             body: JSON.stringify(body),
+
         });
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
         return await response.json();
     } catch (error) {
-        console.error('Failed to post: ', error);
-        return ({});
+        throw new Error('Failed to post');
     }
 }
 
@@ -103,10 +105,13 @@ async function POST(url: string, body: object) {
  * @param body object
  * @returns promise
  */
-async function DELETE(url: string, body: object | null) {
+async function DELETE(url: string, access_token: string, body: object | null) {
     try {
         const response = await fetch(url, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            },
             body: JSON.stringify(body),
         });
         if (!response.ok) {
