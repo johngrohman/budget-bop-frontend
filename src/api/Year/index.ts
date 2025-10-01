@@ -1,6 +1,7 @@
 // Year API Client
 
-import { GET } from "../http";
+import { YearInSchema, YearSchema } from "@/types";
+import { DELETE, GET, PATCH, POST } from "../http";
 
 const url = "/api/years";
 const API = "http://localhost:8000";
@@ -14,49 +15,21 @@ interface Year {
  * Get All Years
  * @returns array of years
  */
-export async function getYears(access_token: string) {return await GET(`${API}${url}`, access_token)}
+export async function getYears() {return await GET(`${API}${url}`)}
 
-/**
- * Post Year
- * @returns year object that was created
- */
-export async function createYear(year: Year): Promise<Year> {
-    try {
-        const response = await fetch(`${API}${url}`, {
-            method: 'POST',
-            body: JSON.stringify(year),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch years:", error);
-        return {id:'', year:''};
-    }
+export async function createYear(payload: YearInSchema) {
+    return await POST(`${API}${url}`, payload);
 }
 
-export async function getYearById(year_id: Year['id'], access_token: string) {return await GET(`${API}${url}/${year_id}`, access_token)}
+export async function getYearById(year_id: Year['id'], ) {return await GET(`${API}${url}/${year_id}`, )}
 
 /**
  * Patch Year By Id
  * @param year 
  * @returns 
  */
-export async function patchYearById(year_id: Year['id'], year: Year['year']): Promise<Year> {
-    try {
-        const response = await fetch(`${API}${url}/${year_id}`, {
-            method: 'PATCH',
-            body: JSON.stringify(year),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch years:", error);
-        return {id:'', year:''};
-    }
+export async function patchYear(year_id: YearSchema['id'], payload: YearInSchema) {
+    return await PATCH(`${API}${url}/${year_id}`, payload);
 }
 
 /**
@@ -64,37 +37,14 @@ export async function patchYearById(year_id: Year['id'], year: Year['year']): Pr
  * @param year_id 
  * @returns 
  */
-export async function deleteYear(year_id: Year['id']): Promise<object> {
-    try {
-        const response = await fetch(`${API}${url}/${year_id}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch years:", error);
-        return {id:'', year:''};
-    }
+export async function deleteYear(year_id: YearSchema['id']) {
+    return await DELETE(`${API}${url}/${year_id}`);
 }
 
 /**
  * Post Complete Year
  * @returns year object that was created
  */
-export async function createCompleteYear(year: Year): Promise<Year> {
-    try {
-        const response = await fetch(`${API}${url}/complete`, {
-            method: 'POST',
-            body: JSON.stringify(year),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch years:", error);
-        return {id:'', year:''};
-    }
+export async function createCompleteYear(year: YearInSchema) {
+    return await POST(`${API}${url}/complete`, year);
 }

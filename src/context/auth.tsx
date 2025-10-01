@@ -1,7 +1,7 @@
-import { login } from "@/api/Auth";
+import { getUser, login } from "@/api/Auth";
 import { LoginSchema } from "@/types";
 import { useRouter } from "next/navigation";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useLayoutEffect, useState } from "react";
 
 const AuthContext = createContext<any>(undefined);
 
@@ -15,19 +15,45 @@ export const useAuthContext = () => {
 
 export default function AuthContextProvider({children}: {children: ReactNode}) {
 
-    const [authenticated, setAuthenticated] = useState(false);
-    const [accessToken, setAccessToken] = useState(undefined);
+    const [authenticated, setAuthenticated] = useState<boolean | undefined>();
+    const router = useRouter();
 
-    useEffect(() => {
-        const token = document.cookie.match('(^|;)\\s*' + 'access_token' + '\\s*=\\s*([^;]+)')?.pop() || '';
+    const fetchMe = async () => {
+        return await getUser()
+        .then((response) => {
+            console.log('get user: ', response)
+            setAuthenticated(true);
+            return true;
+        })
+        .catch(() => {
+            console.log('error get User');
+            setAuthenticated(false);
+            return false;
+        })
+    }
+
+    useLayoutEffect(() => {
+        const fetchMe = async () => {
+            return await getUser()
+            .then((response) => {
+                console.log('get user: ', response)
+                setAuthenticated(true);
+                return true;
+            })
+            .catch(() => {
+                console.log('error get User');
+                setAuthenticated(false);
+                router.push('/login');
+                return false;
+            })
+        }
+        fetchMe();
     }, []);
 
     const handleLogin = async ({username, password}: LoginSchema) => {
         await login({ username, password })
-        .then(async (response) => {
-            document.cookie = `access_token=${response.access_token}; path=/api/; `;
+        .then((response) => {
             setAuthenticated(true);
-            setAccessToken(response.access_token);
         })
         .catch((e) => {
             console.log('error');
@@ -40,7 +66,7 @@ export default function AuthContextProvider({children}: {children: ReactNode}) {
                 authenticated,
                 setAuthenticated,
                 handleLogin,
-                accessToken
+                fetchMe,
             }}
         >
             {children}

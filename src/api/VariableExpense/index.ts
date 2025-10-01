@@ -12,7 +12,7 @@ export async function getVariableExpensesByMonthId(month_id: MonthSchema['id']) 
 
 export async function listVariableExpenses(filters: VariableExpenseFilterSchema) {
     const params = new URLSearchParams(filters as Record<string, string>).toString();
-    return await GET(`${API}${url}/?${params}`);
+    return await GET(`${API}${url}`, params);
 }
 
 export async function patchVariableExpense(
@@ -25,11 +25,11 @@ export async function patchVariableExpense(
 export async function createVariableExpense(
     payload: VariableExpenseInSchema
 ) {
-    return await POST(`${API}${url}/`, payload);
+    return await POST(`${API}${url}`, payload);
 }
 
 export async function deleteVariableExpense(
     payload: Array<VariableExpenseOutSchema['id']>
 ) {
-    return await DELETE(`${API}${url}/`, payload);
+    return await DELETE(`${API}${url}`, payload);
 }

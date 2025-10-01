@@ -2,25 +2,34 @@
  * HTTP functions 
  */
 
+import { refreshAuth } from "./Auth";
+
+function getCookie(cookie: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${cookie}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
+}
+
 /**
  * Send a get request
  * @param url string
  * @returns promise
  */
-async function GET(url: string, access_token: string) {
-    try {
-        const response = await fetch (url,
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                }
-            }
-        );
-        return await response.json();
-    } catch (error) {
-        throw new Error('error')
+async function GET(url: string, params: any = undefined) {
+    const response = await fetch(
+        `${url}${params? `?${new URLSearchParams(params).toString()}`:''}`, 
+        {
+            method: 'GET',
+            credentials: 'include',    
+        }
+    );
+    if (!response.ok) {
+        if (response.status === 401) {
+            await refreshAuth();
+        }
+        throw new Error(`Error: ${response.status}`);
     }
+    return await response.json();
 }
 
 /**
@@ -29,23 +38,19 @@ async function GET(url: string, access_token: string) {
  * @param body object
  * @returns promise
  */
-async function PUT(url: string, access_token: string, body: object) {
-    try {
-        const response = await fetch(url, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
-            body: JSON.stringify(body),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+async function PUT(url: string, body: object) {
+    const response = await fetch(url, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')!,
         }
-        return await response.json();
-    } catch (error) {
-        console.error('Failed to patch: ', error);
-        return ({});
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
     }
+    return await response.json();
 }
 
 /**
@@ -54,23 +59,19 @@ async function PUT(url: string, access_token: string, body: object) {
  * @param body object
  * @returns promise
  */
-async function PATCH(url: string, access_token: string, body: object) {
-    try {
-        const response = await fetch(url, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
-            body: JSON.stringify(body),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+async function PATCH(url: string,  body: object) {
+    const response = await fetch(url, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')!,
         }
-        return await response.json();
-    } catch (error) {
-        console.error('Failed to patch: ', error);
-        return ({});
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
     }
+    return await response.json();
 }
 
 /**
@@ -79,24 +80,19 @@ async function PATCH(url: string, access_token: string, body: object) {
  * @param body object
  * @returns promise
  */
-async function POST(url: string, access_token: string, body: object) {
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${access_token}`,
-            },
-            body: JSON.stringify(body),
-
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+async function POST(url: string,  body: object | null = null) {
+    const response =  await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')!,
         }
-        return await response.json();
-    } catch (error) {
-        throw new Error('Failed to post');
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
     }
+    return await response.json()
 }
 
 /**
@@ -105,23 +101,19 @@ async function POST(url: string, access_token: string, body: object) {
  * @param body object
  * @returns promise
  */
-async function DELETE(url: string, access_token: string, body: object | null) {
-    try {
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
-            body: JSON.stringify(body),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+async function DELETE(url: string,  body: object | null = null) {
+    const response = await fetch(url, {
+        method: 'DELETE',
+        body: JSON.stringify(body),
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')!,
         }
-        return await response.json();
-    } catch (error) {
-        console.error('Failed to delete: ', error);
-        return ({});
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
     }
+    return await response.json();
 }
 
 export {

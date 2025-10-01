@@ -18,6 +18,7 @@ export default function LoginForm({setLoggingIn}: {setLoggingIn: Function}) {
 
     useEffect(() => {
         if (authenticated) {
+            console.log(authenticated)
             router.push('/');
         }
     }, [authenticated]);

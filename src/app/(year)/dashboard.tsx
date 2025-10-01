@@ -7,13 +7,11 @@ import { useAuthContext } from "@/context/auth";
 
 export default function Dashboard() {
     const [years, setYears] = useState<YearSchema[]>([]);
-    
-    const { accessToken } = useAuthContext();
-    console.log(accessToken);
 
     const getYearsData = () => {
-        getYears(accessToken)
-            .then((response) => setYears(response));
+        getYears()
+            .then((response) => setYears(response))
+            .catch(() => setYears([]));
     };
 
     useEffect(() => {

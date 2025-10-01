@@ -49,6 +49,7 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
             return;
         }
         setUploading(true);
+        console.log(file);
         try {
             await uploadTransactions(file, month_id);
             addToast('Transactions uploaded successfully', 'success');

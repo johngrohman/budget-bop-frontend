@@ -150,6 +150,12 @@ export default function SavingsDataGrid(
                 onCellEditStop={handleCellEditStop}
                 onProcessRowUpdateError={handleRowUpdateError}
                 checkboxSelection
+                slotProps={{
+                    loadingOverlay: {
+                        variant: 'skeleton',
+                        noRowsVariant: 'skeleton',
+                    },
+                }}
                 onRowSelectionModelChange={(e) => {
                     setSelectedRows(e);
                     setCanDelete(e.length);

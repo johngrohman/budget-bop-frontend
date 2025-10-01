@@ -15,11 +15,17 @@ interface Navigation {
 export default function Navigation({show, setShow}: Navigation) {
     
     const [yearsAndMonths, setYearsAndMonths] = useState([]);
-    const { accessToken } = useAuthContext();
 
     const getTimeData = () => {
-        getAllTime(accessToken)
-            .then((response) => setYearsAndMonths(response));
+        getAllTime()
+            .then((response) => {
+                console.log('success', response);
+                setYearsAndMonths(response)
+            })
+            .catch((error) => {
+                console.log('error', error);
+                setYearsAndMonths([]);                
+            });
     };
 
     const handleItemSelectionToggle = (

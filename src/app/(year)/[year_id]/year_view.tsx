@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import { Suspense } from 'react';
 import { getYearById } from '@/api/Year';
 import FallbackComponentH1 from '@/components/FallbackComponent';
@@ -10,12 +11,24 @@ import { MonthSchema, YearSchema } from '@/types';
 import { LineChart } from '@mui/x-charts';
 
 async function YearComponent({ id }: { id: string }) {
-    const year = await getYearById(id);
+    const [year, setYear] = useState<any>();
+
+    useEffect(() => {
+        const response = getYearById(id);
+        setYear(response)
+    }, []);
+
     return <h1 className="page_heading">{year.year}</h1>;
 }
 
 async function MonthComponents({ id }: { id: string }) {
-    const months = await getMonthsInYear(id);
+    const [months, setMonths] = useState<any>([]);
+
+    useEffect(() => {
+        const response = getMonthsInYear(id);
+        setMonths(response);
+    }, []);
+
     return (
         months.map((month: MonthSchema, index: number) => (
             <Link
@@ -30,9 +43,13 @@ async function MonthComponents({ id }: { id: string }) {
     );
 }
 
-export default async function YearView({ year_id }: { year_id: YearSchema['id'] }) {
+export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
+    const [yearData, setYearData] = useState<any>([]);
 
-    const year_data = await getMonthsInYear(year_id)
+    useEffect(() => {
+        const response = getMonthsInYear(year_id);
+        setYearData(response);
+    }, [])
 
     return (
         <div className="page_container">
@@ -71,7 +88,7 @@ export default async function YearView({ year_id }: { year_id: YearSchema['id'] 
                             ]}
                             series={[
                                 {
-                                    data: year_data.map((year) => (year.total_variable_expenses?.actual || null)),
+                                    data: yearData.map((year: any) => (year.total_variable_expenses?.actual || null)),
                                     label: 'Variable Expenses',
                                 },
                             ]}

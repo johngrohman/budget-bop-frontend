@@ -5,6 +5,7 @@ import {
     MonthSchema,
     YearOutSchema
 } from "@/types";
+import { GET } from "../http";
 
 const url='/api/months';
 const API = 'http://localhost:8000';
@@ -15,31 +16,9 @@ const API = 'http://localhost:8000';
  */
 
 export async function getMonthsInYear(year_id: YearOutSchema['id']): Promise<Array<MonthSchema>> {
-    try {
-        const response = await fetch(`${API}${url}/year/${year_id}`, {
-            method: 'GET',
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Failed to fetch years:', error);
-        return ([]);
-    }
+        return await GET(`${API}${url}/year/${year_id}`);
 }
 
 export async function getMonthById(month_id: any): Promise<MonthOutSchema> {
-    try {
-        const response = await fetch(`${API}${url}/${month_id}`, {
-            method: 'GET'
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Failed to fetch month: ', error);
-        return {id: '', month: '', year: {id: '', year: ''}};
-    }
+        return await GET(`${API}${url}/${month_id}`);
 }
