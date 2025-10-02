@@ -26,7 +26,7 @@ const columns: GridColDef[] = [
     {
         field: "name",
         headerName: "Name",
-        width: 170,
+        width: 165,
         editable: true,
         sortable: false,
         resizable: false,
@@ -34,7 +34,16 @@ const columns: GridColDef[] = [
     {
         field: "date",
         headerName: "Date",
-        width: 94,
+        type: 'date',
+        width: 115,
+        valueGetter: (value) => {
+            if (!value) return null;
+            return new Date(value);
+        },
+        valueParser: (value) => {
+            if (!value) return null
+            return new Date(value);
+        },
         editable: true,
         sortable: false,
         resizable: false,
@@ -120,6 +129,9 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
             if(newRow[typedKey] !== oldRow[typedKey]) {
                 const newValue = newRow[typedKey] === '' ? null : newRow[typedKey];
                 bodyPayload[typedKey] = newValue;
+            }
+            if (bodyPayload.date) {
+                bodyPayload.date = new Date(bodyPayload.date).toISOString().split("T")[0];
             }
         });
 

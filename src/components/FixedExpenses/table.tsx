@@ -16,7 +16,16 @@ const columns: GridColDef[] = [
     {
         field: 'date',
         headerName: 'Date',
-        width: 170,
+        type: 'date',
+        valueGetter: (value) => {
+            if (!value) return null 
+            return new Date(value);
+        },
+        valueParser: (value) => {
+            if (!value) return null
+            return new Date(value);
+        },
+        width: 115,
         editable: true,
     },
     {
@@ -110,6 +119,9 @@ export default function FixedExpenseDataGrid(
                 const newValue = newRow[typedKey] === '' ? null : newRow[typedKey];
                 bodyPayload[typedKey] = newValue;
             }
+            if (bodyPayload.date) {
+                bodyPayload.date = new Date(bodyPayload.date).toISOString().split("T")[0];
+            }
         });
 
         try {
@@ -160,6 +172,7 @@ export default function FixedExpenseDataGrid(
                 className="table_styles"
                 disableColumnMenu
                 disableColumnResize
+                disableColumnSorting
                 processRowUpdate={handleRowUpdate}
                 onCellEditStop={handleCellEditStop}
                 onProcessRowUpdateError={handleRowUpdateError}

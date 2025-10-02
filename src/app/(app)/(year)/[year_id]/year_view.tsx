@@ -10,23 +10,23 @@ import './styles.scss';
 import { MonthSchema, YearSchema } from '@/types';
 import { LineChart } from '@mui/x-charts';
 
-async function YearComponent({ id }: { id: string }) {
+function YearComponent({ id }: { id: string }) {
     const [year, setYear] = useState<any>();
 
     useEffect(() => {
-        const response = getYearById(id);
-        setYear(response)
+        getYearById(id)
+        .then((response) => setYear(response));
     }, []);
 
-    return <h1 className="page_heading">{year.year}</h1>;
+    return <h1 className="page_heading">{year?.year}</h1>;
 }
 
-async function MonthComponents({ id }: { id: string }) {
+function MonthComponents({ id }: { id: string }) {
     const [months, setMonths] = useState<any>([]);
 
     useEffect(() => {
-        const response = getMonthsInYear(id);
-        setMonths(response);
+        getMonthsInYear(id)
+        .then((response) => setMonths(response));  
     }, []);
 
     return (
@@ -36,7 +36,7 @@ async function MonthComponents({ id }: { id: string }) {
                 key={index}
             >
                 <Card className='p-1'>
-                    {month.month}
+                    {month?.month}
                 </Card>
             </Link>
         ))
@@ -66,34 +66,6 @@ export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
                         </Stack>
                     </Col>
                     <Col>
-                        <LineChart
-                            xAxis={[
-                                { 
-                                    data: [
-                                        'Jan',
-                                        'Feb',
-                                        'Mar',
-                                        'Apr',
-                                        'May',
-                                        'Jun',
-                                        'Jul',
-                                        'Aug',
-                                        'Sep',
-                                        'Oct',
-                                        'Nov',
-                                        'Dec',
-                                    ],
-                                    scaleType: 'point'
-                                }
-                            ]}
-                            series={[
-                                {
-                                    data: yearData.map((year: any) => (year.total_variable_expenses?.actual || null)),
-                                    label: 'Variable Expenses',
-                                },
-                            ]}
-                            height={300}
-                        />
                     </Col>
                 </Row>
             </Container>

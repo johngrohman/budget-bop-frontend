@@ -59,6 +59,10 @@ export default function Navigation({show, setShow}: Navigation) {
                 <Nav>
                     <Container>
                         <SimpleTreeView onItemSelectionToggle={handleItemSelectionToggle}>
+                            <TreeItem
+                                itemId='/'
+                                label='Home'
+                            />
                             {
                                 yearsAndMonths.map((yearAndMonth: {
                                 year: YearOutSchema,

@@ -96,6 +96,27 @@ async function POST(url: string,  body: object | null = null) {
 }
 
 /**
+ * Send a post request
+ * @param url string
+ * @param body object
+ * @returns promise
+ */
+async function POSTFile(url: string,  body: BodyInit | null = null) {
+    const response =  await fetch(url, {
+        method: 'POST',
+        body: body,
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')!,
+        }
+    });
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+    }
+    return await response.json()
+}
+
+/**
  * Send a delete request
  * @param url string
  * @param body object
@@ -122,4 +143,5 @@ export {
     PUT,
     PATCH,
     DELETE,
+    POSTFile
 };

@@ -21,10 +21,7 @@ export default function RootLayout({
             <body
                 className='content'
             >
-                <ToastProvider>
-                    <TitleBar />
-                    {children}
-                </ToastProvider>
+                {children}
             </body>
         </html>
     );

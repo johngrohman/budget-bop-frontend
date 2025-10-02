@@ -1,7 +1,7 @@
 // Transaction API Client
 
 import { MonthOutSchema, TransactionFilterSchema, TransactionOutSchema } from "@/types";
-import { DELETE, GET, POST } from "../http";
+import { DELETE, GET, POST, POSTFile } from "../http";
 
 const url='/api/transactions';
 const API = 'http://localhost:8000';
@@ -17,12 +17,10 @@ export async function uploadTransactions(
     file: File,
     month_id: MonthOutSchema['id']
 ) {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('month_id', month_id);
-    console.log(file);
-    console.log(formData);
-    return await POST(`${API}${url}/upload`, {formData});
+    const data = new FormData();
+    data.append('file', file);
+    data.append('month_id', month_id);
+    return await POSTFile(`${API}${url}/upload`, data);
 }
 
 export async function deleteTransactions(
