@@ -7,13 +7,18 @@ import { Button, Col, Row, Stack } from "react-bootstrap";
 import { MonthSchema, VariableExpenseInSchema, VariableExpenseOutSchema } from "@/types";
 import { createVariableExpense, deleteVariableExpense, listVariableExpenses, patchVariableExpense } from "@/api/VariableExpense";
 import './styles.scss';
+import { InfoCircle } from "react-bootstrap-icons";
+import NoRowsOverlay from "../GridOverlays";
 
 const columns: GridColDef[] = [
     {
-        field: 'name',
-        headerName: 'Name',
+        field: "name",
+        headerName: "Category",
         width: 170,
+        type: 'singleSelect',
+        valueOptions: ['None', 'Restaurants & Dining', 'Groceries', 'Online Services', 'Credit Card Payments', 'Personal Care & Fitness', 'Home Supplies', 'Refunds/Adjustments', 'Clothing', 'Automotive Expenses', 'Shopping', 'Hobbies', 'Travel & Commute'],
         editable: true,
+        valueFormatter: (value) => !value ? 'None' : value,
     },
     {
         field: 'budget',
@@ -132,7 +137,14 @@ export default function VariableExpenseDataGrid(
         <div className="d-flex flex-column h-100">
             <div className="w-100 m-0 d-flex justify-content-between">
                 <div className='p-0 pb-2'>
-                    <h5 className="m-0">Variable Expenses</h5>
+                    <Row>
+                        <Col md='auto'>
+                            <h5 className="m-0">Variable Expenses</h5>
+                        </Col>
+                        <Col className="ps-0 d-flex justify-content-center align-items-center">
+                            <InfoCircle size={15} fill="gray" />
+                        </Col>
+                    </Row>
                 </div>
                 <div className="p-0">
                     <Button
@@ -173,7 +185,16 @@ export default function VariableExpenseDataGrid(
                     setSelectedRows(e);
                     setCanDelete(e.length);
                 }}
-                slots={{footer: () => <CustomFooter rows={rows} />}}
+                slots={{
+                    noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
+                    footer: () => <CustomFooter rows={rows} />
+                }}
+                slotProps={{
+                    loadingOverlay: {
+                        variant: 'skeleton',
+                        noRowsVariant: 'skeleton',
+                    },
+                }}
             />
         </div>
     );

@@ -3,7 +3,7 @@ import { getMonthById } from "@/api/Month";
 import { MonthOutSchema } from "@/types";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
-type MonthViewContextType = {
+export type MonthViewContextType = {
     showFileUploadModal: boolean;
     setShowFileUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
     monthData: MonthOutSchema;

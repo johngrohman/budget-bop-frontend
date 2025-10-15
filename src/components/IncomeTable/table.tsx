@@ -7,11 +7,18 @@ import {
     GridRowsProp,
     GridRowSelectionModel
 } from "@mui/x-data-grid";
+import {
+    MutationFunction,
+    useMutation,
+    useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { IncomeInSchema, IncomeOutSchema, MonthSchema } from "@/types";
 import React, { useEffect, useMemo, useState } from "react";
 import { createIncome, deleteIncome, listIncome, patchIncome } from "@/api/Income";
 import { useMonthViewContext } from "@/context/monthview";
+import NoRowsOverlay from "../GridOverlays";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -91,29 +98,59 @@ function CustomFooter({ rows }: { rows: IncomeOutSchema[] }) {
 
 export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id'] }) {
 
-    const [rows, setRows] = useState<Array<IncomeOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
     const { getMonthData } = useMonthViewContext();
 
-    useEffect(() => {
-        listIncome({ month_id })
-            .then((response) => {
-                setRows(response);
-            });
-    }, []);
+    const queryClient = useQueryClient();
 
-    const handleRowCreate = async () => {
-        await createIncome({month_id: month_id});
-        setRows(await listIncome({month_id}));
-        getMonthData();
-    };
+    const getIncomeQuery = useQuery(
+        {
+            queryKey: [`getIncomeQuery${month_id}`],
+            queryFn: () => {
+                return listIncome({month_id});
+            },
+            initialData: [],
+        }
+    );
 
-    const handleRowDelete = async () => {
-        await deleteIncome(selectedRows as Array<IncomeOutSchema['id']>);
-        setRows(await listIncome({month_id}));
-        getMonthData();
-    };
+    const postIncomeMutation = useMutation(
+        {
+            mutationKey: ['postIncome'],
+            mutationFn: createIncome,
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: [`getIncomeQuery${month_id}`]})
+                .then(() => getMonthData());
+            }
+        }
+    );
+
+    const patchIncomeMutation = useMutation(
+        {
+            mutationKey: ['patchIncome'],
+            mutationFn: ({income_id, content}: {income_id: string, content: IncomeInSchema}) => patchIncome(income_id, content),
+            onSuccess: (response) => {
+                queryClient.invalidateQueries({ queryKey: [`getIncomeQuery${month_id}`]})
+                .then(() => getMonthData())
+                .then(() => response);
+            }
+        }
+    );
+
+    const deleteIncomeMutation = useMutation(
+        {
+            mutationKey: ['deleteIncome'],
+            mutationFn: deleteIncome,
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: [`getIncomeQuery${month_id}`]})
+                .then(() => getMonthData());
+            }
+        }
+    );
+
+    const handleRowCreate = () => postIncomeMutation.mutate({month_id: month_id});
+
+    const handleRowDelete = async () => deleteIncomeMutation.mutate(selectedRows as Array<IncomeOutSchema['id']>);
 
     const handleRowUpdate = async (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,23 +172,13 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
             }
         });
 
-        try {
-            const updatedRow = await patchIncome(newRow.id, bodyPayload);
-            setRows(await listIncome({month_id}));
-            return updatedRow;
-        } catch (error) {
-            console.error('Row update failed', error);
-            throw error;
-        }
-    };
-
-    const handleCellEditStop = async () => {
-        getMonthData();
+        return await patchIncomeMutation.mutateAsync({income_id: newRow.id, content: bodyPayload})
+        
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
-        console.log(e);
+        throw(e)
     };
 
     return (
@@ -178,7 +205,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
                 </div>
             </div>
             <DataGrid
-                rows={rows}
+                rows={getIncomeQuery.data}
                 columns={columns}
                 density="compact"
                 className="table_styles"
@@ -186,14 +213,28 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
                 disableColumnMenu
                 disableColumnResize
                 processRowUpdate={handleRowUpdate}
-                onCellEditStop={handleCellEditStop}
+                loading={
+                    getIncomeQuery.isFetching ||
+                    postIncomeMutation.isPending ||
+                    deleteIncomeMutation.isPending ||
+                    patchIncomeMutation.isPending
+                }
+                slots={{
+                    noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
+                    footer: () => <CustomFooter rows={getIncomeQuery.data} />,
+                }}
+                slotProps={{
+                    loadingOverlay: {
+                        variant: 'linear-progress',
+                        noRowsVariant: getIncomeQuery.isFetching ? 'skeleton' : 'linear-progress',
+                    },
+                }}
                 onProcessRowUpdateError={handleRowUpdateError}
                 checkboxSelection
                 onRowSelectionModelChange={(e) => {
                     setSelectedRows(e);
                     setCanDelete(e.length);
                 }}
-                slots={{footer: () => <CustomFooter rows={rows} />}}
             />
         </div>
     );

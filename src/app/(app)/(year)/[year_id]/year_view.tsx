@@ -52,23 +52,21 @@ export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
     }, [])
 
     return (
-        <div className="page_container">
-            <Container fluid>
-                <Row>
-                    <Suspense fallback={<FallbackComponentH1 size={1} />}>
-                        <YearComponent id={year_id} />
-                    </Suspense>
-                </Row>
-                <Row>
-                    <Col xs={2} className='d-flex'>
-                        <Stack gap={4} key={1}>
-                            <MonthComponents id={year_id} key={2}/>
-                        </Stack>
-                    </Col>
-                    <Col>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
+        <Container fluid>
+            <Row>
+                <Suspense fallback={<FallbackComponentH1 size={1} />}>
+                    <YearComponent id={year_id} />
+                </Suspense>
+            </Row>
+            <Row>
+                <Col xs={2} className='d-flex'>
+                    <Stack gap={4} key={1}>
+                        <MonthComponents id={year_id} key={2}/>
+                    </Stack>
+                </Col>
+                <Col>
+                </Col>
+            </Row>
+        </Container>
     );
 }

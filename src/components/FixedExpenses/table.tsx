@@ -5,6 +5,8 @@ import { FixedExpenseInSchema, FixedExpenseOutSchema, MonthSchema } from "@/type
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Col, Row, Stack } from "react-bootstrap";
+import NoRowsOverlay from "../GridOverlays";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const columns: GridColDef[] = [
     {
@@ -80,29 +82,59 @@ function CustomFooter({ rows }: { rows: FixedExpenseOutSchema[] }) {
 export default function FixedExpenseDataGrid(
     { month_id }: { month_id: MonthSchema['id'] }
 ) {
-    const [rows, setRows] = useState<Array<FixedExpenseOutSchema>>([]);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [canDelete, setCanDelete] = useState(0);
     const { getMonthData } = useMonthViewContext();
 
-    useEffect(() => {
-        listFixedExpenses({ month_id })
-            .then((response) => {
-                setRows(response);
-            });
-    }, []);
+    const queryClient = useQueryClient();
 
-    const handleRowCreate = async () => {
-        await createFixedExpense({month_id: month_id});
-        setRows(await listFixedExpenses({ month_id }));
-        getMonthData();
-    };
+    const getFixedExpensesQuery = useQuery(
+        {
+            queryKey: [`getFixedExpenseQuery${month_id}`],
+            queryFn: () => listFixedExpenses({month_id}),
+            initialData: []
+        }
+    );
 
-    const handleRowDelete = async () => {
-        await deleteFixedExpense(selectedRows as Array<FixedExpenseOutSchema['id']>);
-        setRows(await listFixedExpenses({ month_id }));
-        getMonthData();
-    };
+    const postFixedExpenseMutation = useMutation(
+        {
+            mutationKey: ['postFixedExpense'],
+            mutationFn: createFixedExpense,
+            onSuccess: (response) => {
+                queryClient.invalidateQueries({ queryKey: [`getFixedExpenseQuery${month_id}`]})
+                .then(() => getMonthData())
+                .then(() => response);
+            },
+        }
+    );
+
+    const patchFixedExpenseMutation = useMutation(
+        {
+            mutationKey: ['patchFixedExpense'],
+            mutationFn: ({fixed_expense_id, content}: {fixed_expense_id: string, content: FixedExpenseInSchema }) => patchFixedExpense(fixed_expense_id, content),
+            onSuccess: (response) => {
+                queryClient.invalidateQueries({ queryKey: [`getFixedExpenseQuery${month_id}`]})
+                .then(() => getMonthData())
+                .then(() => response);
+            }
+        }
+    );
+
+    const deleteFixedExpenseMutation = useMutation(
+        {
+            mutationKey: ['deleteFixedExpense'],
+            mutationFn: deleteFixedExpense,
+            onSuccess: (response) => {
+                queryClient.invalidateQueries({ queryKey: [`getFixedExpenseQuery${month_id}`]})
+                .then(() => getMonthData())
+                .then(() => response);
+            }
+        }
+    );
+
+    const handleRowCreate = () => postFixedExpenseMutation.mutate({month_id: month_id});
+
+    const handleRowDelete = () => deleteFixedExpenseMutation.mutate(selectedRows as Array<FixedExpenseOutSchema['id']>);
 
     const handleRowUpdate = async (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,14 +156,7 @@ export default function FixedExpenseDataGrid(
             }
         });
 
-        try {
-            const updatedRow = await patchFixedExpense(newRow.id, bodyPayload);
-            setRows(await listFixedExpenses({ month_id }));
-            return updatedRow;
-        } catch (error) {
-            console.error('Row update failed', error);
-            throw error;
-        }
+        return await patchFixedExpenseMutation.mutateAsync({fixed_expense_id: newRow.id, content: bodyPayload});
     };
 
     const handleCellEditStop = async () => {
@@ -166,7 +191,7 @@ export default function FixedExpenseDataGrid(
                 </div>
             </div>
             <DataGrid
-                rows={rows}
+                rows={getFixedExpensesQuery.data}
                 columns={columns}
                 density="compact"
                 className="table_styles"
@@ -177,11 +202,26 @@ export default function FixedExpenseDataGrid(
                 onCellEditStop={handleCellEditStop}
                 onProcessRowUpdateError={handleRowUpdateError}
                 checkboxSelection
+                loading={
+                    getFixedExpensesQuery.isFetching ||
+                    postFixedExpenseMutation.isPending ||
+                    deleteFixedExpenseMutation.isPending ||
+                    patchFixedExpenseMutation.isPending
+                }
                 onRowSelectionModelChange={(e) => {
                     setSelectedRows(e);
                     setCanDelete(e.length);
                 }}
-                slots={{footer: () => <CustomFooter rows={rows}/>}}
+                slots={{
+                    noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
+                    footer: () => <CustomFooter rows={getFixedExpensesQuery.data}/>
+                }}
+                slotProps={{
+                    loadingOverlay: {
+                        variant: 'linear-progress',
+                        noRowsVariant: getFixedExpensesQuery.isFetching ? 'skeleton' : 'linear-progress',
+                    },
+                }}
             />
         </div>
     );

@@ -4,33 +4,35 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { getYears } from "../../../api/Year";
 import { YearSchema } from "@/types";
 import { useAuthContext } from "@/context/auth";
+import "./[year_id]/styles.scss";
+import { useQuery } from "@tanstack/react-query";
+import { useToast } from "@/components/ToastSystem";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-    const [years, setYears] = useState<YearSchema[]>([]);
 
-    const getYearsData = () => {
-        getYears()
-            .then((response) => setYears(response))
-            .catch(() => setYears([]));
-    };
+    const router = useRouter();
 
-    useEffect(() => {
-        getYearsData();
-    }, []);
+    const getYearsQuery = useQuery({
+        queryKey: ['getYears'],
+        queryFn: getYears,
+        initialData: [],
+    });
 
     return (
         <Container fluid>
+            <h2>Welcome back</h2>
             <Row>
                 {
-                    years.map((year: YearSchema, index: number) => (
+                    getYearsQuery.data.map((year: YearSchema, index: number) => (
                         <Col key={index}>
-                            <a
-                                href={`${year.id}`}
+                            <div
+                                onClick={() => router.push(`/${year.id}`)}
                             >
                                 <Card>
                                     {year.year}
                                 </Card>
-                            </a>
+                            </div>
                         </Col>
                     ))
                 }

@@ -1,0 +1,52 @@
+.content_container {
+    margin: 20px 30px;
+    width: 100%;
+    position: absolute;
+    min-height: 87.5vh;
+    // border: 1px solid green;
+}
+
+div.content {
+    // border: 1px solid purple;
+    overflow-x: hidden;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    // height: max-content;
+}
+
+.content_nav_container {
+    display: flex;
+    width: 97.5vw;
+    height: 91vh;
+}
+
+@keyframes container_with_nav {
+    0% {
+        max-width: 95vw;
+        left: 0px;
+    }
+    100% {
+        max-width: calc(95vw - 224px);
+        left: 224px;
+    }
+}
+
+@keyframes container_no_nav {
+    0% {
+        max-width: calc(95vw - 224px);
+        left: 224px;
+    }
+    100% {
+        max-width: 95vw;
+        left: 0px;
+    }
+}
+
+.nav_shown {
+    animation: container_with_nav 0.2s ease-in-out forwards;
+}
+
+.nav_hidden {
+    animation: container_no_nav 0.2s ease-in-out forwards;
+}

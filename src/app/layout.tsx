@@ -2,8 +2,6 @@ import React from "react";
 import type { Metadata } from "next";
 import "./globals.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ToastProvider } from "@/components/ToastSystem";
-import TitleBar from "@/components/TitleBar";
 
 export const metadata: Metadata = {
     title: "Budget Buddy",

@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Container, Nav, Offcanvas, OffcanvasBody, OffcanvasHeader, OffcanvasTitle } from "react-bootstrap";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { getAllTime } from "@/api/Time";
-import { redirect } from "next/navigation";
 import { MonthOutSchema, YearOutSchema } from "@/types";
-import { useAuthContext } from "@/context/auth";
+import { useRouter } from "next/navigation";
 
 interface Navigation {
     show: boolean,
@@ -15,6 +14,7 @@ interface Navigation {
 export default function Navigation({show, setShow}: Navigation) {
     
     const [yearsAndMonths, setYearsAndMonths] = useState([]);
+    const router = useRouter();
 
     const getTimeData = () => {
         getAllTime()
@@ -24,7 +24,7 @@ export default function Navigation({show, setShow}: Navigation) {
             })
             .catch((error) => {
                 console.log('error', error);
-                setYearsAndMonths([]);                
+                setYearsAndMonths([]);
             });
     };
 
@@ -35,7 +35,7 @@ export default function Navigation({show, setShow}: Navigation) {
     ) => {
         if (isSelected) {
             if (itemId[0] === 'x') return;
-            redirect(`/${itemId}`);
+            router.push(`/${itemId}`);
         }
     };
 
@@ -62,6 +62,10 @@ export default function Navigation({show, setShow}: Navigation) {
                             <TreeItem
                                 itemId='/'
                                 label='Home'
+                            />
+                            <TreeItem
+                                itemId='transactions'
+                                label='Transactions'
                             />
                             {
                                 yearsAndMonths.map((yearAndMonth: {

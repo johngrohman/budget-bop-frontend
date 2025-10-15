@@ -4,7 +4,7 @@ import { YearInSchema, YearSchema } from "@/types";
 import { DELETE, GET, PATCH, POST } from "../http";
 
 const url = "/api/years";
-const API = "http://localhost:8000";
+const API = 'http://localhost:8000';
 
 interface Year {
   id: string;

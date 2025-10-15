@@ -195,6 +195,19 @@ declare namespace Components {
             month?: /* MonthSchema */ MonthSchema | null;
         }
         /**
+         * Input
+         */
+        export interface Input {
+            /**
+             * Limit
+             */
+            limit?: number;
+            /**
+             * Offset
+             */
+            offset?: number;
+        }
+        /**
          * LoginResponse
          */
         export interface LoginResponse {
@@ -314,6 +327,20 @@ declare namespace Components {
             total_savings?: /* MonthSavings */ MonthSavings | null;
         }
         /**
+         * MonthSchemaShallow
+         */
+        export interface MonthSchemaShallow {
+            /**
+             * Id
+             */
+            id: string; // uuid
+            /**
+             * Month
+             */
+            month: string;
+            year: /* YearSchema */ YearSchema;
+        }
+        /**
          * MonthVariableExpense
          */
         export interface MonthVariableExpense {
@@ -325,6 +352,19 @@ declare namespace Components {
              * Actual
              */
             actual: number;
+        }
+        /**
+         * PagedTransactionOutSchema
+         */
+        export interface PagedTransactionOutSchema {
+            /**
+             * Items
+             */
+            items: /* TransactionOutSchema */ TransactionOutSchema[];
+            /**
+             * Count
+             */
+            count: number;
         }
         /**
          * SavingsFilterSchema
@@ -403,9 +443,13 @@ declare namespace Components {
          */
         export interface TransactionFilterSchema {
             /**
-             * Date
+             * Posting Date
              */
-            date?: /* Date */ string /* date-time */ | null;
+            posting_date?: /* Posting Date */ string /* date-time */ | null;
+            /**
+             * Effective Date
+             */
+            effective_date?: /* Effective Date */ string /* date-time */ | null;
             /**
              * Amount
              */
@@ -415,34 +459,54 @@ declare namespace Components {
              */
             description?: /* Description */ string | null;
             /**
+             * Extended Description
+             */
+            extended_description?: /* Extended Description */ string | null;
+            /**
              * Category
              */
             category?: /* Category */ string | null;
             /**
-             * Month Id
+             * Month
              */
-            month_id?: /* Month Id */ string /* uuid */ | null;
+            month?: /* Month */ string /* uuid */ | null;
         }
         /**
          * TransactionInSchema
          */
         export interface TransactionInSchema {
             /**
-             * Date
+             * User
              */
-            date: string; // date
+            user: string; // uuid
+            /**
+             * Posting Date
+             */
+            posting_date?: /* Posting Date */ string /* date */ | null;
+            /**
+             * Effective Date
+             */
+            effective_date?: /* Effective Date */ string /* date */ | null;
             /**
              * Amount
              */
-            amount: number;
+            amount?: /* Amount */ number | null;
             /**
              * Description
              */
-            description: string;
+            description?: /* Description */ string | null;
+            /**
+             * Extended Description
+             */
+            extended_description?: /* Extended Description */ string | null;
             /**
              * Category
              */
-            category: string;
+            category?: /* Category */ string | null;
+            /**
+             * Month
+             */
+            month?: /* Month */ string /* uuid */ | null;
         }
         /**
          * TransactionOutSchema
@@ -453,22 +517,30 @@ declare namespace Components {
              */
             id: string; // uuid
             /**
-             * Date
+             * Posting Date
              */
-            date: string; // date
+            posting_date?: /* Posting Date */ string /* date */ | null;
+            /**
+             * Effective Date
+             */
+            effective_date?: /* Effective Date */ string /* date */ | null;
             /**
              * Amount
              */
-            amount: number;
+            amount?: /* Amount */ number | null;
             /**
              * Description
              */
-            description: string;
+            description?: /* Description */ string | null;
+            /**
+             * Extended Description
+             */
+            extended_description?: /* Extended Description */ string | null;
             /**
              * Category
              */
-            category: string;
-            month: /* MonthSchema */ MonthSchema;
+            category?: /* Category */ string | null;
+            month?: /* MonthSchemaShallow */ MonthSchemaShallow | null;
         }
         /**
          * UserSchema
@@ -924,6 +996,21 @@ declare namespace Paths {
             }
         }
     }
+    namespace AppApiTransactionApiGetCategoryTotals {
+        namespace Parameters {
+            /**
+             * Reqeust
+             */
+            export type Reqeust = string;
+        }
+        export interface QueryParameters {
+            reqeust: /* Reqeust */ Parameters.Reqeust;
+        }
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
     namespace AppApiTransactionApiGetTransactionById {
         namespace Parameters {
             /**
@@ -964,30 +1051,57 @@ declare namespace Paths {
              */
             export type Category = /* Category */ string | null;
             /**
-             * Date
-             */
-            export type Date = /* Date */ string /* date-time */ | null;
-            /**
              * Description
              */
             export type Description = /* Description */ string | null;
             /**
-             * Month Id
+             * Effective Date
              */
-            export type MonthId = /* Month Id */ string /* uuid */ | null;
+            export type EffectiveDate = /* Effective Date */ string /* date-time */ | null;
+            /**
+             * Extended Description
+             */
+            export type ExtendedDescription = /* Extended Description */ string | null;
+            /**
+             * Limit
+             */
+            export type Limit = number;
+            /**
+             * Month
+             */
+            export type Month = /* Month */ string /* uuid */ | null;
+            /**
+             * Offset
+             */
+            export type Offset = number;
+            /**
+             * Order By
+             */
+            export type OrderBy = /* Order By */ string | null;
+            /**
+             * Order Direction
+             */
+            export type OrderDirection = /* Order Direction */ string | null;
+            /**
+             * Posting Date
+             */
+            export type PostingDate = /* Posting Date */ string /* date-time */ | null;
         }
         export interface QueryParameters {
-            date?: /* Date */ Parameters.Date;
+            posting_date?: /* Posting Date */ Parameters.PostingDate;
+            effective_date?: /* Effective Date */ Parameters.EffectiveDate;
             amount?: /* Amount */ Parameters.Amount;
             description?: /* Description */ Parameters.Description;
+            extended_description?: /* Extended Description */ Parameters.ExtendedDescription;
             category?: /* Category */ Parameters.Category;
-            month_id?: /* Month Id */ Parameters.MonthId;
+            month?: /* Month */ Parameters.Month;
+            order_by?: /* Order By */ Parameters.OrderBy;
+            order_direction?: /* Order Direction */ Parameters.OrderDirection;
+            limit?: /* Limit */ Parameters.Limit;
+            offset?: /* Offset */ Parameters.Offset;
         }
         namespace Responses {
-            /**
-             * Response
-             */
-            export type $200 = /* TransactionOutSchema */ Components.Schemas.TransactionOutSchema[];
+            export type $200 = /* PagedTransactionOutSchema */ Components.Schemas.PagedTransactionOutSchema;
         }
     }
     namespace AppApiTransactionApiPatchTransaction {
@@ -1485,6 +1599,22 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiTransactionApiListTransactions.Responses.$200>
   /**
+   * app_api_transaction_api_post_transaction - Post Transaction
+   */
+  'app_api_transaction_api_post_transaction'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
+  /**
+   * app_api_transaction_api_delete_transaction - Delete Transaction
+   */
+  'app_api_transaction_api_delete_transaction'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AppApiTransactionApiDeleteTransaction.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
+  /**
    * app_api_transaction_api_get_transaction_by_id - Get Transaction By Id
    */
   'app_api_transaction_api_get_transaction_by_id'(
@@ -1501,6 +1631,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiTransactionApiPatchTransaction.Responses.$200>
   /**
+   * app_api_transaction_api_get_category_totals - Get Category Totals
+   */
+  'app_api_transaction_api_get_category_totals'(
+    parameters?: Parameters<Paths.AppApiTransactionApiGetCategoryTotals.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppApiTransactionApiGetCategoryTotals.Responses.$200>
+  /**
    * app_api_transaction_api_get_transaction_summary - Get Transaction Summary
    */
   'app_api_transaction_api_get_transaction_summary'(
@@ -1508,22 +1646,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AppApiTransactionApiGetTransactionSummary.Responses.$200>
-  /**
-   * app_api_transaction_api_post_transaction - Post Transaction
-   */
-  'app_api_transaction_api_post_transaction'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
-  /**
-   * app_api_transaction_api_delete_transaction - Delete Transaction
-   */
-  'app_api_transaction_api_delete_transaction'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AppApiTransactionApiDeleteTransaction.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
   /**
    * app_api_time_api_list_all_time_data - List All Time Data
    */
@@ -1553,7 +1675,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiAuthApiDeleteAcount.Responses.$200>
   }
-  ['/api/auth/']: {
+  ['/api/auth']: {
     /**
      * app_api_auth_api_create_user - Create User
      */
@@ -1583,7 +1705,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiAuthApiRefreshAccessToken.Responses.$200>
   }
-  ['/api/years/']: {
+  ['/api/years']: {
     /**
      * app_api_year_api_get_all_years - Get All Years
      */
@@ -1663,7 +1785,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiMonthApiDeleteMonth.Responses.$200>
   }
-  ['/api/months/']: {
+  ['/api/months']: {
     /**
      * app_api_month_api_post_month - Post Month
      */
@@ -1683,7 +1805,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiMonthApiListMonthsInYear.Responses.$200>
   }
-  ['/api/income/']: {
+  ['/api/income']: {
     /**
      * app_api_income_api_list_income - List Income
      * 
@@ -1721,7 +1843,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiIncomeApiPatchIncome.Responses.$200>
   }
-  ['/api/variable-expense/']: {
+  ['/api/variable-expense']: {
     /**
      * app_api_variable_expense_api_list_variable_expense - List Variable Expense
      * 
@@ -1771,7 +1893,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiVariableExpenseApiPatchVariableExpense.Responses.$200>
   }
-  ['/api/fixed-expense/']: {
+  ['/api/fixed-expense']: {
     /**
      * app_api_fixed_expense_api_list_fixed_expense - List Fixed Expense
      * 
@@ -1809,7 +1931,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiFixedExpenseApiPatchFixedExpense.Responses.$200>
   }
-  ['/api/savings/']: {
+  ['/api/savings']: {
     /**
      * app_api_savings_api_list_all_savings - List All Savings
      * 
@@ -1871,7 +1993,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiTransactionApiUploadTransactionList.Responses.$200>
   }
-  ['/api/transactions/list']: {
+  ['/api/transactions']: {
     /**
      * app_api_transaction_api_list_transactions - List Transactions
      */
@@ -1880,6 +2002,22 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiTransactionApiListTransactions.Responses.$200>
+    /**
+     * app_api_transaction_api_post_transaction - Post Transaction
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
+    /**
+     * app_api_transaction_api_delete_transaction - Delete Transaction
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AppApiTransactionApiDeleteTransaction.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
   }
   ['/api/transactions/{transaction_id}']: {
     /**
@@ -1899,6 +2037,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiTransactionApiPatchTransaction.Responses.$200>
   }
+  ['/api/transactions/categories/totals']: {
+    /**
+     * app_api_transaction_api_get_category_totals - Get Category Totals
+     */
+    'get'(
+      parameters?: Parameters<Paths.AppApiTransactionApiGetCategoryTotals.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppApiTransactionApiGetCategoryTotals.Responses.$200>
+  }
   ['/api/transactions/month/{month_id}']: {
     /**
      * app_api_transaction_api_get_transaction_summary - Get Transaction Summary
@@ -1908,24 +2056,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AppApiTransactionApiGetTransactionSummary.Responses.$200>
-  }
-  ['/api/transactions/']: {
-    /**
-     * app_api_transaction_api_post_transaction - Post Transaction
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AppApiTransactionApiPostTransaction.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiTransactionApiPostTransaction.Responses.$200>
-    /**
-     * app_api_transaction_api_delete_transaction - Delete Transaction
-     */
-    'delete'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AppApiTransactionApiDeleteTransaction.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AppApiTransactionApiDeleteTransaction.Responses.$200>
   }
   ['/api/time/years-months']: {
     /**
@@ -1950,6 +2080,7 @@ export type FixedExpenseOutSchema = Components.Schemas.FixedExpenseOutSchema;
 export type IncomeFilterSchema = Components.Schemas.IncomeFilterSchema;
 export type IncomeInSchema = Components.Schemas.IncomeInSchema;
 export type IncomeOutSchema = Components.Schemas.IncomeOutSchema;
+export type Input = Components.Schemas.Input;
 export type LoginResponse = Components.Schemas.LoginResponse;
 export type LoginSchema = Components.Schemas.LoginSchema;
 export type MonthFixedExpense = Components.Schemas.MonthFixedExpense;
@@ -1958,7 +2089,9 @@ export type MonthIncome = Components.Schemas.MonthIncome;
 export type MonthOutSchema = Components.Schemas.MonthOutSchema;
 export type MonthSavings = Components.Schemas.MonthSavings;
 export type MonthSchema = Components.Schemas.MonthSchema;
+export type MonthSchemaShallow = Components.Schemas.MonthSchemaShallow;
 export type MonthVariableExpense = Components.Schemas.MonthVariableExpense;
+export type PagedTransactionOutSchema = Components.Schemas.PagedTransactionOutSchema;
 export type SavingsFilterSchema = Components.Schemas.SavingsFilterSchema;
 export type SavingsInSchema = Components.Schemas.SavingsInSchema;
 export type SavingsOutSchema = Components.Schemas.SavingsOutSchema;

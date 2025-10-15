@@ -1,0 +1,26 @@
+.side_nav {
+    border: 1px solid #e1e3ec;
+    background-color: #f5f6fa;
+    min-width: 224px;
+    padding: 16px;
+    color: hsl(220, 30%, 6%);
+    height: 100%;
+}
+
+@keyframes slide_in {
+  0%   { margin-left: -224px; position: relative;}
+  100% { margin-left: 0; position: fixed;}
+}
+
+@keyframes slide_out {
+  0%   { margin-left: 0; position: fixed; }
+  100% { margin-left: -224px; position: relative; }
+}
+
+.animate-in {
+    animation: slide_in 0.2s ease-in-out forwards;
+}
+
+.animate-out {
+    animation: slide_out 0.2s ease-in-out forwards;
+}

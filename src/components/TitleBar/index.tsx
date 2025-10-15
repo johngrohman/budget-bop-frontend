@@ -1,24 +1,40 @@
-'use client';
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
+import React from "react";
 import styles from './titlebar.module.scss';
-import { List } from "react-bootstrap-icons";
-import Navigation from "../navigation";
+import { ArrowClockwise, ArrowLeft, ArrowRight, LayoutSidebar, Person } from "react-bootstrap-icons";
+import { useRouter } from "next/navigation";
 
-export default function TitleBar() {
-    const [showNav, setShowNav] = useState<boolean>(false);
+export default function TitleBar({showNav, setShowNav, showUser, setShowUser}: any) {
+
+    const router = useRouter();
+    const buttonSize = 19;
 
     return (
         <div className={styles.titlebar}>
-            <Navigation show={showNav} setShow={setShowNav} />
-            <Button
-                onClick={() => setShowNav(true)}
-                className="d-flex justify-content-center align-items-center"
-                variant=""
+            <div
+                onClick={() => setShowNav(!showNav)}
+                className={styles.control_button}
             >
-                <List size={25} />
-            </Button>
+                <LayoutSidebar size={buttonSize} fill="#363636" />
+            </div>
+            <div
+                onClick={router.back}
+                className={styles.control_button}
+            >
+                <ArrowLeft size={buttonSize} fill="#363636" />
+            </div>
+            <div
+                onClick={router.forward}
+                className={styles.control_button}
+            >
+                <ArrowRight size={buttonSize} fill="#363636" />
+            </div>
             <div className={styles.drag_container} />
+            <div
+                onClick={() => setShowUser(true)}
+                className={styles.control_button}
+            >
+                <Person size={buttonSize} fill="#363636" />
+            </div>
         </div>
     );
 }

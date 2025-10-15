@@ -6,6 +6,7 @@ import { MonthSchema, SavingsInSchema, SavingsOutSchema } from "@/types";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { Stack, Row, Col, Button } from "react-bootstrap";
 import { useMonthViewContext } from "@/context/monthview";
+import NoRowsOverlay from "../GridOverlays";
 
 const columns: GridColDef[] = [
     {
@@ -150,17 +151,20 @@ export default function SavingsDataGrid(
                 onCellEditStop={handleCellEditStop}
                 onProcessRowUpdateError={handleRowUpdateError}
                 checkboxSelection
+                onRowSelectionModelChange={(e) => {
+                    setSelectedRows(e);
+                    setCanDelete(e.length);
+                }}
+                slots={{
+                    noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
+                    footer: () => <CustomFooter rows={rows} />
+                }}
                 slotProps={{
                     loadingOverlay: {
                         variant: 'skeleton',
                         noRowsVariant: 'skeleton',
                     },
                 }}
-                onRowSelectionModelChange={(e) => {
-                    setSelectedRows(e);
-                    setCanDelete(e.length);
-                }}
-                slots={{footer: () => <CustomFooter rows={rows} />}}
             />
         </div>
     );

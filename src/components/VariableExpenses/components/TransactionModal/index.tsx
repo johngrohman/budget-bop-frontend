@@ -15,6 +15,9 @@ import {
 import { useToast } from "@/components/ToastSystem";
 import { uploadTransactions } from "@/api/Transaction";
 import TransactionTable from "./components/Table";
+import { useRouter } from "next/navigation";
+import styles from '../../../TitleBar/titlebar.module.scss'
+import { ArrowsAngleExpand } from "react-bootstrap-icons";
 // import TransactionTable from "./components/table";
 // import TransactionTableWrapper from "./components/Table";
 
@@ -27,6 +30,7 @@ import TransactionTable from "./components/Table";
 export default function FileUploadModal({month_id}: {month_id: string}) {
     const { addToast } = useToast();
     const [file, setFile] = useState<File | null>(null);
+    const router = useRouter();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [uploading, setUploading] = useState<boolean>(false);
 
@@ -70,8 +74,14 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
             centered
             size="lg"
         >
-            <ModalHeader closeButton className="px-4 border-0">
+            <ModalHeader className="ps-4 pt-3 pe-3 border-0 d-flex justify-content-between align-items-start">
                 <ModalTitle>Transactions</ModalTitle>
+                <div
+                    onClick={() => router.push(`${month_id}/transactions`)}
+                    className={styles.control_button}
+                >
+                    <ArrowsAngleExpand size={15} fill="#363636" />
+                </div>
             </ModalHeader>
             <ModalBody>
                 <div className="ps-4 pe-4 pb-4 mx-auto">

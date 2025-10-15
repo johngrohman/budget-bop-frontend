@@ -6,6 +6,7 @@ import {
     YearOutSchema
 } from "@/types";
 import { GET } from "../http";
+import { cache } from "react";
 
 const url='/api/months';
 const API = 'http://localhost:8000';
@@ -15,10 +16,10 @@ const API = 'http://localhost:8000';
  * @returns array of months in a given year
  */
 
-export async function getMonthsInYear(year_id: YearOutSchema['id']): Promise<Array<MonthSchema>> {
+export const getMonthsInYear = cache(async (year_id: YearOutSchema['id']) => {
         return await GET(`${API}${url}/year/${year_id}`);
-}
+});
 
-export async function getMonthById(month_id: any): Promise<MonthOutSchema> {
+export const getMonthById = cache(async (month_id: any): Promise<MonthOutSchema> => {
         return await GET(`${API}${url}/${month_id}`);
-}
+})

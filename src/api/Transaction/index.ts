@@ -7,7 +7,7 @@ const url='/api/transactions';
 const API = 'http://localhost:8000';
 
 export async function listTransactions(
-    filters: TransactionFilterSchema,
+    filters: any,
 ) {
     const params = new URLSearchParams(filters as Record<string, string>).toString();
     return await GET(`${API}${url}`, params)

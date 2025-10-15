@@ -8,11 +8,7 @@ function AuthContainer() {
     const { authenticated } = useAuthContext();
 
     if (authenticated) {
-        return (
-            <>
-                <Dashboard />
-            </>
-        );
+        return (<Dashboard />);
     } else {
         return (
             <div></div>
@@ -22,9 +18,9 @@ function AuthContainer() {
 
 export default function LandingPage() {
         
-        return (
+    return (
         <AuthContextProvider>
             <AuthContainer />
         </AuthContextProvider>
-    )
+    );
 }

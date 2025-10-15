@@ -20,12 +20,15 @@ async function GET(url: string, params: any = undefined) {
         `${url}${params? `?${new URLSearchParams(params).toString()}`:''}`, 
         {
             method: 'GET',
-            credentials: 'include',    
+            credentials: 'include',
         }
     );
     if (!response.ok) {
         if (response.status === 401) {
-            await refreshAuth();
+            await refreshAuth()
+            .then(async () => {
+                return await GET(url, params)}
+            )
         }
         throw new Error(`Error: ${response.status}`);
     }
