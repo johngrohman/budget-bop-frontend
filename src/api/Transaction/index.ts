@@ -1,7 +1,7 @@
 // Transaction API Client
 
-import { MonthOutSchema, TransactionFilterSchema, TransactionOutSchema } from "@/types";
-import { DELETE, GET, POST, POSTFile } from "../http";
+import { MonthOutSchema, TransactionOutSchema } from "@/types";
+import { DELETE, GET, POSTFile } from "../http";
 
 const url='/api/transactions';
 const API = 'http://localhost:8000';
@@ -10,7 +10,7 @@ export async function listTransactions(
     filters: any,
 ) {
     const params = new URLSearchParams(filters as Record<string, string>).toString();
-    return await GET(`${API}${url}`, params)
+    return await GET(`${API}${url}`, params);
 }
 
 export async function uploadTransactions(
@@ -26,5 +26,5 @@ export async function uploadTransactions(
 export async function deleteTransactions(
     payload: Array<TransactionOutSchema['id']>
 ) {
-    return await DELETE(`${API}${url}/`, payload)
+    return await DELETE(`${API}${url}/`, payload);
 }

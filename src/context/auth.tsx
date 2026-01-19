@@ -11,7 +11,7 @@ export const useAuthContext = () => {
         throw new Error('useAuthContext must be within a AuthContextProvider');
     }
     return context;
-}
+};
 
 export default function AuthContextProvider({children}: {children: ReactNode}) {
 
@@ -20,44 +20,44 @@ export default function AuthContextProvider({children}: {children: ReactNode}) {
 
     const fetchMe = async () => {
         return await getUser()
-        .then((response) => {
-            console.log('get user: ', response)
-            setAuthenticated(true);
-            return true;
-        })
-        .catch(() => {
-            console.log('error get User');
-            setAuthenticated(false);
-            return false;
-        })
-    }
-
-    useLayoutEffect(() => {
-        const fetchMe = async () => {
-            return await getUser()
             .then((response) => {
-                console.log('get user: ', response)
+                console.log('get user: ', response);
                 setAuthenticated(true);
                 return true;
             })
             .catch(() => {
                 console.log('error get User');
                 setAuthenticated(false);
-                router.push('/login');
                 return false;
-            })
-        }
+            });
+    };
+
+    useLayoutEffect(() => {
+        const fetchMe = async () => {
+            return await getUser()
+                .then((response) => {
+                    console.log('get user: ', response);
+                    setAuthenticated(true);
+                    return true;
+                })
+                .catch(() => {
+                    console.log('error get User');
+                    setAuthenticated(false);
+                    router.push('/login');
+                    return false;
+                });
+        };
         fetchMe();
     }, []);
 
     const handleLogin = async ({username, password}: LoginSchema) => {
         await login({ username, password })
-        .then((response) => {
-            setAuthenticated(true);
-        })
-        .catch((e) => {
-            console.log('error');
-        })
+            .then((response) => {
+                setAuthenticated(true);
+            })
+            .catch((e) => {
+                console.log('error');
+            });
     };
 
     return (

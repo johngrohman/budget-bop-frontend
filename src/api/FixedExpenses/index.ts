@@ -9,7 +9,7 @@ const API = 'http://localhost:8000';
 
 export async function listFixedExpenses(filters: FixedExpenseFilterSchema) {
     const params = new URLSearchParams(filters as Record<string, string>).toString();
-    return await GET(`${API}${url}`, params)
+    return await GET(`${API}${url}`, params);
 }
 
 export async function patchFixedExpense(

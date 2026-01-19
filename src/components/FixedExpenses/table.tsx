@@ -6,7 +6,7 @@ import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import NoRowsOverlay from "../GridOverlays";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const columns: GridColDef[] = [
     {
@@ -20,11 +20,11 @@ const columns: GridColDef[] = [
         headerName: 'Date',
         type: 'date',
         valueGetter: (value) => {
-            if (!value) return null 
+            if (!value) return null; 
             return new Date(value);
         },
         valueParser: (value) => {
-            if (!value) return null
+            if (!value) return null;
             return new Date(value);
         },
         width: 115,
@@ -92,7 +92,8 @@ export default function FixedExpenseDataGrid(
         {
             queryKey: [`getFixedExpenseQuery${month_id}`],
             queryFn: () => listFixedExpenses({month_id}),
-            initialData: []
+            placeholderData: keepPreviousData,
+            staleTime: 30000,
         }
     );
 
@@ -102,8 +103,8 @@ export default function FixedExpenseDataGrid(
             mutationFn: createFixedExpense,
             onSuccess: (response) => {
                 queryClient.invalidateQueries({ queryKey: [`getFixedExpenseQuery${month_id}`]})
-                .then(() => getMonthData())
-                .then(() => response);
+                    .then(() => getMonthData())
+                    .then(() => response);
             },
         }
     );
@@ -114,8 +115,8 @@ export default function FixedExpenseDataGrid(
             mutationFn: ({fixed_expense_id, content}: {fixed_expense_id: string, content: FixedExpenseInSchema }) => patchFixedExpense(fixed_expense_id, content),
             onSuccess: (response) => {
                 queryClient.invalidateQueries({ queryKey: [`getFixedExpenseQuery${month_id}`]})
-                .then(() => getMonthData())
-                .then(() => response);
+                    .then(() => getMonthData())
+                    .then(() => response);
             }
         }
     );
@@ -126,8 +127,8 @@ export default function FixedExpenseDataGrid(
             mutationFn: deleteFixedExpense,
             onSuccess: (response) => {
                 queryClient.invalidateQueries({ queryKey: [`getFixedExpenseQuery${month_id}`]})
-                .then(() => getMonthData())
-                .then(() => response);
+                    .then(() => getMonthData())
+                    .then(() => response);
             }
         }
     );
@@ -191,7 +192,7 @@ export default function FixedExpenseDataGrid(
                 </div>
             </div>
             <DataGrid
-                rows={getFixedExpensesQuery.data}
+                rows={getFixedExpensesQuery?.data || []}
                 columns={columns}
                 density="compact"
                 className="table_styles"
@@ -214,12 +215,12 @@ export default function FixedExpenseDataGrid(
                 }}
                 slots={{
                     noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
-                    footer: () => <CustomFooter rows={getFixedExpensesQuery.data}/>
+                    footer: () => <CustomFooter rows={getFixedExpensesQuery?.data || []}/>
                 }}
                 slotProps={{
                     loadingOverlay: {
                         variant: 'linear-progress',
-                        noRowsVariant: getFixedExpensesQuery.isFetching ? 'skeleton' : 'linear-progress',
+                        noRowsVariant: 'skeleton',
                     },
                 }}
             />

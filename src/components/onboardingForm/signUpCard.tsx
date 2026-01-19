@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { CreateUserSchema } from "@/types";
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";

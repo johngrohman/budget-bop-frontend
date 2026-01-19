@@ -15,13 +15,13 @@ interface Year {
  * Get All Years
  * @returns array of years
  */
-export async function getYears() {return await GET(`${API}${url}`)}
+export async function getYears() {return await GET(`${API}${url}`);}
 
 export async function createYear(payload: YearInSchema) {
     return await POST(`${API}${url}`, payload);
 }
 
-export async function getYearById(year_id: Year['id'], ) {return await GET(`${API}${url}/${year_id}`, )}
+export async function getYearById(year_id: Year['id'], ) {return await GET(`${API}${url}/${year_id}`, );}
 
 /**
  * Patch Year By Id

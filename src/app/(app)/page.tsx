@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import AuthContextProvider, { useAuthContext } from '@/context/auth';
 import Dashboard from './(year)/dashboard';

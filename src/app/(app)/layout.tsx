@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from "react";
 import TitleBar from "@/components/TitleBar";
 import { ToastProvider } from "@/components/ToastSystem";

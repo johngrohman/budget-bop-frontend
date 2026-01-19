@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import { Suspense } from 'react';
 import { getYearById } from '@/api/Year';
@@ -15,7 +15,7 @@ function YearComponent({ id }: { id: string }) {
 
     useEffect(() => {
         getYearById(id)
-        .then((response) => setYear(response));
+            .then((response) => setYear(response));
     }, []);
 
     return <h1 className="page_heading">{year?.year}</h1>;
@@ -26,7 +26,7 @@ function MonthComponents({ id }: { id: string }) {
 
     useEffect(() => {
         getMonthsInYear(id)
-        .then((response) => setMonths(response));  
+            .then((response) => setMonths(response));  
     }, []);
 
     return (
@@ -49,7 +49,7 @@ export default function YearView({ year_id }: { year_id: YearSchema['id'] }) {
     useEffect(() => {
         const response = getMonthsInYear(year_id);
         setYearData(response);
-    }, [])
+    }, []);
 
     return (
         <Container fluid>

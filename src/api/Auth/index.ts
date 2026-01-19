@@ -4,7 +4,7 @@ import { GET, POST } from "../http";
 const API = 'http://localhost:8000';
 const url='/api/auth';
 
-export async function getUser() {return await GET(`${API}${url}/me`)}
+export async function getUser() {return await GET(`${API}${url}/me`);}
 
 export async function login(
     payload: LoginSchema

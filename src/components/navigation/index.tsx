@@ -20,7 +20,7 @@ export default function Navigation({show, setShow}: Navigation) {
         getAllTime()
             .then((response) => {
                 console.log('success', response);
-                setYearsAndMonths(response)
+                setYearsAndMonths(response);
             })
             .catch((error) => {
                 console.log('error', error);

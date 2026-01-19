@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import LoginCard from "@/components/onboardingForm";
 import AuthContextProvider from "@/context/auth";
 

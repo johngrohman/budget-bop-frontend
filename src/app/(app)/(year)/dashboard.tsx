@@ -5,7 +5,7 @@ import { getYears } from "../../../api/Year";
 import { YearSchema } from "@/types";
 import { useAuthContext } from "@/context/auth";
 import "./[year_id]/styles.scss";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/components/ToastSystem";
 import { useRouter } from "next/navigation";
 
@@ -17,6 +17,8 @@ export default function Dashboard() {
         queryKey: ['getYears'],
         queryFn: getYears,
         initialData: [],
+        placeholderData: keepPreviousData,
+        staleTime: 30000
     });
 
     return (

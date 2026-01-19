@@ -5,4 +5,4 @@ import { GET } from "../http";
 const url='/api/time/years-months';
 const API = 'http://localhost:8000';
 
-export async function getAllTime() {return await GET(`${API}${url}`)}
+export async function getAllTime() {return await GET(`${API}${url}`);}

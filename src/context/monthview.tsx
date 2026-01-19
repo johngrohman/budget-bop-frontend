@@ -56,8 +56,8 @@ export default function MonthViewContextProvider({month_id, children}: {month_id
         getMonthById(month_id)
             .then((res) => {
                 setMonthData(res as any);
-        });
-    }
+            });
+    };
 
     const value: MonthViewContextType = {
         showFileUploadModal,

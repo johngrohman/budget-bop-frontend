@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import LoginForm from "./loginCard";
@@ -17,7 +17,7 @@ export default function LoginCard() {
         if (accessToken) {
             router.push('/');
         }
-    }, [])
+    }, []);
 
     return (
         <Modal
@@ -28,8 +28,8 @@ export default function LoginCard() {
             <Modal.Body className="p-4">
                 {
                     loggingIn ?
-                    <LoginForm setLoggingIn={setLoggingIn} />:
-                    <SignUpForm setLoggingIn={setLoggingIn} />
+                        <LoginForm setLoggingIn={setLoggingIn} />:
+                        <SignUpForm setLoggingIn={setLoggingIn} />
                 }
             </Modal.Body>
         </Modal>

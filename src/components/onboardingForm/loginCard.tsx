@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { login } from "@/api/Auth";
 import { useAuthContext } from "@/context/auth";
 import { useRouter } from "next/navigation";
@@ -14,11 +14,11 @@ export default function LoginForm({setLoggingIn}: {setLoggingIn: Function}) {
 
     const handleSubmit = async () => {
         await handleLogin({username, password});
-    }
+    };
 
     useEffect(() => {
         if (authenticated) {
-            console.log(authenticated)
+            console.log(authenticated);
             router.push('/');
         }
     }, [authenticated]);

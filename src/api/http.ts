@@ -5,9 +5,9 @@
 import { refreshAuth } from "./Auth";
 
 function getCookie(cookie: string) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${cookie}=`);
-  if (parts.length === 2) return parts.pop()?.split(";").shift();
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${cookie}=`);
+    if (parts.length === 2) return parts.pop()?.split(";").shift();
 }
 
 /**
@@ -26,9 +26,9 @@ async function GET(url: string, params: any = undefined) {
     if (!response.ok) {
         if (response.status === 401) {
             await refreshAuth()
-            .then(async () => {
-                return await GET(url, params)}
-            )
+                .then(async () => {
+                    return await GET(url, params);}
+                );
         }
         throw new Error(`Error: ${response.status}`);
     }
@@ -95,7 +95,7 @@ async function POST(url: string,  body: object | null = null) {
     if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
     }
-    return await response.json()
+    return await response.json();
 }
 
 /**
@@ -116,7 +116,7 @@ async function POSTFile(url: string,  body: BodyInit | null = null) {
     if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
     }
-    return await response.json()
+    return await response.json();
 }
 
 /**

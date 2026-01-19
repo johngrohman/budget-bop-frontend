@@ -8,10 +8,11 @@ import {
     GridRowSelectionModel
 } from "@mui/x-data-grid";
 import {
+    keepPreviousData,
     MutationFunction,
     useMutation,
     useQuery,
-  useQueryClient,
+    useQueryClient,
 } from '@tanstack/react-query';
 import { Button, Col, Row, Stack } from "react-bootstrap";
 import { IncomeInSchema, IncomeOutSchema, MonthSchema } from "@/types";
@@ -48,7 +49,7 @@ const columns: GridColDef[] = [
             return new Date(value);
         },
         valueParser: (value) => {
-            if (!value) return null
+            if (!value) return null;
             return new Date(value);
         },
         editable: true,
@@ -107,10 +108,9 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
     const getIncomeQuery = useQuery(
         {
             queryKey: [`getIncomeQuery${month_id}`],
-            queryFn: () => {
-                return listIncome({month_id});
-            },
-            initialData: [],
+            queryFn: () => listIncome({month_id}),
+            placeholderData: keepPreviousData,
+            staleTime: 30000,
         }
     );
 
@@ -120,7 +120,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
             mutationFn: createIncome,
             onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: [`getIncomeQuery${month_id}`]})
-                .then(() => getMonthData());
+                    .then(() => getMonthData());
             }
         }
     );
@@ -131,8 +131,8 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
             mutationFn: ({income_id, content}: {income_id: string, content: IncomeInSchema}) => patchIncome(income_id, content),
             onSuccess: (response) => {
                 queryClient.invalidateQueries({ queryKey: [`getIncomeQuery${month_id}`]})
-                .then(() => getMonthData())
-                .then(() => response);
+                    .then(() => getMonthData())
+                    .then(() => response);
             }
         }
     );
@@ -143,7 +143,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
             mutationFn: deleteIncome,
             onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: [`getIncomeQuery${month_id}`]})
-                .then(() => getMonthData());
+                    .then(() => getMonthData());
             }
         }
     );
@@ -172,13 +172,13 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
             }
         });
 
-        return await patchIncomeMutation.mutateAsync({income_id: newRow.id, content: bodyPayload})
+        return await patchIncomeMutation.mutateAsync({income_id: newRow.id, content: bodyPayload});
         
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleRowUpdateError = (e: any) => {
-        throw(e)
+        throw(e);
     };
 
     return (
@@ -205,7 +205,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
                 </div>
             </div>
             <DataGrid
-                rows={getIncomeQuery.data}
+                rows={getIncomeQuery?.data || []}
                 columns={columns}
                 density="compact"
                 className="table_styles"
@@ -221,7 +221,7 @@ export default function IncomeDataGrid({ month_id }: { month_id: MonthSchema['id
                 }
                 slots={{
                     noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
-                    footer: () => <CustomFooter rows={getIncomeQuery.data} />,
+                    footer: () => <CustomFooter rows={getIncomeQuery?.data || []} />,
                 }}
                 slotProps={{
                     loadingOverlay: {

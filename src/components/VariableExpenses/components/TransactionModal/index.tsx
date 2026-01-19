@@ -16,8 +16,9 @@ import { useToast } from "@/components/ToastSystem";
 import { uploadTransactions } from "@/api/Transaction";
 import TransactionTable from "./components/Table";
 import { useRouter } from "next/navigation";
-import styles from '../../../TitleBar/titlebar.module.scss'
+import styles from '../../../TitleBar/titlebar.module.scss';
 import { ArrowsAngleExpand } from "react-bootstrap-icons";
+import { IconArrowsDiagonal } from "@tabler/icons-react";
 // import TransactionTable from "./components/table";
 // import TransactionTableWrapper from "./components/Table";
 
@@ -80,7 +81,7 @@ export default function FileUploadModal({month_id}: {month_id: string}) {
                     onClick={() => router.push(`${month_id}/transactions`)}
                     className={styles.control_button}
                 >
-                    <ArrowsAngleExpand size={15} fill="#363636" />
+                    <IconArrowsDiagonal size={17} color="#363636" stroke={1.5}/>
                 </div>
             </ModalHeader>
             <ModalBody>

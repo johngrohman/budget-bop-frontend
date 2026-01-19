@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
 import '../../(app)/(year)/[year_id]/styles.scss';
 import { DataGrid, GridColDef, GridPaginationModel, GridSortModel } from "@mui/x-data-grid";
@@ -6,7 +6,7 @@ import { listTransactions } from "@/api/Transaction";
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle, Row } from "react-bootstrap";
 import { Border, CloudUpload, CloudUploadFill } from "react-bootstrap-icons";
 import { PieChart } from "@mui/x-charts";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import NoRowsOverlay from "@/components/GridOverlays";
 
 interface TransactionOutSchema {
@@ -28,8 +28,8 @@ export default function TransactionPage() {
                 sort: 'asc',
             },
         ]
-    )
-    console.log(sortingModel)
+    );
+
     const columns: GridColDef[] = [
         {
             field: "posting_date",
@@ -41,7 +41,7 @@ export default function TransactionPage() {
                 return new Date(value);
             },
             valueParser: (value) => {
-                if (!value) return null
+                if (!value) return null;
                 return new Date(value);
             },
             editable: true,
@@ -56,7 +56,7 @@ export default function TransactionPage() {
                 return new Date(value);
             },
             valueParser: (value) => {
-                if (!value) return null
+                if (!value) return null;
                 return new Date(value);
             },
             editable: true,
@@ -70,7 +70,8 @@ export default function TransactionPage() {
             valueFormatter: (c) => `$${c}`,
         },
         {
-            field: "category",
+            field: "variable_expense",
+            valueGetter: (value: any) => value?.category?.name,
             headerName: "Category",
             width: 170,
             type: 'singleSelect',
@@ -101,20 +102,21 @@ export default function TransactionPage() {
                 const parameters: any = {
                     limit: paginationModel.pageSize,
                     offset: paginationModel.page*paginationModel.pageSize,
-                }
+                };
 
                 if (sortingModel[0]) {
                     parameters['order_by'] = sortingModel[0]?.field;
                     parameters['order_direction'] = sortingModel[0]?.sort;
                 }
             
-                return listTransactions(parameters)
+                return listTransactions(parameters);
             },
             initialData: {
                 items: [],
                 count: 0
             },
-            placeholderData: (prev) => prev,
+            placeholderData: keepPreviousData,
+            // staleTime: 30000,
         }
     );
 
@@ -188,32 +190,36 @@ export default function TransactionPage() {
                             </Button>
                         </div>
                     </div>
-                    <DataGrid
-                        rows={getTransactionQuery.data.items}
-                        columns={columns}
-                        rowCount={getTransactionQuery.data.count}
-                        
-                        loading={getTransactionQuery.isLoading}
-                        slots={{
-                            noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
-                        }}
-                        slotProps={{
-                            loadingOverlay: {
-                                variant: 'skeleton',
-                                noRowsVariant: 'skeleton',
-                            },
-                        }}
-                        sortingMode='server'
-                        sortModel={sortingModel}
-                        onSortModelChange={setSortingModel}
-                        paginationMode='server'
-                        paginationModel={paginationModel}
-                        onPaginationModelChange={setPaginationModel}
-                        pageSizeOptions={[5, 10, 15, 25, 50, 100]}
-                        checkboxSelection
-                        density='compact'
-                        style={{height: 'auto'}}
-                    />
+                    <div>
+                        <DataGrid
+                            rows={getTransactionQuery.data.items}
+                            columns={columns}
+                            rowCount={getTransactionQuery.data.count}
+                            loading={
+                                getTransactionQuery.isLoading ||
+                            getTransactionQuery.isFetching
+                            }
+                            slots={{
+                                noRowsOverlay: () => <NoRowsOverlay text={'None'} />,
+                            }}
+                            slotProps={{
+                                loadingOverlay: {
+                                    variant: 'linear-progress',
+                                    noRowsVariant: getTransactionQuery.isFetching ? 'skeleton' : 'linear-progress',
+                                },
+                            }}
+                            sortingMode='server'
+                            sortModel={sortingModel}
+                            onSortModelChange={setSortingModel}
+                            paginationMode='server'
+                            paginationModel={paginationModel}
+                            onPaginationModelChange={setPaginationModel}
+                            pageSizeOptions={[5, 10, 15, 25, 50, 100]}
+                            checkboxSelection
+                            density='compact'
+                            style={{minHeight: getTransactionQuery.isLoading?'100px':'auto'}}
+                        />
+                    </div>
                 </Col>
                 <Col md={3}>
                     <Card className="" style={{width: '280px'}}>
